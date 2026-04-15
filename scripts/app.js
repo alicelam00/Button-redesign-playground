@@ -555,7 +555,7 @@
     let borderL = Math.max(0, Math.min(100, hsl[2] + dir * s));
     const borderHex = hsluvToHex([hsl[0], hsl[1], borderL]);
     const borderBright = hexBrightness(borderHex);
-    if (borderBright < 30)  borderL = Math.max(borderL, 20);
+    if (borderBright < 30)  borderL = Math.max(borderL, 40);
     if (borderBright > 225) borderL = Math.min(borderL, 80);
     return hsluvToHex([hsl[0], hsl[1], borderL]);
   }

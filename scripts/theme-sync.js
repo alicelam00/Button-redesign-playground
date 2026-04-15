@@ -41,7 +41,7 @@
     var borderL  = Math.max(0, Math.min(100, hsl[2] + bDir * bStep));
     var borderHex = hsluvToHex([hsl[0], hsl[1], borderL]);
     var bBrt     = hexBrightness(borderHex);
-    if (bBrt < 30)  borderL = Math.max(borderL, 20);
+    if (bBrt < 30)  borderL = Math.max(borderL, 40);
     if (bBrt > 225) borderL = Math.min(borderL, 80);
     borderHex = hsluvToHex([hsl[0], hsl[1], borderL]);
 
