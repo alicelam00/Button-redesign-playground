@@ -32,7 +32,7 @@
   var accent = cs.getPropertyValue('--color-accent').trim();
   if (HEX.test(accent)) {
     var hsl      = hexToHsluv(accent);
-    var bStep    = p.primaryBorderStep != null ? p.primaryBorderStep : 12;
+    var bStep    = p.primaryBorderStep != null ? p.primaryBorderStep : 10;
     var pageBg   = cs.getPropertyValue('--color-bg-page').trim();
     var pageBrt  = HEX.test(pageBg) ? hexBrightness(pageBg) : 255;
     var dkHex    = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - 13)]);
