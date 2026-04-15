@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:shopify.dev)",
-      "Bash(gh auth status)"
+      "Bash(gh auth status)",
+      "mcp__grokt-mcp__search_code",
+      "WebFetch(domain:cdn.shopify.com)",
+      "Bash(open:*)",
+      "Bash(quick --version)",
+      "Bash(quick deploy:*)"
     ]
   }
 }

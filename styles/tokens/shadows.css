@@ -1,0 +1,56 @@
+/* ============================================
+   Shadow Tokens
+   ============================================ */
+
+:root {
+  /* --- Elevation Shadows --- */
+  --shadow-extra-small:
+    0 -1px 2px 0 rgba(0, 0, 0, 0.02), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+
+  --shadow-small:
+    0 -1px 2px 0 rgba(0, 0, 0, 0.02), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+
+  --shadow-base:
+    0 -1px 2px 0 rgba(0, 0, 0, 0.02), 0 4px 16px 0 rgba(0, 0, 0, 0.16);
+
+  --shadow-large:
+    0 -1px 2px 0 rgba(0, 0, 0, 0.02), 0 5px 20px 0 rgba(0, 0, 0, 0.2);
+
+  --shadow-extra-large:
+    0 -1px 2px 0 rgba(0, 0, 0, 0.02), 0 6px 24px 0 rgba(0, 0, 0, 0.24);
+
+  --shadow-card:
+    0 0 0 0.5px rgba(0,0,0,0.08), 0 1px 8px 0 rgba(0, 0, 0, 0.04), 0 2px 16px 0 rgba(0, 0, 0, 0.03);
+
+  --shadow-button-primary: none;
+
+  --shadow-button-primary-hover: none;
+
+  --shadow-button-primary-pressed: none;
+
+  /* --- Blur Effects --- */
+  --blur-light: blur(12px);
+  --blur-medium: blur(12px);
+  --blur-heavy: blur(40px);
+}
+
+/* --- Shadow Utility Classes --- */
+.shadow-extra-small {
+  box-shadow: var(--shadow-extra-small);
+}
+
+.shadow-small {
+  box-shadow: var(--shadow-small);
+}
+
+.shadow-base {
+  box-shadow: var(--shadow-base);
+}
+
+.shadow-large {
+  box-shadow: var(--shadow-large);
+}
+
+.shadow-extra-large {
+  box-shadow: var(--shadow-extra-large);
+}

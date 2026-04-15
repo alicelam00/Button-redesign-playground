@@ -1,0 +1,13 @@
+:root {
+  --cornerradius-none: 0px;
+  --cornerradius-small: 8px;
+  --cornerradius-base: 12px;
+  --cornerradius-large: 16px;
+  --cornerradius-full: 36px;
+
+  --radius-none: var(--cornerradius-none);
+  --radius-small: var(--cornerradius-small);
+  --radius-base: var(--cornerradius-base);
+  --radius-large: var(--cornerradius-large);
+  --radius-full: var(--cornerradius-full);
+}

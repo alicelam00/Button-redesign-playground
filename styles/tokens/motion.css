@@ -1,0 +1,14 @@
+:root {
+  --x-timing-base: cubic-bezier(0.16, 1, 0.3, 1);
+  --x-timing-ease-out: ease-out;
+  --x-timing-linear: linear;
+  --x-timing-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --x-duration-faster: 0s;
+  --x-duration-fast: 0s;
+  --x-duration-base: 0s;
+  --x-duration-slow: 0s;
+  --x-duration-slower: 0s;
+  --x-duration-slowest: 0s;
+  --x-duration-reduced-motion: 0s;
+}

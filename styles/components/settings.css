@@ -1,0 +1,375 @@
+.settings-widget {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  max-height: 100vh;
+  background: #1a1a1a;
+  padding: 0;
+  font-family: var(--font-body);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.settings-widget__header {
+  padding: 14px 16px 12px;
+}
+
+.settings-widget__title {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.settings-widget__body {
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  flex: 1;
+  min-height: 0;
+}
+
+.settings-widget__panel {
+  min-height: 100%;
+}
+
+.settings-widget__body::-webkit-scrollbar { width: 3px; }
+.settings-widget__body::-webkit-scrollbar-track { background: transparent; }
+.settings-widget__body::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
+
+.settings-widget__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+
+.settings-widget__label {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.settings-widget__select {
+  min-width: 100px;
+  height: 28px;
+  padding: 0 24px 2px 8px;
+  border-radius: 999px;
+  border: none;
+  background: #000000;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-opacity='0.35' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M1 1l3 3 3-3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.settings-widget__select--sm { min-width: 72px; }
+.settings-widget__select:focus { outline: none; border-color: rgba(255, 255, 255, 0.25); }
+
+.settings-widget__color-wrap {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-widget__color {
+  width: 36px;
+  height: 24px;
+  cursor: pointer;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.settings-widget__color-hex {
+  width: 64px;
+  height: 28px;
+  padding: 0 6px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-family: ui-monospace, monospace;
+  text-transform: uppercase;
+  outline: none;
+}
+
+.settings-widget__color-hex:focus { border-color: rgba(255, 255, 255, 0.25); }
+
+.settings-widget__reset-all-btn {
+  display: block;
+  width: 100%;
+  padding: 8px 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  font-family: inherit;
+  text-align: center;
+}
+
+.settings-widget__reset-all-btn {
+  margin: 0;
+}
+
+.settings-widget__reset-all-btn:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ── Accordion sections ──────────────────────────────────────────── */
+
+.settings-widget__section {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.settings-widget__section:first-child {
+  border-top: none;
+}
+
+.settings-widget__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.settings-widget__section-header:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.settings-widget__section-header svg {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.35);
+  transition: transform 0.18s ease;
+}
+
+.settings-widget__section-header[aria-expanded="false"] svg {
+  transform: rotate(180deg);
+}
+
+.settings-widget__section-content {
+  display: grid;
+  grid-template-rows: 1fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.2s ease;
+}
+
+.settings-widget__section-content.is-collapsed {
+  grid-template-rows: 0fr;
+}
+
+.settings-widget__section-content-inner {
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.settings-widget__section-content-inner > .settings-widget__row,
+.settings-widget__section-content-inner > .settings-widget__group {
+  padding-inline: 16px;
+}
+
+
+.settings-widget__section-content-inner > *:last-child {
+  padding-bottom: 12px;
+}
+
+.settings-widget__theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.settings-widget__theme-row .settings-widget__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.settings-widget__footer {
+  padding: 14px 16px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── HSLUV expandable groups ─────────────────────────────────────── */
+
+.settings-widget__row-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.settings-widget__chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.25);
+  padding: 2px;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.settings-widget__chevron:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.settings-widget__chevron svg {
+  display: block;
+  transition: transform 0.18s ease;
+}
+
+.settings-widget__chevron[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.settings-widget__hsluv-panel {
+  display: none;
+  padding: 2px 0 6px;
+}
+
+.settings-widget__hsluv-panel.is-open {
+  display: block;
+}
+
+.settings-widget__hsluv-row {
+  display: grid;
+  grid-template-columns: 12px 1fr 36px;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.settings-widget__hsluv-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: ui-monospace, monospace;
+}
+
+.settings-widget__hsluv-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 1px;
+  cursor: pointer;
+  outline: none;
+}
+
+.settings-widget__hsluv-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+}
+
+.settings-widget__hsluv-range::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  border: none;
+  cursor: pointer;
+}
+
+.settings-widget__hsluv-num {
+  width: 36px;
+  padding: 4px 4px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-family: ui-monospace, monospace;
+  text-align: right;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.settings-widget__hsluv-num::-webkit-inner-spin-button,
+.settings-widget__hsluv-num::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.settings-widget__hsluv-num:focus {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ── L-step column inputs ────────────────────────────────────────── */
+
+.settings-widget__l-cols {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px 4px;
+  padding: 2px 0 8px;
+}
+
+.settings-widget__l-cols > span {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.2;
+}
+
+.settings-widget__l-num {
+  width: 100%;
+  padding: 4px 0;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+  font-family: ui-monospace, monospace;
+  text-align: center;
+  outline: none;
+  -moz-appearance: textfield;
+  box-sizing: border-box;
+}
+
+.settings-widget__l-num::-webkit-inner-spin-button,
+.settings-widget__l-num::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.settings-widget__l-num:focus {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+}

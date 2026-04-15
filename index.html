@@ -6,1249 +6,191 @@
   <title>Button States Prototype</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="size-default">
+<body>
   <div class="prototype">
-    <h1>Button</h1>
+    <h1>Button component</h1>
 
-    <section class="interactive-demo card" aria-label="Interactive buttons">
-      <h2 class="section-title">Interactive buttons</h2>
-      <p class="interactive-demo__hint">Interact to see all states: default, hover, pressed, focus, and loading.</p>
-      <div class="interactive-demo__row">
-        <button type="button" class="btn btn--primary" id="interactive-primary-btn">Label</button>
-        <button type="button" class="btn btn--secondary" id="interactive-secondary-btn">Label</button>
-        <button type="button" class="btn btn--subdued" id="interactive-subdued-btn">Label</button>
-        <button type="button" class="btn btn--plain" id="interactive-plain-btn">Label</button>
+    <div class="interactive-demo" aria-label="Interactive buttons">
+      <div class="interactive-demo__panel">
+        <div class="interactive-demo__cluster">
+          <div class="interactive-demo__row interactive-demo__row--core">
+            <button type="button" class="button" data-kind="primary" id="interactive-primary-btn">Primary</button>
+            <button type="button" class="button" data-kind="secondary" id="interactive-secondary-btn">Secondary</button>
+            <button type="button" class="button" data-kind="plain" id="interactive-plain-btn" hidden>Tertiary</button>
+          </div>
+          <div class="interactive-demo__row interactive-demo__row--core">
+            <button type="button" class="button" data-kind="primary" data-variant="primary-2" id="interactive-primary-btn-2">Primary button 2</button>
+            <button type="button" class="button" data-kind="secondary" data-variant="secondary-2" id="interactive-secondary-btn-2">Secondary button 2</button>
+          </div>
+          <div class="interactive-demo__row interactive-demo__row--core">
+            <button type="button" class="button" data-kind="primary" data-variant="primary-3" id="interactive-primary-btn-3">Primary button 3</button>
+            <button type="button" class="button" data-kind="secondary" data-variant="secondary-3" id="interactive-secondary-btn-3">Secondary button 3</button>
+          </div>
+        </div>
       </div>
-      <div class="interactive-demo__divider-inner" aria-hidden="true"></div>
-      <div class="interactive-demo__row">
-        <button type="button" class="btn btn--shop" id="interactive-shop-btn">Label</button>
-        <button type="button" class="btn btn--warning" id="interactive-warning-btn">Label</button>
-        <button type="button" class="btn btn--success" id="interactive-success-btn">Label</button>
-        <button type="button" class="btn btn--critical" id="interactive-critical-primary-btn">Label</button>
-        <button type="button" class="btn btn--secondary btn--critical-secondary" id="interactive-critical-secondary-btn">Label</button>
-        <button type="button" class="btn btn--plain btn--critical-plain" id="interactive-critical-plain-btn">Label</button>
-      </div>
-      <div class="interactive-demo__divider-inner" aria-hidden="true"></div>
-      <p class="interactive-demo__subhead">Button group</p>
-      <div class="interactive-demo__btn-group">
-        <button type="button" class="btn btn--secondary" id="interactive-group-secondary-btn">Label</button>
-        <button type="button" class="btn btn--primary" id="interactive-group-primary-btn">Label</button>
-      </div>
-    </section>
-    <section class="interactive-demo interactive-demo--grouped card" aria-label="Grouped buttons" style="display:none">
-      <h2 class="section-title">Grouped buttons</h2>
-      <div class="interactive-demo__btn-group">
-        <button type="button" class="btn btn--secondary" id="interactive-grouped-secondary-btn">Label</button>
-        <button type="button" class="btn btn--primary" id="interactive-grouped-primary-btn">Label</button>
-      </div>
-    </section>
-    <section class="variants-overview card variants-overview--collapsed" id="variants-overview">
-      <button type="button" class="variants-overview__header" id="variants-overview-toggle" aria-expanded="false" aria-controls="variants-overview-body">
-        <h2 class="variants-overview__title">Buttons overview</h2>
-        <svg class="variants-overview__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <div class="variants-overview__body" id="variants-overview-body">
-        <div class="variants-table" id="variants-table"></div>
+    </div>
 
-        <h2 class="section-title" style="margin-top: 48px;">Critical</h2>
-        <div class="variants-table variants-table--critical" id="critical-variants-table"></div>
-
-        <h2 class="section-title" style="margin-top: 48px;">Others</h2>
-        <div class="variants-table variants-table--critical" id="others-variants-table"></div>
-      </div>
-    </section>
+    <h2 class="section-title" hidden>Variants</h2>
+    <div class="variants-table" id="variants-table" hidden></div>
   </div>
 
   <div class="settings-widget" id="settings-widget">
-    <button type="button" class="settings-widget__gear" id="settings-widget-gear" title="Open settings" aria-label="Open settings">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
     <div class="settings-widget__header">
-      <svg class="settings-widget__drag-handle" xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true">
-        <circle cx="3" cy="3" r="1.5"/><circle cx="9" cy="3" r="1.5"/>
-        <circle cx="3" cy="8" r="1.5"/><circle cx="9" cy="8" r="1.5"/>
-        <circle cx="3" cy="13" r="1.5"/><circle cx="9" cy="13" r="1.5"/>
-      </svg>
-      <span class="settings-widget__title">Button settings</span>
+      <span class="settings-widget__title">Settings</span>
     </div>
     <div class="settings-widget__body">
-      <div class="settings-widget__row">
-        <span class="settings-widget__label">Mode</span>
-        <div class="settings-widget__switch" id="setting-theme">
-          <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="Light">Light</button>
-          <button type="button" class="settings-widget__switch-option" data-value="Dark">Dark</button>
+      <div class="settings-widget__panel">
+
+        <!-- Theme row -->
+        <div class="settings-widget__theme-row">
+          <span class="settings-widget__label">Theme</span>
+          <select class="settings-widget__select settings-widget__select--sm" id="setting-theme">
+            <option value="button-overview" selected>Button overview</option>
+            <option value="plain-goods">Plain goods</option>
+            <option value="pitch">Pitch</option>
+            <option value="heritage">Heritage</option>
+            <option value="ghia">Ghia</option>
+          </select>
         </div>
-      </div>
-      <div class="settings-widget__section" id="primary-btn-section">
-        <button type="button" class="settings-widget__section-header" id="primary-btn-toggle" aria-expanded="false">
-          <span class="settings-widget__section-title">Primary button</span>
-          <svg class="settings-widget__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <div class="settings-widget__section-body" id="primary-btn-section-body">
-          <div class="settings-widget__section-actions">
-            <a href="#" class="settings-widget__reset" id="primary-reset">Reset</a>
-          </div>
-          <div class="settings-widget__row" id="branding-accent-row">
-            <span class="settings-widget__label">Accent colour</span>
-            <div class="settings-widget__color-wrap">
-              <input type="color" class="settings-widget__color" id="setting-branded-bg" value="#000000">
-              <input type="text" class="settings-widget__color-hex" id="setting-branded-bg-hex" value="#000000" maxlength="7" spellcheck="false">
+
+        <!-- Buttons section -->
+        <div class="settings-widget__section">
+          <button type="button" class="settings-widget__section-header" id="section-buttons-btn" aria-expanded="false" aria-controls="section-buttons-content">
+            <span>Buttons</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="settings-widget__section-content is-collapsed" id="section-buttons-content">
+            <div class="settings-widget__section-content-inner">
+
+              <div class="settings-widget__group">
+                <div class="settings-widget__row">
+                  <span class="settings-widget__label">Primary</span>
+                  <div class="settings-widget__color-wrap">
+                    <input type="color" class="settings-widget__color" id="setting-branded-bg" value="#005BD3">
+                    <input type="text" class="settings-widget__color-hex" id="setting-branded-bg-hex" value="#005BD3" maxlength="7" spellcheck="false">
+                  </div>
+                </div>
+                <div class="settings-widget__l-cols">
+                  <span>Hover</span><span>Press</span><span>Border</span><span>Top</span><span>Bottom</span>
+                  <input type="number" class="settings-widget__l-num" id="setting-primary-hover-l" value="5" step="1">
+                  <input type="number" class="settings-widget__l-num" id="setting-primary-active-l" value="10" step="1">
+                  <input type="number" class="settings-widget__l-num" id="setting-primary-border-contrast" value="12" step="1" min="0" max="100">
+                  <input type="number" class="settings-widget__l-num" id="setting-primary-grad-top-l" value="20" step="1">
+                  <input type="number" class="settings-widget__l-num" id="setting-primary-grad-bottom-l" value="10" step="1">
+                </div>
+              </div>
+
+              <div class="settings-widget__group">
+                <div class="settings-widget__row">
+                  <span class="settings-widget__label">Secondary</span>
+                </div>
+                <input type="color" class="settings-widget__color" id="setting-secondary-bg" value="#F2F2F2" hidden>
+                <input type="text" class="settings-widget__color-hex" id="setting-secondary-bg-hex" value="" maxlength="7" spellcheck="false" hidden>
+                <div class="settings-widget__l-cols">
+                  <span>Default</span><span>Hover</span><span>Press</span><span>2 & 3</span><span>Border</span>
+                  <input type="number" class="settings-widget__l-num" id="setting-secondary-default-l" value="-4" step="1">
+                  <input type="number" class="settings-widget__l-num" id="setting-secondary-hover-l" value="-9" step="1">
+                  <input type="number" class="settings-widget__l-num" id="setting-secondary-active-l" value="-10" step="1">
+                  <input type="number" class="settings-widget__l-num" id="setting-secondary-active23-l" value="-14" step="1">
+                  <input type="number" class="settings-widget__l-num" id="setting-secondary-border-l" value="-14" step="1">
+                </div>
+              </div>
+
             </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Background</span>
-            <div class="settings-widget__switch" id="setting-branded-bg-fill">
-              <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="Solid">Solid</button>
-              <button type="button" class="settings-widget__switch-option" data-value="None">None</button>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Block padding</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-branded-padding" min="0" max="5" step="1" value="3">
-              <span class="settings-widget__slider-label" id="branded-padding-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Inline padding</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-branded-inline-padding" min="0" max="5" step="1" value="3">
-              <span class="settings-widget__slider-label" id="branded-inline-padding-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Corner radius</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-branded-corner-radius" min="0" max="4" step="1" value="2">
-              <span class="settings-widget__slider-label" id="branded-corner-radius-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Border</span>
-            <div class="settings-widget__switch" id="setting-branded-border">
-              <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="FULL">Full</button>
-              <button type="button" class="settings-widget__switch-option" data-value="NONE">None</button>
-            </div>
-          </div>
-          <div class="settings-widget__subhead">Typography</div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Kerning</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-primary-kerning" min="0" max="2" step="1" value="0">
-              <span class="settings-widget__slider-label" id="primary-kerning-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Lettercase</span>
-            <select class="settings-widget__select settings-widget__select--sm" id="setting-primary-lettercase">
-              <option value="lowercase">Lower</option>
-              <option value="none" selected>None</option>
-              <option value="capitalize">Title</option>
-              <option value="uppercase">Upper</option>
-            </select>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Weight</span>
-            <div class="settings-widget__switch" id="setting-primary-weight">
-              <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="base">Base</button>
-              <button type="button" class="settings-widget__switch-option" data-value="bold">Bold</button>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Size</span>
-            <select class="settings-widget__select settings-widget__select--sm" id="setting-primary-font-size">
-              <option value="6px">Extra small (6px)</option>
-              <option value="8px">Small (8px)</option>
-              <option value="14px" selected>Base (14px)</option>
-              <option value="16px">Medium (16px)</option>
-              <option value="20px">Large (20px)</option>
-              <option value="24px">Extra large (24px)</option>
-              <option value="32px">Extra extra large (32px)</option>
-            </select>
           </div>
         </div>
-      </div>
-      <div class="settings-widget__section" id="secondary-btn-section">
-        <button type="button" class="settings-widget__section-header" id="secondary-btn-toggle" aria-expanded="false">
-          <span class="settings-widget__section-title">Secondary button</span>
-          <svg class="settings-widget__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <div class="settings-widget__section-body" id="secondary-btn-section-body">
-          <div class="settings-widget__section-actions">
-            <a href="#" class="settings-widget__reset" id="secondary-reset">Reset</a>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Text</span>
-            <div class="settings-widget__color-wrap">
-              <input type="color" class="settings-widget__color" id="setting-branded-text" value="#000000">
-              <input type="text" class="settings-widget__color-hex" id="setting-branded-text-hex" value="#000000" maxlength="7" spellcheck="false">
+
+        <!-- Colours section -->
+        <div class="settings-widget__section">
+          <button type="button" class="settings-widget__section-header" id="section-colours-btn" aria-expanded="false" aria-controls="section-colours-content">
+            <span>Colours</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="settings-widget__section-content is-collapsed" id="section-colours-content">
+            <div class="settings-widget__section-content-inner">
+
+              <div class="settings-widget__row">
+                <span class="settings-widget__label">Background</span>
+                <div class="settings-widget__color-wrap">
+                  <input type="color" class="settings-widget__color" id="setting-background" value="#FFFFFF">
+                  <input type="text" class="settings-widget__color-hex" id="setting-background-hex" value="#FFFFFF" maxlength="7" spellcheck="false">
+                </div>
+              </div>
+
+              <div class="settings-widget__row">
+                <span class="settings-widget__label">Text</span>
+                <div class="settings-widget__color-wrap">
+                  <input type="color" class="settings-widget__color" id="setting-branded-text" value="#000000">
+                  <input type="text" class="settings-widget__color-hex" id="setting-branded-text-hex" value="#000000" maxlength="7" spellcheck="false">
+                </div>
+              </div>
+
+              <div class="settings-widget__row">
+                <span class="settings-widget__label">Accent</span>
+                <div class="settings-widget__color-wrap">
+                  <input type="color" class="settings-widget__color" id="setting-plain-color" value="#005BD3">
+                  <input type="text" class="settings-widget__color-hex" id="setting-plain-color-hex" value="#005BD3" maxlength="7" spellcheck="false">
+                </div>
+              </div>
+
             </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Background</span>
-            <div class="settings-widget__switch" id="setting-secondary-bg-fill">
-              <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="Solid">Solid</button>
-              <button type="button" class="settings-widget__switch-option" data-value="None">None</button>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Block padding</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-secondary-padding" min="0" max="5" step="1" value="3">
-              <span class="settings-widget__slider-label" id="secondary-padding-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Inline padding</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-secondary-inline-padding" min="0" max="5" step="1" value="3">
-              <span class="settings-widget__slider-label" id="secondary-inline-padding-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Corner radius</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-secondary-corner-radius" min="0" max="4" step="1" value="2">
-              <span class="settings-widget__slider-label" id="secondary-corner-radius-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Border</span>
-            <div class="settings-widget__switch" id="setting-secondary-border">
-              <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="FULL">Full</button>
-              <button type="button" class="settings-widget__switch-option" data-value="NONE">None</button>
-            </div>
-          </div>
-          <div class="settings-widget__subhead">Typography</div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Kerning</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-secondary-kerning" min="0" max="2" step="1" value="0">
-              <span class="settings-widget__slider-label" id="secondary-kerning-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Lettercase</span>
-            <select class="settings-widget__select settings-widget__select--sm" id="setting-secondary-lettercase">
-              <option value="lowercase">Lower</option>
-              <option value="none" selected>None</option>
-              <option value="capitalize">Title</option>
-              <option value="uppercase">Upper</option>
-            </select>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Weight</span>
-            <div class="settings-widget__switch" id="setting-secondary-weight">
-              <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="base">Base</button>
-              <button type="button" class="settings-widget__switch-option" data-value="bold">Bold</button>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Size</span>
-            <select class="settings-widget__select settings-widget__select--sm" id="setting-secondary-font-size">
-              <option value="6px">Extra small (6px)</option>
-              <option value="8px">Small (8px)</option>
-              <option value="14px" selected>Base (14px)</option>
-              <option value="16px">Medium (16px)</option>
-              <option value="20px">Large (20px)</option>
-              <option value="24px">Extra large (24px)</option>
-              <option value="32px">Extra extra large (32px)</option>
-            </select>
           </div>
         </div>
-      </div>
-      <div class="settings-widget__section" id="subdued-btn-section">
-        <button type="button" class="settings-widget__section-header" id="subdued-btn-toggle" aria-expanded="false">
-          <span class="settings-widget__section-title">Subdued button</span>
-          <svg class="settings-widget__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <div class="settings-widget__section-body" id="subdued-btn-section-body">
-          <div class="settings-widget__section-actions">
-            <a href="#" class="settings-widget__reset" id="subdued-reset">Reset</a>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Text</span>
-            <div class="settings-widget__color-wrap">
-              <input type="color" class="settings-widget__color" id="setting-subdued-text" value="#000000">
-              <input type="text" class="settings-widget__color-hex" id="setting-subdued-text-hex" value="#000000" maxlength="7" spellcheck="false">
+
+        <!-- Button section -->
+        <div class="settings-widget__section">
+          <button type="button" class="settings-widget__section-header" id="section-button-btn" aria-expanded="false" aria-controls="section-button-content">
+            <span>Styles</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="settings-widget__section-content is-collapsed" id="section-button-content">
+            <div class="settings-widget__section-content-inner">
+
+              <div class="settings-widget__row">
+                <span class="settings-widget__label">Border radius</span>
+                <select class="settings-widget__select settings-widget__select--sm" id="setting-border-radius">
+                  <option value="cornerradius-none">None · 0px</option>
+                  <option value="cornerradius-small">Small · 8px</option>
+                  <option value="cornerradius-base" selected>Base · 12px</option>
+                  <option value="cornerradius-large">Large · 16px</option>
+                  <option value="cornerradius-full">Full · 36px</option>
+                </select>
+              </div>
+
+              <div class="settings-widget__row">
+                <span class="settings-widget__label">Icon</span>
+                <select class="settings-widget__select settings-widget__select--sm" id="setting-icon">
+                  <option value="None" selected>None</option>
+                  <option value="Left">Left</option>
+                  <option value="Right">Right</option>
+                  <option value="Only">Only</option>
+                </select>
+              </div>
+
+              <div class="settings-widget__row">
+                <span class="settings-widget__label">Size</span>
+                <select class="settings-widget__select settings-widget__select--sm" id="setting-size-preset">
+                  <option value="small">Small</option>
+                  <option value="default" selected>Base</option>
+                  <option value="large">Large</option>
+                  <option value="extra-large">Extra large</option>
+                </select>
+              </div>
+
             </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Background</span>
-            <div class="settings-widget__switch" id="setting-subdued-bg-fill">
-              <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="Solid">Solid</button>
-              <button type="button" class="settings-widget__switch-option" data-value="None">None</button>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Block padding</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-subdued-padding" min="0" max="5" step="1" value="3">
-              <span class="settings-widget__slider-label" id="subdued-padding-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Inline padding</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-subdued-inline-padding" min="0" max="5" step="1" value="3">
-              <span class="settings-widget__slider-label" id="subdued-inline-padding-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Corner radius</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-subdued-corner-radius" min="0" max="4" step="1" value="2">
-              <span class="settings-widget__slider-label" id="subdued-corner-radius-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Border</span>
-            <div class="settings-widget__switch" id="setting-subdued-border">
-              <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="FULL">Full</button>
-              <button type="button" class="settings-widget__switch-option" data-value="NONE">None</button>
-            </div>
-          </div>
-          <div class="settings-widget__subhead">Typography</div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Kerning</span>
-            <div class="settings-widget__slider-wrap">
-              <input type="range" class="settings-widget__slider" id="setting-subdued-kerning" min="0" max="2" step="1" value="0">
-              <span class="settings-widget__slider-label" id="subdued-kerning-label">Base</span>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Lettercase</span>
-            <select class="settings-widget__select settings-widget__select--sm" id="setting-subdued-lettercase">
-              <option value="lowercase">Lower</option>
-              <option value="none" selected>None</option>
-              <option value="capitalize">Title</option>
-              <option value="uppercase">Upper</option>
-            </select>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Weight</span>
-            <div class="settings-widget__switch" id="setting-subdued-weight">
-              <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="base">Base</button>
-              <button type="button" class="settings-widget__switch-option" data-value="bold">Bold</button>
-            </div>
-          </div>
-          <div class="settings-widget__row">
-            <span class="settings-widget__label">Size</span>
-            <select class="settings-widget__select settings-widget__select--sm" id="setting-subdued-font-size">
-              <option value="6px">Extra small (6px)</option>
-              <option value="8px">Small (8px)</option>
-              <option value="14px" selected>Base (14px)</option>
-              <option value="16px">Medium (16px)</option>
-              <option value="20px">Large (20px)</option>
-              <option value="24px">Extra large (24px)</option>
-              <option value="32px">Extra extra large (32px)</option>
-            </select>
           </div>
         </div>
-      </div>
-      <div class="settings-widget__row">
-        <span class="settings-widget__label">Style</span>
-        <div class="settings-widget__switch" id="setting-style">
-          <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="Depth">Depth</button>
-          <button type="button" class="settings-widget__switch-option" data-value="Flat">Flat</button>
+
+        <!-- Footer -->
+        <div class="settings-widget__footer">
+          <button type="button" class="settings-widget__reset-all-btn" id="global-reset-all">Reset all</button>
         </div>
-      </div>
-      <div class="settings-widget__row" style="display:none">
-        <span class="settings-widget__label">Radius</span>
-        <div class="settings-widget__switch" id="setting-radius">
-          <button type="button" class="settings-widget__switch-option" data-value="Squircle">Squircle</button>
-          <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="Regular">Regular</button>
-        </div>
-      </div>
-      <div class="settings-widget__row">
-        <span class="settings-widget__label">Label</span>
-        <div class="settings-widget__switch" id="setting-label">
-          <button type="button" class="settings-widget__switch-option settings-widget__switch-option--active" data-value="Text">Text</button>
-          <button type="button" class="settings-widget__switch-option" data-value="Icon">Icon</button>
-        </div>
-      </div>
-      <div class="settings-widget__row" style="display:none">
-        <span class="settings-widget__label">Size</span>
-        <select class="settings-widget__select" id="setting-size">
-          <option value="xs">Extra small</option>
-          <option value="sm">Small</option>
-          <option value="default" selected>Default</option>
-          <option value="lg">Large</option>
-          <option value="xl">Extra largea</option>
-        </select>
+
       </div>
     </div>
   </div>
 
-  <script>
-    (function () {
-      var VARIANTS = ['primary', 'secondary', 'subdued', 'plain'];
-      var CRITICAL_VARIANTS = ['critical', 'critical-secondary', 'critical-plain'];
-      var CRITICAL_HEADINGS = ['Primary', 'Secondary', 'Plain'];
-      var OTHERS_VARIANTS = ['shop', 'warning', 'success'];
-      var STATES = ['default', 'hover', 'pressed', 'focus', 'disabled', 'loading'];
-      var stateLabels = { default: 'Default', hover: 'Hover', pressed: 'Pressed', focus: 'Focus', disabled: 'Disabled', loading: 'Loading' };
-
-      function el(tag, className, content) {
-        var e = document.createElement(tag);
-        if (className) e.className = className;
-        if (content !== undefined) e.textContent = content;
-        return e;
-      }
-
-      function spinner() {
-        var s = el('span', 'spinner');
-        s.setAttribute('aria-hidden', 'true');
-        return s;
-      }
-
-      function createButton(variant, state, label) {
-        var btn = el('button', 'btn btn--' + variant + (state !== 'default' ? ' btn--' + state : ''));
-        btn.type = 'button';
-        if (state === 'disabled') btn.disabled = true;
-        if (state === 'loading') {
-          btn.setAttribute('aria-busy', 'true');
-          var inv = el('span', 'btn__label-invisible', label);
-          inv.setAttribute('aria-hidden', 'true');
-          var wrap = el('span', 'btn__spinner-wrap');
-          wrap.appendChild(spinner());
-          btn.appendChild(inv);
-          btn.appendChild(wrap);
-        } else {
-          btn.textContent = label;
-        }
-        return btn;
-      }
-
-      var table = document.getElementById('variants-table');
-      table.appendChild(el('div', 'variants-table__cell variants-table__cell--label', ''));
-      VARIANTS.forEach(function (v) {
-        table.appendChild(el('div', 'variants-table__cell variants-table__cell--heading', v.charAt(0).toUpperCase() + v.slice(1)));
-      });
-      STATES.forEach(function (state) {
-        table.appendChild(el('div', 'variants-table__cell variants-table__cell--label', stateLabels[state]));
-        VARIANTS.forEach(function (variant) {
-          var cell = el('div', 'variants-table__cell variants-table__cell--demo');
-          cell.appendChild(createButton(variant, state, 'Label'));
-          table.appendChild(cell);
-        });
-      });
-
-      var criticalTable = document.getElementById('critical-variants-table');
-      criticalTable.appendChild(el('div', 'variants-table__cell variants-table__cell--label', ''));
-      criticalTable.appendChild(el('div', 'variants-table__cell variants-table__cell--heading', 'Primary'));
-      criticalTable.appendChild(el('div', 'variants-table__cell variants-table__cell--heading', 'Secondary'));
-      criticalTable.appendChild(el('div', 'variants-table__cell', '')); /* empty: align with Subdued column */
-      criticalTable.appendChild(el('div', 'variants-table__cell variants-table__cell--heading', 'Plain'));
-      STATES.forEach(function (state) {
-        criticalTable.appendChild(el('div', 'variants-table__cell variants-table__cell--label', stateLabels[state]));
-        (function () {
-          var c = el('div', 'variants-table__cell variants-table__cell--demo');
-          c.appendChild(createButton('critical', state, 'Label'));
-          criticalTable.appendChild(c);
-        })();
-        (function () {
-          var c = el('div', 'variants-table__cell variants-table__cell--demo');
-          c.appendChild(createButton('critical-secondary', state, 'Label'));
-          criticalTable.appendChild(c);
-        })();
-        criticalTable.appendChild(el('div', 'variants-table__cell', ''));
-        (function () {
-          var c = el('div', 'variants-table__cell variants-table__cell--demo');
-          c.appendChild(createButton('critical-plain', state, 'Label'));
-          criticalTable.appendChild(c);
-        })();
-      });
-
-      var othersTable = document.getElementById('others-variants-table');
-      othersTable.appendChild(el('div', 'variants-table__cell variants-table__cell--label', ''));
-      othersTable.appendChild(el('div', 'variants-table__cell variants-table__cell--heading', 'Shop'));
-      othersTable.appendChild(el('div', 'variants-table__cell variants-table__cell--heading', 'Warning'));
-      othersTable.appendChild(el('div', 'variants-table__cell variants-table__cell--heading', 'Success'));
-      othersTable.appendChild(el('div', 'variants-table__cell', '')); /* empty: align with Plain column */
-      STATES.forEach(function (state) {
-        othersTable.appendChild(el('div', 'variants-table__cell variants-table__cell--label', stateLabels[state]));
-        (function () {
-          var c = el('div', 'variants-table__cell variants-table__cell--demo');
-          c.appendChild(createButton('shop', state, 'Label'));
-          othersTable.appendChild(c);
-        })();
-        (function () {
-          var c = el('div', 'variants-table__cell variants-table__cell--demo');
-          c.appendChild(createButton('warning', state, 'Label'));
-          othersTable.appendChild(c);
-        })();
-        (function () {
-          var c = el('div', 'variants-table__cell variants-table__cell--demo');
-          c.appendChild(createButton('success', state, 'Label'));
-          othersTable.appendChild(c);
-        })();
-        othersTable.appendChild(el('div', 'variants-table__cell', ''));
-      });
-
-      // Settings widget: gear opens; click outside closes
-      var widget = document.getElementById('settings-widget');
-      var gearBtn = document.getElementById('settings-widget-gear');
-      function setMinimized(isMinimized) {
-        widget.classList.toggle('settings-widget--minimized', isMinimized);
-        localStorage.setItem('widgetOpen', isMinimized ? '0' : '1');
-        if (isMinimized) {
-          widget.style.top = '';
-          widget.style.left = '';
-          widget.style.bottom = '';
-          widget.style.right = '';
-        }
-      }
-      if (localStorage.getItem('widgetOpen') === '1') {
-        setMinimized(false);
-      }
-      gearBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        setMinimized(false);
-      });
-      document.addEventListener('click', function (e) {
-        if (!widget.classList.contains('settings-widget--minimized') && !widget.contains(e.target) && !e.target.closest('.btn') && !e.target.closest('#variants-overview-toggle')) {
-          setMinimized(true);
-        }
-      });
-
-      // Draggable widget
-      var isDragging = false;
-      var dragOffsetX = 0;
-      var dragOffsetY = 0;
-      var widgetHeader = widget.querySelector('.settings-widget__header');
-      widgetHeader.addEventListener('mousedown', function (e) {
-        if (widget.classList.contains('settings-widget--minimized')) return;
-        isDragging = true;
-        var rect = widget.getBoundingClientRect();
-        dragOffsetX = e.clientX - rect.left;
-        dragOffsetY = e.clientY - rect.top;
-        widget.style.bottom = 'auto';
-        widget.style.right = 'auto';
-        widget.style.left = rect.left + 'px';
-        widget.style.top = rect.top + 'px';
-        widget.classList.add('settings-widget--dragging');
-        e.preventDefault();
-      });
-      document.addEventListener('mousemove', function (e) {
-        if (!isDragging) return;
-        widget.style.left = (e.clientX - dragOffsetX) + 'px';
-        widget.style.top = (e.clientY - dragOffsetY) + 'px';
-      });
-      document.addEventListener('mouseup', function () {
-        if (!isDragging) return;
-        isDragging = false;
-        widget.classList.remove('settings-widget--dragging');
-      });
-
-      // Mode: Light / Dark
-      var themeSwitch = document.getElementById('setting-theme');
-      var themeSwitchValue = 'Light';
-      function applyTheme() {
-        document.body.classList.toggle('theme-dark', themeSwitchValue === 'Dark');
-      }
-      themeSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        themeSwitchValue = opt.dataset.value;
-        themeSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === themeSwitchValue);
-        });
-        applyTheme();
-      });
-      applyTheme();
-
-      // Branding
-      var bgColorInput = document.getElementById('setting-branded-bg');
-      var bgHexInput = document.getElementById('setting-branded-bg-hex');
-      var textColorInput = document.getElementById('setting-branded-text');
-      var textHexInput = document.getElementById('setting-branded-text-hex');
-      var paddingSlider = document.getElementById('setting-branded-padding');
-      var paddingLabel = document.getElementById('branded-padding-label');
-      var inlinePaddingSlider = document.getElementById('setting-branded-inline-padding');
-      var inlinePaddingLabel = document.getElementById('branded-inline-padding-label');
-      var cornerRadiusSlider = document.getElementById('setting-branded-corner-radius');
-      var cornerRadiusLabel = document.getElementById('branded-corner-radius-label');
-      var brandedBorderSwitch = document.getElementById('setting-branded-border');
-      var brandedBorderValue = 'FULL';
-      var PADDING_STEPS = [
-        { label: 'None',        value: '0px'  },
-        { label: 'Extra tight', value: '6px'  },
-        { label: 'Tight',       value: '8px'  },
-        { label: 'Base',        value: '12px' },
-        { label: 'Loose',       value: '16px' },
-        { label: 'Extra loose', value: '20px' },
-      ];
-      var INLINE_PADDING_STEPS = [
-        { label: 'None',        value: '0px'  },
-        { label: 'Extra tight', value: '4px'  },
-        { label: 'Tight',       value: '8px'  },
-        { label: 'Base',        value: '14px' },
-        { label: 'Loose',       value: '20px' },
-        { label: 'Extra loose', value: '32px' },
-      ];
-      var CORNER_RADIUS_STEPS = [
-        { label: 'None',  value: '0px'    },
-        { label: 'Small', value: '4px'    },
-        { label: 'Base',  value: '12px'   },
-        { label: 'Large', value: '16px'   },
-        { label: 'Full',  value: '9999px' },
-      ];
-      function hexAdjust(hex, amt) {
-        var n = parseInt(hex.replace('#', ''), 16);
-        var r = Math.min(255, Math.max(0, (n >> 16) + amt));
-        var g = Math.min(255, Math.max(0, ((n >> 8) & 0xff) + amt));
-        var b = Math.min(255, Math.max(0, (n & 0xff) + amt));
-        return '#' + [r, g, b].map(function(v) { return v.toString(16).padStart(2, '0'); }).join('');
-      }
-      function hexToRgb(hex) {
-        var n = parseInt(hex.replace('#', ''), 16);
-        return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
-      }
-      function hexBrightness(hex) {
-        var rgb = hexToRgb(hex);
-        return 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2];
-      }
-      function contrastColor(hex) {
-        return hexBrightness(hex) > 128 ? '#000000' : '#f9f6f5';
-      }
-      function initButtonTextColors() {
-        var root = document.documentElement.style;
-        root.setProperty('--btn-text-critical', contrastColor('#eb001c'));
-        root.setProperty('--btn-text-shop',     contrastColor('#5433eb'));
-        root.setProperty('--btn-text-warning',  contrastColor('#ffaf01'));
-        root.setProperty('--btn-text-success',  contrastColor('#0da860'));
-      }
-      initButtonTextColors();
-      var secondaryPaddingSlider = document.getElementById('setting-secondary-padding');
-      var secondaryPaddingLabel = document.getElementById('secondary-padding-label');
-      var secondaryInlinePaddingSlider = document.getElementById('setting-secondary-inline-padding');
-      var secondaryInlinePaddingLabel = document.getElementById('secondary-inline-padding-label');
-      var secondaryCornerRadiusSlider = document.getElementById('setting-secondary-corner-radius');
-      var secondaryCornerRadiusLabel = document.getElementById('secondary-corner-radius-label');
-      var secondaryBgFillSwitch = document.getElementById('setting-secondary-bg-fill');
-      var secondaryBorderSwitch = document.getElementById('setting-secondary-border');
-      var secondaryBgFillValue = 'Solid';
-      var secondaryBorderValue = 'FULL';
-
-      var subduedTextColorInput = document.getElementById('setting-subdued-text');
-      var subduedTextHexInput = document.getElementById('setting-subdued-text-hex');
-      var subduedPaddingSlider = document.getElementById('setting-subdued-padding');
-      var subduedPaddingLabel = document.getElementById('subdued-padding-label');
-      var subduedInlinePaddingSlider = document.getElementById('setting-subdued-inline-padding');
-      var subduedInlinePaddingLabel = document.getElementById('subdued-inline-padding-label');
-      var subduedCornerRadiusSlider = document.getElementById('setting-subdued-corner-radius');
-      var subduedCornerRadiusLabel = document.getElementById('subdued-corner-radius-label');
-      var subduedBgFillSwitch = document.getElementById('setting-subdued-bg-fill');
-      var subduedBorderSwitch = document.getElementById('setting-subdued-border');
-      var subduedBgFillValue = 'Solid';
-      var subduedBorderValue = 'FULL';
-
-      var brandedStyleEl = document.createElement('style');
-      document.head.appendChild(brandedStyleEl);
-      var secondaryStyleEl = document.createElement('style');
-      document.head.appendChild(secondaryStyleEl);
-      var subduedStyleEl = document.createElement('style');
-      document.head.appendChild(subduedStyleEl);
-      var groupedStyleEl = document.createElement('style');
-      document.head.appendChild(groupedStyleEl);
-
-      function updateSecondaryStyles() {
-        var text = textColorInput.value;
-        var isCustomText = text.toLowerCase() !== '#000000';
-        var tr = hexToRgb(text);
-        var textHover = hexAdjust(text, -20);
-        var textPressed = hexAdjust(text, -25);
-        var hasSecondaryBgFill = secondaryBgFillValue !== 'None';
-        var hasSecondaryBorder = secondaryBorderValue === 'FULL';
-        var secBlock = PADDING_STEPS[parseInt(secondaryPaddingSlider.value)];
-        var secInline = INLINE_PADDING_STEPS[parseInt(secondaryInlinePaddingSlider.value)];
-        var secCorner = CORNER_RADIUS_STEPS[parseInt(secondaryCornerRadiusSlider.value)];
-        secondaryPaddingLabel.textContent = secBlock.label;
-        secondaryInlinePaddingLabel.textContent = secInline.label;
-        secondaryCornerRadiusLabel.textContent = secCorner.label;
-        var cornerShape = document.body.classList.contains('radius-regular') ? 'unset' : 'squircle';
-        var rules = [];
-        /* dark mode colour defaults — always inject */
-        if (isCustomText) {
-          rules.push('body .btn--secondary:not(.btn--critical-secondary) { color: ' + text + '; }');
-          rules.push('body .btn--plain:not(.btn--critical-plain) { color: ' + text + '; }');
-          rules.push('body .btn--plain:not(.btn--critical-plain):disabled, body .btn--plain:not(.btn--critical-plain).btn--disabled { color: ' + text + '; }');
-          rules.push('body .btn--plain:not(.btn--critical-plain):hover:not(:disabled), body .btn--plain:not(.btn--critical-plain).btn--hover { color: ' + textHover + '; }');
-          rules.push('body .btn--plain:not(.btn--critical-plain):active:not(:disabled), body .btn--plain:not(.btn--critical-plain).btn--pressed { color: ' + textPressed + '; }');
-          rules.push('body.theme-dark .btn--secondary:not(.btn--critical-secondary) { color: ' + text + '; }');
-          rules.push('body.theme-dark .btn--plain:not(.btn--critical-plain) { color: ' + text + '; }');
-          rules.push('body.theme-dark .btn--plain:not(.btn--critical-plain):hover:not(:disabled), body.theme-dark .btn--plain:not(.btn--critical-plain).btn--hover, body.theme-dark .btn--plain:not(.btn--critical-plain):active:not(:disabled), body.theme-dark .btn--plain:not(.btn--critical-plain).btn--pressed { color: ' + text + '; }');
-        } else {
-          rules.push('body.theme-dark .btn--secondary:not(.btn--critical-secondary) { color: #ffffff; }');
-          rules.push('body.theme-dark .btn--plain:not(.btn--critical-plain) { color: #ffffff; }');
-          rules.push('body.theme-dark .btn--plain:not(.btn--critical-plain):hover:not(:disabled), body.theme-dark .btn--plain:not(.btn--critical-plain).btn--hover { color: rgba(255, 255, 255, 0.75); }');
-          rules.push('body.theme-dark .btn--plain:not(.btn--critical-plain):active:not(:disabled), body.theme-dark .btn--plain:not(.btn--critical-plain).btn--pressed { color: rgba(255, 255, 255, 0.65); }');
-        }
-        /* background fills */
-        if (isCustomText && hasSecondaryBgFill) {
-          rules.push('body .btn--secondary:not(.btn--critical-secondary) { background: transparent; border-color: rgba(' + tr + ',0.35); }');
-          rules.push('body .btn--secondary:not(.btn--critical-secondary):hover:not(:disabled), body .btn--secondary:not(.btn--critical-secondary).btn--hover { background: rgba(' + tr + ',0.12); border-color: rgba(' + tr + ',0.5); }');
-          rules.push('body .btn--secondary:not(.btn--critical-secondary):active:not(:disabled), body .btn--secondary:not(.btn--critical-secondary).btn--pressed { background: rgba(' + tr + ',0.16); border-color: rgba(' + tr + ',0.5); }');
-          rules.push('body.theme-dark .btn--secondary:not(.btn--critical-secondary) { background: transparent; border-color: rgba(' + tr + ',0.35); }');
-          rules.push('body.theme-dark .btn--secondary:not(.btn--critical-secondary):hover:not(:disabled), body.theme-dark .btn--secondary:not(.btn--critical-secondary).btn--hover { background: rgba(' + tr + ',0.12); border-color: rgba(' + tr + ',0.5); }');
-          rules.push('body.theme-dark .btn--secondary:not(.btn--critical-secondary):active:not(:disabled), body.theme-dark .btn--secondary:not(.btn--critical-secondary).btn--pressed { background: rgba(' + tr + ',0.16); border-color: rgba(' + tr + ',0.5); }');
-        } else if (!hasSecondaryBgFill) {
-          rules.push('body .btn--secondary:not(.btn--critical-secondary), body .btn--secondary:not(.btn--critical-secondary):hover:not(:disabled), body .btn--secondary:not(.btn--critical-secondary).btn--hover, body .btn--secondary:not(.btn--critical-secondary):active:not(:disabled), body .btn--secondary:not(.btn--critical-secondary).btn--pressed { background: transparent !important; }');
-          rules.push('body.theme-dark .btn--secondary:not(.btn--critical-secondary), body.theme-dark .btn--secondary:not(.btn--critical-secondary):hover:not(:disabled), body.theme-dark .btn--secondary:not(.btn--critical-secondary).btn--hover, body.theme-dark .btn--secondary:not(.btn--critical-secondary):active:not(:disabled), body.theme-dark .btn--secondary:not(.btn--critical-secondary).btn--pressed { background: transparent !important; }');
-        }
-        /* border */
-        if (!hasSecondaryBorder) {
-          rules.push('body .btn--secondary:not(.btn--critical-secondary), body .btn--secondary:not(.btn--critical-secondary):hover:not(:disabled), body .btn--secondary:not(.btn--critical-secondary).btn--hover, body .btn--secondary:not(.btn--critical-secondary):active:not(:disabled), body .btn--secondary:not(.btn--critical-secondary).btn--pressed { border: none; }');
-          rules.push('body.theme-dark .btn--secondary:not(.btn--critical-secondary), body.theme-dark .btn--secondary:not(.btn--critical-secondary):hover:not(:disabled), body.theme-dark .btn--secondary:not(.btn--critical-secondary).btn--hover, body.theme-dark .btn--secondary:not(.btn--critical-secondary):active:not(:disabled), body.theme-dark .btn--secondary:not(.btn--critical-secondary).btn--pressed { border: none; }');
-        }
-        /* padding */
-        rules.push('body .btn--secondary:not(.btn--critical-secondary) { padding: ' + secBlock.value + ' ' + secInline.value + ' !important; height: auto !important; min-height: 0 !important; }');
-        /* corner radius + shape */
-        rules.push('body .btn--secondary:not(.btn--critical-secondary), body .btn--plain:not(.btn--critical-plain) { border-radius: ' + secCorner.value + ' !important; corner-shape: ' + cornerShape + ' !important; }');
-        secondaryStyleEl.textContent = rules.join('\n');
-        updateGroupedStyles();
-      }
-
-      function updateSubduedStyles() {
-        var text = subduedTextColorInput.value;
-        var isCustomText = text.toLowerCase() !== '#000000';
-        var tr = hexToRgb(text);
-        var hasSubduedBgFill = subduedBgFillValue !== 'None';
-        var hasSubduedBorder = subduedBorderValue === 'FULL';
-        var subBlock = PADDING_STEPS[parseInt(subduedPaddingSlider.value)];
-        var subInline = INLINE_PADDING_STEPS[parseInt(subduedInlinePaddingSlider.value)];
-        var subCorner = CORNER_RADIUS_STEPS[parseInt(subduedCornerRadiusSlider.value)];
-        subduedPaddingLabel.textContent = subBlock.label;
-        subduedInlinePaddingLabel.textContent = subInline.label;
-        subduedCornerRadiusLabel.textContent = subCorner.label;
-        var cornerShape = document.body.classList.contains('radius-regular') ? 'unset' : 'squircle';
-        var rules = [];
-        /* text color */
-        if (isCustomText) {
-          rules.push('body .btn--subdued { color: ' + text + '; }');
-          rules.push('body.theme-dark .btn--subdued { color: ' + text + '; }');
-        } else {
-          rules.push('body.theme-dark .btn--subdued { color: #ffffff; }');
-        }
-        /* background fill */
-        if (isCustomText && hasSubduedBgFill) {
-          rules.push('body .btn--subdued { background: rgba(' + tr + ',0.08); }');
-          rules.push('body .btn--subdued:hover:not(:disabled), body .btn--subdued.btn--hover { background: rgba(' + tr + ',0.12); }');
-          rules.push('body .btn--subdued:active:not(:disabled), body .btn--subdued.btn--pressed { background: rgba(' + tr + ',0.18); }');
-          rules.push('body.theme-dark .btn--subdued { background: rgba(' + tr + ',0.08); }');
-          rules.push('body.theme-dark .btn--subdued:hover:not(:disabled), body.theme-dark .btn--subdued.btn--hover { background: rgba(' + tr + ',0.12); }');
-          rules.push('body.theme-dark .btn--subdued:active:not(:disabled), body.theme-dark .btn--subdued.btn--pressed { background: rgba(' + tr + ',0.18); }');
-        } else if (!hasSubduedBgFill) {
-          rules.push('body .btn--subdued, body .btn--subdued:hover:not(:disabled), body .btn--subdued.btn--hover, body .btn--subdued:active:not(:disabled), body .btn--subdued.btn--pressed { background: transparent !important; }');
-          rules.push('body.theme-dark .btn--subdued, body.theme-dark .btn--subdued:hover:not(:disabled), body.theme-dark .btn--subdued.btn--hover, body.theme-dark .btn--subdued:active:not(:disabled), body.theme-dark .btn--subdued.btn--pressed { background: transparent !important; }');
-        }
-        /* border */
-        if (hasSubduedBorder) {
-          rules.push('body .btn--subdued { border: 1px solid rgba(0,0,0,0.1); }');
-          rules.push('body.theme-dark .btn--subdued { border: 1px solid rgba(255,255,255,0.15); }');
-        }
-        /* padding */
-        rules.push('body .btn--subdued { padding: ' + subBlock.value + ' ' + subInline.value + ' !important; height: auto !important; min-height: 0 !important; }');
-        /* corner radius + shape */
-        rules.push('body .btn--subdued { border-radius: ' + subCorner.value + ' !important; corner-shape: ' + cornerShape + ' !important; }');
-        subduedStyleEl.textContent = rules.join('\n');
-      }
-
-      function updateGroupedStyles() {
-        var blockStep = PADDING_STEPS[parseInt(paddingSlider.value)];
-        var inlineStep = INLINE_PADDING_STEPS[parseInt(inlinePaddingSlider.value)];
-        var cornerStep = CORNER_RADIUS_STEPS[parseInt(cornerRadiusSlider.value)];
-        var cornerShape = document.body.classList.contains('radius-regular') ? 'unset' : 'squircle';
-        groupedStyleEl.textContent = [
-          'body .interactive-demo__btn-group .btn { padding: ' + blockStep.value + ' ' + inlineStep.value + ' !important; height: auto !important; min-height: 0 !important; }',
-          'body .interactive-demo__btn-group .btn { border-radius: ' + cornerStep.value + ' !important; corner-shape: ' + cornerShape + ' !important; }',
-        ].join('\n');
-      }
-
-      function updateBrandedStyles() {
-        var bg = bgColorInput.value;
-        var hover = styleSwitchValue === 'Flat'
-          ? (hexBrightness(bg) < 128 ? hexAdjust(bg, 15) : hexAdjust(bg, -10))
-          : hexAdjust(bg, 20);
-        var pressed = hexAdjust(bg, -20);
-        var text = textColorInput.value;
-        var blockStep = PADDING_STEPS[parseInt(paddingSlider.value)];
-        var inlineStep = INLINE_PADDING_STEPS[parseInt(inlinePaddingSlider.value)];
-        var cornerStep = CORNER_RADIUS_STEPS[parseInt(cornerRadiusSlider.value)];
-        paddingLabel.textContent = blockStep.label;
-        inlinePaddingLabel.textContent = inlineStep.label;
-        cornerRadiusLabel.textContent = cornerStep.label;
-        var hasBorder = brandedBorderValue === 'FULL';
-        var primaryBorder = hasBorder ? '1px solid ' + bg : 'none';
-        var gradOverlay = styleSwitchValue === 'Flat' ? 'none' : 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.05) 100%)';
-        var hasBgFill = bgFillValue !== 'None';
-        var rules = [
-          /* CSS variables */
-          'body { --p-color-bg-fill-brand: ' + bg + '; --p-color-button-gradient-bg-fill: ' + gradOverlay + '; }',
-          /* primary background */
-          hasBgFill ? 'body .btn--primary { background: var(--p-color-button-gradient-bg-fill), var(--p-color-bg-fill-brand); }' : 'body .btn--primary { background: transparent; }',
-          hasBgFill ? 'body .btn--primary:hover:not(:disabled), body .btn--primary.btn--hover { background: ' + gradOverlay + ', ' + hover + '; }' : 'body .btn--primary:hover:not(:disabled), body .btn--primary.btn--hover { background: transparent; }',
-          hasBgFill ? 'body .btn--primary:active:not(:disabled), body .btn--primary.btn--pressed { background: ' + gradOverlay + ', ' + pressed + '; }' : 'body .btn--primary:active:not(:disabled), body .btn--primary.btn--pressed { background: transparent; }',
-          /* primary border — always preserve box-shadow */
-          'body .btn--primary { border: ' + (hasBorder ? (hasBgFill ? '1px solid ' + bg : '1px solid ' + bg) : 'none') + '; box-shadow: inset 0 1px #fff3; }',
-          'body .btn--primary:hover:not(:disabled), body .btn--primary.btn--hover { border: ' + (hasBorder ? (hasBgFill ? '1px solid ' + bg : '1px solid ' + bg) : 'none') + '; box-shadow: inset 0 1px #fff3; }',
-          'body .btn--primary:active:not(:disabled), body .btn--primary.btn--pressed { border: ' + (hasBorder ? (hasBgFill ? '1px solid ' + bg : '1px solid ' + bg) : 'none') + '; box-shadow: inset 0 1px #fff3; }',
-          /* padding — primary + fill buttons */
-          'body .btn--primary, body .btn--critical, body .btn--shop, body .btn--warning, body .btn--success { padding: ' + blockStep.value + ' ' + inlineStep.value + ' !important; height: auto !important; min-height: 0 !important; }',
-          /* corner radius + shape — primary + fill buttons */
-          'body .btn--primary, body .btn--critical, body .btn--shop, body .btn--warning, body .btn--success { border-radius: ' + cornerStep.value + ' !important; corner-shape: ' + (document.body.classList.contains('radius-regular') ? 'unset' : 'squircle') + ' !important; }',
-        ];
-        if (hasBgFill) {
-          var isBlack = bg.toLowerCase() === '#000000';
-          var darkBg = isBlack ? '#ffffff' : bg;
-          var darkHover = isBlack ? '#e8e8e8' : hover;
-          var darkPressed = isBlack ? '#d4d4d4' : pressed;
-          var lightTextColor = contrastColor(bg);
-          var darkTextColor = contrastColor(darkBg);
-          document.documentElement.style.setProperty('--btn-text-primary', lightTextColor);
-          var darkBorder = hasBorder ? '1px solid ' + darkBg : 'none';
-          rules.push('body.theme-dark .btn--primary { --p-color-bg-fill-brand: ' + darkBg + '; background: var(--p-color-button-gradient-bg-fill), var(--p-color-bg-fill-brand); border: ' + darkBorder + '; color: ' + darkTextColor + '; box-shadow: inset 0 1px #fff3; }');
-          rules.push('body.theme-dark .btn--primary:hover:not(:disabled), body.theme-dark .btn--primary.btn--hover { background: ' + gradOverlay + ', ' + darkHover + '; border: ' + darkBorder + '; }');
-          rules.push('body.theme-dark .btn--primary:active:not(:disabled), body.theme-dark .btn--primary.btn--pressed { background: ' + gradOverlay + ', ' + darkPressed + '; border: ' + darkBorder + '; }');
-        }
-        if (!hasBgFill) {
-          var noBgHover = hexAdjust(bg, -20);
-          var noBgPressed = hexAdjust(bg, -25);
-          /* light mode: use accent colour as text (no fill = outline/text style) */
-          document.documentElement.style.setProperty('--btn-text-primary', bg);
-          rules.push('body .btn--primary { color: ' + bg + '; box-shadow: none; }');
-          rules.push('body .btn--primary:hover:not(:disabled), body .btn--primary.btn--hover { color: ' + noBgHover + '; }');
-          rules.push('body .btn--primary:active:not(:disabled), body .btn--primary.btn--pressed { color: ' + noBgPressed + '; }');
-          rules.push('body .btn--primary:disabled, body .btn--primary.btn--disabled { color: ' + bg + '; }');
-          /* dark mode */
-          var darkNoBgColor = bg.toLowerCase() === '#000000' ? '#ffffff' : bg;
-          var darkNoBgHover = bg.toLowerCase() === '#000000' ? '#e5e5e5' : noBgHover;
-          var darkNoBgPressed = bg.toLowerCase() === '#000000' ? '#d8d8d8' : noBgPressed;
-          var darkNoBgBorder = hasBorder ? '1px solid ' + (bg.toLowerCase() === '#000000' ? '#ffffff' : bg) : 'none';
-          rules.push('body.theme-dark .btn--primary { background: transparent; border: ' + darkNoBgBorder + '; color: ' + darkNoBgColor + '; box-shadow: none; }');
-          rules.push('body.theme-dark .btn--primary:hover:not(:disabled), body.theme-dark .btn--primary.btn--hover { border: ' + darkNoBgBorder + '; color: ' + darkNoBgHover + '; }');
-          rules.push('body.theme-dark .btn--primary:active:not(:disabled), body.theme-dark .btn--primary.btn--pressed { border: ' + darkNoBgBorder + '; color: ' + darkNoBgPressed + '; }');
-        }
-        if (!hasBorder) {
-          rules.push('body .btn--primary, body .btn--primary:hover:not(:disabled), body .btn--primary.btn--hover, body .btn--primary:active:not(:disabled), body .btn--primary.btn--pressed { border: none; }');
-          rules.push('body.theme-dark .btn--primary, body.theme-dark .btn--primary:hover:not(:disabled), body.theme-dark .btn--primary.btn--hover, body.theme-dark .btn--primary:active:not(:disabled), body.theme-dark .btn--primary.btn--pressed { border: none; }');
-        }
-        brandedStyleEl.textContent = rules.join('\n');
-        updateGroupedStyles();
-      }
-      bgColorInput.addEventListener('input', function () {
-        bgHexInput.value = bgColorInput.value.toUpperCase();
-        updateBrandedStyles();
-      });
-      bgHexInput.addEventListener('input', function () {
-        var val = bgHexInput.value.trim();
-        if (!/^#/.test(val)) val = '#' + val;
-        if (/^#[0-9a-fA-F]{6}$/.test(val)) {
-          bgColorInput.value = val;
-          updateBrandedStyles();
-        }
-      });
-      textColorInput.addEventListener('input', function () {
-        textHexInput.value = textColorInput.value.toUpperCase();
-        updateSecondaryStyles();
-      });
-      textHexInput.addEventListener('input', function () {
-        var val = textHexInput.value.trim();
-        if (!/^#/.test(val)) val = '#' + val;
-        if (/^#[0-9a-fA-F]{6}$/.test(val)) {
-          textColorInput.value = val;
-          updateSecondaryStyles();
-        }
-      });
-      paddingSlider.addEventListener('input', updateBrandedStyles);
-      inlinePaddingSlider.addEventListener('input', updateBrandedStyles);
-      cornerRadiusSlider.addEventListener('input', updateBrandedStyles);
-      brandedBorderSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        brandedBorderValue = opt.dataset.value;
-        brandedBorderSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === brandedBorderValue);
-        });
-        updateBrandedStyles();
-      });
-      // Secondary button section toggle
-      var secondaryBtnSection = document.getElementById('secondary-btn-section');
-      var secondaryBtnSectionBody = document.getElementById('secondary-btn-section-body');
-      document.getElementById('secondary-btn-toggle').addEventListener('click', function () {
-        var isExpanded = secondaryBtnSection.classList.toggle('settings-widget__section--expanded');
-        this.setAttribute('aria-expanded', isExpanded);
-        secondaryBtnSectionBody.classList.toggle('settings-widget__section-body--visible', isExpanded);
-      });
-
-      var subduedBtnSection = document.getElementById('subdued-btn-section');
-      var subduedBtnSectionBody = document.getElementById('subdued-btn-section-body');
-      document.getElementById('subdued-btn-toggle').addEventListener('click', function () {
-        var isExpanded = subduedBtnSection.classList.toggle('settings-widget__section--expanded');
-        this.setAttribute('aria-expanded', isExpanded);
-        subduedBtnSectionBody.classList.toggle('settings-widget__section-body--visible', isExpanded);
-      });
-
-      var primaryBtnSection = document.getElementById('primary-btn-section');
-      var primaryBtnSectionBody = document.getElementById('primary-btn-section-body');
-      document.getElementById('primary-btn-toggle').addEventListener('click', function () {
-        var isExpanded = primaryBtnSection.classList.toggle('settings-widget__section--expanded');
-        this.setAttribute('aria-expanded', isExpanded);
-        primaryBtnSectionBody.classList.toggle('settings-widget__section-body--visible', isExpanded);
-      });
-
-      // Primary button: Background Solid / None
-      var bgFillSwitch = document.getElementById('setting-branded-bg-fill');
-      var bgFillValue = 'Solid';
-      function applyBgFill() {
-        updateBrandedStyles();
-      }
-      bgFillSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        bgFillValue = opt.dataset.value;
-        bgFillSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === bgFillValue);
-        });
-        applyBgFill();
-      });
-
-      // Secondary button: Background Solid / None
-      secondaryBgFillSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        secondaryBgFillValue = opt.dataset.value;
-        secondaryBgFillSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === secondaryBgFillValue);
-        });
-        updateSecondaryStyles();
-      });
-
-      // Secondary button: Border
-      secondaryBorderSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        secondaryBorderValue = opt.dataset.value;
-        secondaryBorderSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === secondaryBorderValue);
-        });
-        updateSecondaryStyles();
-      });
-
-      secondaryPaddingSlider.addEventListener('input', updateSecondaryStyles);
-      secondaryInlinePaddingSlider.addEventListener('input', updateSecondaryStyles);
-      secondaryCornerRadiusSlider.addEventListener('input', updateSecondaryStyles);
-
-      // Subdued button: Text color
-      subduedTextColorInput.addEventListener('input', function () {
-        subduedTextHexInput.value = subduedTextColorInput.value.toUpperCase();
-        updateSubduedStyles();
-      });
-      subduedTextHexInput.addEventListener('input', function () {
-        var val = subduedTextHexInput.value.trim();
-        if (!/^#/.test(val)) val = '#' + val;
-        if (/^#[0-9a-fA-F]{6}$/.test(val)) {
-          subduedTextColorInput.value = val;
-          updateSubduedStyles();
-        }
-      });
-      // Subdued button: Background
-      subduedBgFillSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        subduedBgFillValue = opt.dataset.value;
-        subduedBgFillSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === subduedBgFillValue);
-        });
-        updateSubduedStyles();
-      });
-      // Subdued button: Border
-      subduedBorderSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        subduedBorderValue = opt.dataset.value;
-        subduedBorderSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === subduedBorderValue);
-        });
-        updateSubduedStyles();
-      });
-      subduedPaddingSlider.addEventListener('input', updateSubduedStyles);
-      subduedInlinePaddingSlider.addEventListener('input', updateSubduedStyles);
-      subduedCornerRadiusSlider.addEventListener('input', updateSubduedStyles);
-
-      // Primary button reset
-      document.getElementById('primary-reset').addEventListener('click', function (e) {
-        e.preventDefault();
-        bgColorInput.value = '#000000';
-        bgHexInput.value = '#000000';
-        paddingSlider.value = 3;
-        inlinePaddingSlider.value = 3;
-        cornerRadiusSlider.value = 2;
-        brandedBorderValue = 'FULL';
-        brandedBorderSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === 'FULL');
-        });
-        bgFillValue = 'Solid';
-        bgFillSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === 'Solid');
-        });
-        applyBgFill();
-      });
-
-      // Secondary button reset
-      document.getElementById('secondary-reset').addEventListener('click', function (e) {
-        e.preventDefault();
-        textColorInput.value = '#000000';
-        textHexInput.value = '#000000';
-        secondaryBgFillValue = 'Solid';
-        secondaryBgFillSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === 'Solid');
-        });
-        secondaryPaddingSlider.value = 3;
-        secondaryInlinePaddingSlider.value = 3;
-        secondaryCornerRadiusSlider.value = 2;
-        secondaryBorderValue = 'FULL';
-        secondaryBorderSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === 'FULL');
-        });
-        updateSecondaryStyles();
-      });
-
-      // Subdued button reset
-      document.getElementById('subdued-reset').addEventListener('click', function (e) {
-        e.preventDefault();
-        subduedTextColorInput.value = '#000000';
-        subduedTextHexInput.value = '#000000';
-        subduedBgFillValue = 'Solid';
-        subduedBgFillSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === 'Solid');
-        });
-        subduedPaddingSlider.value = 3;
-        subduedInlinePaddingSlider.value = 3;
-        subduedCornerRadiusSlider.value = 2;
-        subduedBorderValue = 'FULL';
-        subduedBorderSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === 'FULL');
-        });
-        document.documentElement.style.setProperty('--btn-subdued-letter-spacing', '-0.15px');
-        document.documentElement.style.setProperty('--btn-subdued-text-transform', 'none');
-        document.documentElement.style.setProperty('--btn-subdued-font-weight', '600');
-        document.documentElement.style.setProperty('--btn-subdued-font-size', '14px');
-        document.getElementById('setting-subdued-kerning').value = 0;
-        document.getElementById('subdued-kerning-label').textContent = 'Base';
-        document.getElementById('setting-subdued-lettercase').value = 'none';
-        document.getElementById('setting-subdued-font-size').value = '14px';
-        var subduedWeightSw = document.getElementById('setting-subdued-weight');
-        subduedWeightSw.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === 'base');
-        });
-        updateSubduedStyles();
-      });
-
-      applyBgFill();
-      updateSecondaryStyles();
-      updateSubduedStyles();
-
-      // Style: Depth / Flat
-      var styleSwitch = document.getElementById('setting-style');
-      var styleSwitchValue = 'Depth';
-      function applyStyle() {
-        document.body.classList.toggle('style-flat', styleSwitchValue === 'Flat');
-        updateBrandedStyles();
-      }
-      styleSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        styleSwitchValue = opt.dataset.value;
-        styleSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === styleSwitchValue);
-        });
-        applyStyle();
-      });
-      applyStyle();
-
-      // Radius: Squircle / Regular
-      var radiusSwitch = document.getElementById('setting-radius');
-      var radiusSwitchValue = 'Regular';
-      function applyRadius() {
-        document.body.classList.toggle('radius-regular', radiusSwitchValue === 'Regular');
-        updateBrandedStyles();
-        updateSecondaryStyles();
-        updateSubduedStyles();
-      }
-      radiusSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        radiusSwitchValue = opt.dataset.value;
-        radiusSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === radiusSwitchValue);
-        });
-        applyRadius();
-      });
-      applyRadius();
-
-      // Size: xs 24px, sm 36px, default 44px, lg 48px, xl 52px
-      var sizeSelect = document.getElementById('setting-size');
-      function applySize() {
-        document.body.classList.remove('size-xs', 'size-sm', 'size-default', 'size-lg', 'size-xl');
-        document.body.classList.add('size-' + sizeSelect.value);
-      }
-      sizeSelect.addEventListener('change', applySize);
-      applySize();
-
-      // Label: Text / Icon
-      var ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
-      var labelSwitch = document.getElementById('setting-label');
-      var labelSwitchValue = 'Text';
-      function applyLabelMode() {
-        var isIcon = labelSwitchValue === 'Icon';
-        document.querySelectorAll('.btn').forEach(function (btn) {
-          var labelSpan = btn.querySelector('.btn__label-invisible');
-          if (labelSpan) {
-            if (isIcon) { labelSpan.innerHTML = ICON_SVG; } else { labelSpan.textContent = 'Label'; }
-          } else if (!btn.querySelector('.btn__spinner-wrap')) {
-            if (isIcon) { btn.innerHTML = ICON_SVG; } else { btn.textContent = 'Label'; }
-          }
-        });
-      }
-      labelSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        labelSwitchValue = opt.dataset.value;
-        labelSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === labelSwitchValue);
-        });
-        applyLabelMode();
-      });
-      applyLabelMode();
-
-      // Interactive buttons: click triggers loading for 2s
-      var interactiveBtnIds = [
-        'interactive-primary-btn', 'interactive-secondary-btn', 'interactive-subdued-btn', 'interactive-plain-btn',
-        'interactive-grouped-secondary-btn', 'interactive-grouped-primary-btn',
-        'interactive-critical-primary-btn', 'interactive-critical-secondary-btn', 'interactive-critical-plain-btn',
-        'interactive-shop-btn', 'interactive-warning-btn', 'interactive-success-btn'
-      ];
-      function attachInteractiveLoading(btn) {
-        if (!btn) return;
-        btn.addEventListener('click', function () {
-          var b = this;
-          if (b.getAttribute('aria-busy') === 'true') return;
-          var isIcon = labelSwitchValue === 'Icon';
-          b.setAttribute('aria-busy', 'true');
-          b.disabled = true;
-          b.classList.add('btn--loading');
-          b.innerHTML = '';
-          var inv = el('span', 'btn__label-invisible');
-          inv.setAttribute('aria-hidden', 'true');
-          if (isIcon) { inv.innerHTML = ICON_SVG; } else { inv.textContent = 'Label'; }
-          var wrap = el('span', 'btn__spinner-wrap');
-          wrap.appendChild(spinner());
-          b.appendChild(inv);
-          b.appendChild(wrap);
-          setTimeout(function () {
-            b.removeAttribute('aria-busy');
-            b.disabled = false;
-            b.classList.remove('btn--loading');
-            b.innerHTML = '';
-            if (labelSwitchValue === 'Icon') { b.innerHTML = ICON_SVG; } else { b.textContent = 'Label'; }
-          }, 2000);
-        });
-      }
-      interactiveBtnIds.forEach(function (id) {
-        attachInteractiveLoading(document.getElementById(id));
-      });
-
-      // Typography – Primary button
-      var KERNING_VALUES = ['-0.15px', '0.05em', '0.12em'];
-      var KERNING_LABELS = ['Base', 'Loose', 'Extra loose'];
-      var primaryKerningSlider = document.getElementById('setting-primary-kerning');
-      var primaryKerningLabel = document.getElementById('primary-kerning-label');
-      primaryKerningSlider.addEventListener('input', function () {
-        var idx = parseInt(this.value);
-        primaryKerningLabel.textContent = KERNING_LABELS[idx];
-        document.documentElement.style.setProperty('--btn-primary-letter-spacing', KERNING_VALUES[idx]);
-      });
-      document.getElementById('setting-primary-lettercase').addEventListener('change', function () {
-        document.documentElement.style.setProperty('--btn-primary-text-transform', this.value === 'none' ? 'none' : this.value);
-      });
-      var primaryWeightSwitch = document.getElementById('setting-primary-weight');
-      primaryWeightSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        primaryWeightSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === opt.dataset.value);
-        });
-        document.documentElement.style.setProperty('--btn-primary-font-weight', opt.dataset.value === 'bold' ? '700' : '600');
-      });
-      document.getElementById('setting-primary-font-size').addEventListener('change', function () {
-        document.documentElement.style.setProperty('--btn-primary-font-size', this.value);
-      });
-
-      // Typography – Secondary button
-      var secondaryKerningSlider = document.getElementById('setting-secondary-kerning');
-      var secondaryKerningLabel = document.getElementById('secondary-kerning-label');
-      secondaryKerningSlider.addEventListener('input', function () {
-        var idx = parseInt(this.value);
-        secondaryKerningLabel.textContent = KERNING_LABELS[idx];
-        document.documentElement.style.setProperty('--btn-secondary-letter-spacing', KERNING_VALUES[idx]);
-      });
-      document.getElementById('setting-secondary-lettercase').addEventListener('change', function () {
-        document.documentElement.style.setProperty('--btn-secondary-text-transform', this.value === 'none' ? 'none' : this.value);
-      });
-      var secondaryWeightSwitch = document.getElementById('setting-secondary-weight');
-      secondaryWeightSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        secondaryWeightSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === opt.dataset.value);
-        });
-        document.documentElement.style.setProperty('--btn-secondary-font-weight', opt.dataset.value === 'bold' ? '700' : '600');
-      });
-      document.getElementById('setting-secondary-font-size').addEventListener('change', function () {
-        document.documentElement.style.setProperty('--btn-secondary-font-size', this.value);
-      });
-
-      // Typography – Subdued button
-      var subduedKerningSlider = document.getElementById('setting-subdued-kerning');
-      var subduedKerningLabel = document.getElementById('subdued-kerning-label');
-      subduedKerningSlider.addEventListener('input', function () {
-        var idx = parseInt(this.value);
-        subduedKerningLabel.textContent = KERNING_LABELS[idx];
-        document.documentElement.style.setProperty('--btn-subdued-letter-spacing', KERNING_VALUES[idx]);
-      });
-      document.getElementById('setting-subdued-lettercase').addEventListener('change', function () {
-        document.documentElement.style.setProperty('--btn-subdued-text-transform', this.value === 'none' ? 'none' : this.value);
-      });
-      var subduedWeightSwitch = document.getElementById('setting-subdued-weight');
-      subduedWeightSwitch.addEventListener('click', function (e) {
-        var opt = e.target.closest('.settings-widget__switch-option');
-        if (!opt) return;
-        subduedWeightSwitch.querySelectorAll('.settings-widget__switch-option').forEach(function (b) {
-          b.classList.toggle('settings-widget__switch-option--active', b.dataset.value === opt.dataset.value);
-        });
-        document.documentElement.style.setProperty('--btn-subdued-font-weight', opt.dataset.value === 'bold' ? '700' : '600');
-      });
-      document.getElementById('setting-subdued-font-size').addEventListener('change', function () {
-        document.documentElement.style.setProperty('--btn-subdued-font-size', this.value);
-      });
-
-      // Buttons overview collapse/expand
-      document.getElementById('variants-overview-toggle').addEventListener('click', function() {
-        var section = document.getElementById('variants-overview');
-        var collapsed = section.classList.toggle('variants-overview--collapsed');
-        this.setAttribute('aria-expanded', String(!collapsed));
-      });
-    })();
-  </script>
+  <script src="scripts/primary-config.js"></script>
+  <script src="scripts/app.js"></script>
 </body>
 </html>

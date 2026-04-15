@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plain Goods — Checkout</title>
+  <style>
+    /* ─── TOKENS ─── */
+    :root {
+      /* Page backgrounds */
+      --color-bg-page:            #ffffff;
+      --color-bg-summary:         #f5f5f5;
+      --color-bg-delivery-tabs:   rgba(0, 0, 0, 0.05);
+      /* Brand accent */
+      --color-accent:             #005bd3;
+      /* Text */
+      --color-text:               #000;
+      --color-text-subdued:       rgba(0, 0, 0, 0.56);
+      /* Borders */
+      --color-border:             #dedede;
+      --color-border-header:      #e8e8e8;
+      /* Form controls */
+      --color-field-bg:           #fff;
+      /* Wallet buttons */
+      --color-shoppay:            #5433eb;
+      --color-googlepay:          #000;
+      --color-paypal:             #ffc439;
+      /* Upsell / secondary buttons */
+      --color-upsell-border:      #e0e0e0;
+      --color-btn-secondary-bg:   rgba(0, 0, 0, 0.05);
+      --color-btn-secondary-border: rgba(0, 0, 0, 0.12);
+      /* Spacing */
+      --spacing-xs:      5px;
+      --spacing-sm:      11px;
+      --spacing-base:    14px;
+      --spacing-md:      21px;
+      --spacing-lg:      26px;
+      --spacing-xl:      32px;
+      --spacing-2xl:     38px;
+      /* Typography */
+      --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --font-size-xs:   12px;
+      --font-size-base: 14px;
+      --font-size-md:   16px;
+      --font-size-lg:   19px;
+      --font-weight-normal:   400;
+      --font-weight-semibold: 600;
+      --line-height-tight: 1.2;
+      --line-height-base:  1.5;
+      /* Radii */
+      --radius-sm:   4px;
+      --radius-base: 8px;
+      --radius-md:   10px;
+      --radius-lg:   12px;
+      --radius-pill: 20px;
+      --radius-full: 9999px;
+      /* Shadows */
+      --shadow-card: 0 3px 4px rgba(0,0,0,0.03), 0 -0.5px 1.5px rgba(0,0,0,0.09), 0 1px 1.75px rgba(0,0,0,0.12);
+      --shadow-tab:  0 2px 4px rgba(0,0,0,0.08);
+      /* ─── Tokens for styles/components/button.css ─── */
+      --font-body:                     var(--font-family-base);
+      --body-base-size:                var(--font-size-base);
+      --body-base-letter-spacing:      -0.15px;
+      --btn-primary-font-size:         14px;
+      --btn-primary-font-weight:       600;
+      --btn-primary-letter-spacing:    -0.15px;
+      --btn-primary-text-transform:    none;
+      --button-gap:                    6px;
+      --button-radius:                 12px;
+      --button-height:                 44px;
+      --button-min-size:               44px;
+      --button-padding-block:          10px;
+      --button-padding-inline:         16px;
+      --x-duration-base:               0s;
+      --shadow-button-primary:         none;
+      --shadow-button-primary-hover:   none;
+      --shadow-button-primary-pressed: none;
+      /* Pay button colour wiring */
+      --demo-primary-bg:               var(--color-accent);
+    }
+
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-family-base);
+      background: var(--color-bg-page);
+      color: var(--color-text);
+      font-size: var(--font-size-base);
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      background: var(--color-bg-page);
+      border-bottom: 1px solid var(--color-border-header);
+      padding: var(--spacing-md) var(--spacing-2xl);
+    }
+    .header-inner {
+      display: grid;
+      grid-template-columns: 1fr 580px 480px 1fr;
+      align-items: center;
+    }
+    .logo-text {
+      grid-column: 2;
+      padding-left: var(--spacing-2xl);
+      font-size: 18px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: -0.02em;
+      color: var(--color-text);
+    }
+
+    /* ─── PAGE LAYOUT ─── */
+    .page-content {
+      display: grid;
+      grid-template-columns: 1fr 580px 480px 1fr;
+      min-height: calc(100vh - 80px);
+    }
+
+    /* ─── LEFT COLUMN ─── */
+    .checkout-column {
+      background: var(--color-bg-page);
+      grid-column: 1 / 3;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      border-right: 1px solid var(--color-border-header);
+    }
+    .checkout-form-wrapper {
+      width: 580px;
+      padding: var(--spacing-2xl);
+    }
+
+    /* ─── RIGHT COLUMN ─── */
+    .summary-column {
+      background: var(--color-bg-summary);
+      grid-column: 3 / 5;
+    }
+    .summary-content {
+      padding: var(--spacing-2xl);
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+
+    /* ─── UTILITIES ─── */
+    .mt-5  { margin-top: 14px; }
+
+    /* ─── SECTION SPACING ─── */
+    .section-express  { padding-bottom: 17px; }
+    .section-contact  { padding-bottom: var(--spacing-xl); }
+    .section-delivery { padding-bottom: var(--spacing-xl); }
+
+    /* ─── EXPRESS CHECKOUT ─── */
+    .express-label {
+      text-align: center;
+      font-size: var(--font-size-base);
+      color: var(--color-text-subdued);
+      margin-bottom: 17px;
+    }
+    .wallet-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-base);
+      justify-content: center;
+    }
+    .wallet-btn {
+      flex: 1 0 146px;
+      height: 48px;
+      border-radius: var(--radius-base);
+      border: none;
+      cursor: pointer;
+      display: block;
+      padding: 0;
+      overflow: hidden;
+    }
+    .wallet-btn-shoppay   { background: transparent; }
+    .wallet-btn-googlepay { background: transparent; }
+    .wallet-btn-paypal    { background: transparent; }
+
+    /* ─── OR DIVIDER ─── */
+    .divider-or {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding-bottom: var(--spacing-lg);
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--color-border); }
+    .divider-text { font-size: var(--font-size-base); color: var(--color-text-subdued); }
+
+    /* ─── SECTION HEADER ─── */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-xs);
+      margin-bottom: var(--spacing-base);
+    }
+    .section-title {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text);
+      line-height: var(--line-height-tight);
+      flex: 1;
+    }
+    .section-link {
+      font-size: var(--font-size-base);
+      color: var(--color-accent);
+      text-decoration: none;
+      line-height: var(--line-height-base);
+    }
+
+    /* ─── FORM FIELDS ─── */
+    .field {
+      background: var(--color-field-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-base);
+      width: 100%;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 var(--spacing-sm);
+    }
+    .field-body {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      padding: var(--spacing-sm) 0;
+    }
+    .field-label {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-subdued);
+      line-height: var(--line-height-base);
+    }
+    .field-value {
+      font-size: var(--font-size-base);
+      color: var(--color-text);
+      line-height: var(--line-height-base);
+    }
+    .field-placeholder {
+      font-size: var(--font-size-base);
+      color: var(--color-text-subdued);
+      line-height: var(--line-height-base);
+    }
+
+    /* ─── CHECKBOX ─── */
+    .checkbox-row {
+      display: flex;
+      gap: var(--spacing-sm);
+      align-items: flex-start;
+    }
+    .checkbox-box {
+      width: 18px;
+      min-width: 18px;
+      height: 18px;
+      background: var(--color-accent);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.5px;
+      flex-shrink: 0;
+    }
+    .checkbox-label {
+      font-size: var(--font-size-base);
+      color: var(--color-text);
+      line-height: var(--line-height-base);
+    }
+
+    /* ─── DELIVERY TABS ─── */
+    .delivery-tabs {
+      background: var(--color-bg-delivery-tabs);
+      padding: 3px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      gap: 3px;
+      margin-bottom: var(--spacing-base);
+    }
+    .tab {
+      flex: 1;
+      height: 43px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text);
+      cursor: pointer;
+      padding: var(--spacing-sm);
+    }
+    .tab.active {
+      background: var(--color-field-bg);
+      border: 0.5px solid var(--color-border);
+      box-shadow: var(--shadow-tab);
+      border-radius: var(--radius-base);
+    }
+
+    /* ─── LOCATION ─── */
+    .location-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-xs);
+      margin-bottom: var(--spacing-base);
+    }
+    .location-subdued {
+      font-size: var(--font-size-base);
+      color: var(--color-text-subdued);
+      flex: 1;
+    }
+    .location-pill {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+    }
+    .location-pill span {
+      font-size: var(--font-size-base);
+      color: var(--color-accent);
+    }
+    .location-card {
+      background: var(--color-field-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-base);
+      overflow: hidden;
+    }
+    .location-row {
+      padding: var(--spacing-base);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .location-row-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+    }
+    .location-name {
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text);
+      line-height: var(--line-height-base);
+    }
+    .location-free {
+      font-size: var(--font-size-base);
+      color: var(--color-text);
+      white-space: nowrap;
+      line-height: var(--line-height-base);
+    }
+    .location-address {
+      font-size: var(--font-size-base);
+      color: var(--color-text-subdued);
+      line-height: var(--line-height-base);
+    }
+    .location-hours {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      margin-top: 2px;
+    }
+    .more-locations-row {
+      display: flex;
+      align-items: center;
+      padding: var(--spacing-base);
+      cursor: pointer;
+    }
+    .more-locations-text {
+      flex: 1;
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-accent);
+    }
+
+    /* ─── FOOTER ─── */
+    .checkout-footer {
+      border-top: 1px solid var(--color-border);
+      padding-top: var(--spacing-md);
+      margin-top: 48px;
+      display: flex;
+      gap: var(--spacing-base);
+    }
+    .footer-link {
+      font-size: var(--font-size-base);
+      color: var(--color-accent);
+      text-decoration: none;
+      line-height: var(--line-height-base);
+    }
+
+    /* ─── PRODUCT LIST ─── */
+    .product-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    .product-item {
+      display: flex;
+      gap: var(--spacing-base);
+      align-items: flex-start;
+    }
+    .product-thumb-wrap {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+    }
+    .product-thumb-wrap img {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-lg);
+      object-fit: cover;
+      border: 2px solid var(--color-field-bg);
+      box-shadow: var(--shadow-card);
+      display: block;
+    }
+    .product-badge {
+      position: absolute;
+      top: -3px;
+      right: -4px;
+      min-width: 22px;
+      height: 22px;
+      background: #000;
+      border: 2px solid var(--color-field-bg);
+      border-radius: var(--radius-base);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+    }
+    .product-badge span {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-field-bg);
+      line-height: 1;
+    }
+    .product-info { flex: 1; min-width: 0; }
+    .product-name {
+      font-size: var(--font-size-base);
+      color: var(--color-text);
+      line-height: var(--line-height-base);
+    }
+    .product-variant {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-subdued);
+      line-height: var(--line-height-base);
+    }
+    .product-price {
+      font-size: var(--font-size-base);
+      color: var(--color-text);
+      white-space: nowrap;
+      line-height: var(--line-height-base);
+      flex-shrink: 0;
+    }
+
+    /* ─── DISCOUNT CODE ─── */
+    .discount-row { display: flex; gap: 7px; }
+    .discount-field { flex: 1; }
+    .apply-btn {
+      --button-height: 52px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* ─── MONEY LINES ─── */
+    .money-lines { display: flex; flex-direction: column; gap: var(--spacing-xs); }
+    .money-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--font-size-base);
+      color: var(--color-text);
+      line-height: var(--line-height-base);
+    }
+    .money-line-label { display: flex; align-items: center; gap: var(--spacing-xs); }
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-top: 10px;
+    }
+    .total-label {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text);
+    }
+    .total-right { display: flex; gap: 7px; align-items: baseline; }
+    .total-currency { font-size: var(--font-size-xs); color: var(--color-text-subdued); }
+    .total-price {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text);
+    }
+
+    /* ─── UPSELL ─── */
+    .upsell-section {
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-base);
+    }
+    .upsell-title {
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text);
+    }
+    .upsell-item {
+      border: 1px solid var(--color-upsell-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      height: 106px;
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: flex-start;
+    }
+    .upsell-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-card);
+    }
+    .upsell-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .upsell-content {
+      flex: 1;
+      display: flex;
+      gap: var(--spacing-base);
+      align-items: center;
+      align-self: stretch;
+      min-width: 0;
+    }
+    .upsell-info { flex: 1; min-width: 0; }
+    .upsell-name { font-size: var(--font-size-base); color: var(--color-text); }
+    .upsell-variant { font-size: var(--font-size-xs); color: var(--color-text-subdued); }
+    .upsell-price { font-size: var(--font-size-base); color: var(--color-text); }
+    .add-btn {
+      --button-height: 36px;
+      --_button-padding-block: 8px;
+      --button-secondary-padding-inline: 12px;
+      min-width: 61px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* ─── Prototype nav widget ─── */
+    .proto-settings {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 9999;
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.28), 0 1px 4px rgba(0,0,0,0.14);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      font-family: var(--font-family-base);
+      user-select: none;
+    }
+    .proto-settings-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+    }
+    .proto-settings-select {
+      height: 30px;
+      padding: 0 8px 2px;
+      background: #000000;
+      border: none;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 12px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 22px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+    }
+    .proto-settings-select option { background: #1a1a1a; }
+  </style>
+  <link rel="stylesheet" href="../styles/components/button.css">
+  <style>
+    .button[data-kind="primary"]:not(.apply-btn) { width: 100%; --button-height: 48px; }
+    .button.apply-btn { --button-surface-bg: transparent; --button-surface-border: var(--color-border); color: var(--color-text); }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ══════════════════════════════════════════════ -->
+  <header class="header">
+    <div class="header-inner">
+      <span class="logo-text">Plain Goods</span>
+    </div>
+  </header>
+
+  <!-- ═══ PAGE CONTENT ═════════════════════════════════════════ -->
+  <div class="page-content">
+
+    <!-- ──── LEFT: CHECKOUT FORM ────────────────────────────── -->
+    <div class="checkout-column">
+      <div class="checkout-form-wrapper">
+
+        <!-- EXPRESS CHECKOUT -->
+        <section class="section-express">
+          <p class="express-label">Express checkout</p>
+          <div class="wallet-buttons">
+            <button class="wallet-btn wallet-btn-shoppay" aria-label="Shop Pay">
+              <img src="../assets/wallet/shoppay.svg" alt="Shop Pay" style="width:100%;height:100%;display:block;" />
+            </button>
+            <button class="wallet-btn wallet-btn-googlepay" aria-label="Google Pay">
+              <img src="../assets/wallet/googlepay.svg" alt="Google Pay" style="width:100%;height:100%;display:block;" />
+            </button>
+            <button class="wallet-btn wallet-btn-paypal" aria-label="PayPal">
+              <img src="../assets/wallet/paypal.svg" alt="PayPal" style="width:100%;height:100%;display:block;" />
+            </button>
+          </div>
+        </section>
+
+        <!-- OR DIVIDER -->
+        <div class="divider-or">
+          <div class="divider-line"></div>
+          <span class="divider-text">OR</span>
+          <div class="divider-line"></div>
+        </div>
+
+        <!-- CONTACT -->
+        <section class="section-contact">
+          <div class="section-header">
+            <h2 class="section-title">Contact</h2>
+            <a href="#" class="section-link">Log in</a>
+          </div>
+          <div class="field">
+            <div class="field-body">
+              <span class="field-label">Email address or phone number</span>
+              <span class="field-value">jordan.chen@domain.com</span>
+            </div>
+          </div>
+          <div class="checkbox-row mt-5">
+            <div class="checkbox-box">
+              <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                <path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="checkbox-label">Email me with news and offers</span>
+          </div>
+        </section>
+
+        <!-- DELIVERY -->
+        <section class="section-delivery">
+          <h2 class="section-title" style="margin-bottom:14px;">Delivery</h2>
+
+          <div class="delivery-tabs">
+            <!-- Ship tab (inactive) -->
+            <div class="tab">
+              <svg width="18" height="15" viewBox="0 0 18 15" fill="none">
+                <rect x="0.75" y="0.75" width="11" height="9" rx="1.25" stroke="#000" stroke-width="1.25" fill="none"/>
+                <path d="M11.75 3.75H14.5L17.25 7.25v4.5H11.75V3.75z" stroke="#000" stroke-width="1.25" fill="none" stroke-linejoin="round"/>
+                <circle cx="4.25" cy="12.5" r="1.75" stroke="#000" stroke-width="1.25" fill="none"/>
+                <circle cx="14.25" cy="12.5" r="1.75" stroke="#000" stroke-width="1.25" fill="none"/>
+              </svg>
+              <span>Ship</span>
+            </div>
+            <!-- Pickup tab (active) -->
+            <div class="tab active">
+              <svg width="14" height="18" viewBox="0 0 14 18" fill="none">
+                <path d="M7 0.75C3.55 0.75 0.75 3.55 0.75 7C0.75 11.75 7 17.25 7 17.25C7 17.25 13.25 11.75 13.25 7C13.25 3.55 10.45 0.75 7 0.75Z" stroke="#000" stroke-width="1.25" fill="none" stroke-linejoin="round"/>
+                <circle cx="7" cy="7" r="2" stroke="#000" stroke-width="1.25" fill="none"/>
+              </svg>
+              <span>Pickup</span>
+            </div>
+          </div>
+
+          <!-- Location header -->
+          <div class="location-header">
+            <p class="location-subdued">6 nearby locations with your item</p>
+            <div class="location-pill">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2" color="var(--color-accent)"/>
+                <circle cx="7" cy="7" r="1.5" fill="var(--color-accent)"/>
+                <line x1="7" y1="1.5" x2="7" y2="0" stroke="var(--color-accent)" stroke-width="1.2"/>
+                <line x1="7" y1="14" x2="7" y2="12.5" stroke="var(--color-accent)" stroke-width="1.2"/>
+                <line x1="1.5" y1="7" x2="0" y2="7" stroke="var(--color-accent)" stroke-width="1.2"/>
+                <line x1="14" y1="7" x2="12.5" y2="7" stroke="var(--color-accent)" stroke-width="1.2"/>
+              </svg>
+              <span>K2P 2L8</span>
+            </div>
+          </div>
+
+          <!-- Location card -->
+          <div class="location-card">
+            <div class="location-row">
+              <div class="location-row-inner">
+                <div>
+                  <div class="location-name">Plain Goods Flagship (0.6 km)</div>
+                  <div class="location-address">100 Elgin St, Ottawa, ON</div>
+                  <div class="location-hours">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <circle cx="7" cy="7" r="5.5" stroke="rgba(0,0,0,0.56)" stroke-width="1"/>
+                      <path d="M7 4V7L9 8.5" stroke="rgba(0,0,0,0.56)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span style="font-size:14px; color:rgba(0,0,0,0.56);">Usually ready in 24 hours</span>
+                  </div>
+                </div>
+                <span class="location-free">FREE</span>
+              </div>
+            </div>
+            <div class="more-locations-row">
+              <span class="more-locations-text">5 more locations</span>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M3.5 2L7 5L3.5 8" stroke="var(--color-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        <!-- PAY NOW BUTTON -->
+        <button class="button" data-kind="primary" type="button">
+          <span class="button__content">
+            <span class="button__text">Pay now</span>
+          </span>
+        </button>
+
+        <!-- FOOTER -->
+        <div class="checkout-footer">
+          <a href="#" class="footer-link">Return policy</a>
+          <a href="#" class="footer-link">Privacy policy</a>
+          <a href="#" class="footer-link">Terms of service</a>
+        </div>
+
+      </div><!-- /checkout-form-wrapper -->
+    </div><!-- /checkout-column -->
+
+    <!-- ──── RIGHT: ORDER SUMMARY ───────────────────────────── -->
+    <div class="summary-column">
+      <div class="summary-content">
+
+        <!-- Products -->
+        <div class="product-list">
+          <!-- Spray Bottle -->
+          <div class="product-item">
+            <div class="product-thumb-wrap">
+              <img src="https://www.figma.com/api/mcp/asset/81f3d0ac-ec05-4e2b-9f94-161a6499403f" alt="Spray Bottle" />
+              <div class="product-badge"><span>1</span></div>
+            </div>
+            <div class="product-info">
+              <div class="product-name">Spray Bottle</div>
+              <div class="product-variant">32 oz</div>
+            </div>
+            <div class="product-price">$28.00</div>
+          </div>
+          <!-- Dish Pods -->
+          <div class="product-item">
+            <div class="product-thumb-wrap">
+              <img src="https://www.figma.com/api/mcp/asset/3907fb39-77b6-4d82-b374-80d2079c16f6" alt="Dish Pods" />
+              <div class="product-badge"><span>1</span></div>
+            </div>
+            <div class="product-info">
+              <div class="product-name">Dish Pods</div>
+              <div class="product-variant">30 pods</div>
+            </div>
+            <div class="product-price">$44.00</div>
+          </div>
+          <!-- Hand Soap -->
+          <div class="product-item">
+            <div class="product-thumb-wrap">
+              <img src="https://www.figma.com/api/mcp/asset/79261070-07f2-4fa2-93f4-c80033c5e9a1" alt="Hand Soap" />
+              <div class="product-badge"><span>1</span></div>
+            </div>
+            <div class="product-info">
+              <div class="product-name">Hand Soap</div>
+              <div class="product-variant">16 oz</div>
+            </div>
+            <div class="product-price">$36.00</div>
+          </div>
+        </div>
+
+        <!-- Discount code -->
+        <div class="discount-row">
+          <div class="field discount-field" style="height:52px;">
+            <div class="field-body">
+              <span class="field-placeholder">Discount code or gift card</span>
+            </div>
+          </div>
+          <button class="button apply-btn" data-kind="primary" type="button" disabled>
+            <span class="button__content"><span class="button__text">Apply</span></span>
+          </button>
+        </div>
+
+        <!-- Money lines -->
+        <div class="money-lines">
+          <div class="money-line">
+            <div class="money-line-label">
+              <span>Subtotal</span>
+              <span style="color:rgba(0,0,0,0.56)"> · 3 items</span>
+            </div>
+            <span>$108.00</span>
+          </div>
+          <div class="money-line">
+            <span>Shipping</span>
+            <span>FREE</span>
+          </div>
+          <div class="money-line">
+            <div class="money-line-label">
+              <span>Estimated taxes</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="7" r="6.5" stroke="rgba(0,0,0,0.56)" stroke-width="1"/>
+                <path d="M5.5 5.5C5.5 4.67 6.17 4 7 4s1.5.67 1.5 1.5c0 .7-.5 1.1-1.5 1.5v.75" stroke="rgba(0,0,0,0.56)" stroke-width="1" stroke-linecap="round" fill="none"/>
+                <circle cx="7" cy="10" r="0.5" fill="rgba(0,0,0,0.56)"/>
+              </svg>
+            </div>
+            <span>$10.00</span>
+          </div>
+          <div class="total-row">
+            <span class="total-label">Total</span>
+            <div class="total-right">
+              <span class="total-currency">CAD</span>
+              <span class="total-price">$118.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upsell -->
+        <div class="upsell-section">
+          <div class="upsell-title">Other products you might like</div>
+          <div class="upsell-item">
+            <div class="upsell-thumb">
+              <img src="https://www.figma.com/api/mcp/asset/3907fb39-77b6-4d82-b374-80d2079c16f6" alt="Floral dish pods" />
+            </div>
+            <div class="upsell-content">
+              <div class="upsell-info">
+                <div class="upsell-name">Floral dish pods</div>
+                <div class="upsell-variant">30 pods</div>
+                <div class="upsell-price">$56.00</div>
+              </div>
+              <button class="button add-btn" data-kind="secondary" type="button">
+                <span class="button__content"><span class="button__text">Add</span></span>
+              </button>
+            </div>
+          </div>
+          <div class="upsell-item">
+            <div class="upsell-thumb">
+              <img src="https://www.figma.com/api/mcp/asset/79261070-07f2-4fa2-93f4-c80033c5e9a1" alt="Hand sanitizer" />
+            </div>
+            <div class="upsell-content">
+              <div class="upsell-info">
+                <div class="upsell-name">Hand sanitizer</div>
+                <div class="upsell-variant">12 oz</div>
+                <div class="upsell-price">$20.00</div>
+              </div>
+              <button class="button add-btn" data-kind="secondary" type="button">
+                <span class="button__content"><span class="button__text">Add</span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /summary-content -->
+    </div><!-- /summary-column -->
+
+  </div><!-- /page-content -->
+
+  <!-- ─── Prototype nav widget ─── -->
+  <div class="proto-settings">
+    <span class="proto-settings-label">Theme</span>
+    <select class="proto-settings-select" id="proto-theme" aria-label="Switch theme">
+      <option value="button-overview">Button overview</option>
+      <option value="plain-goods" selected>Plain goods</option>
+      <option value="pitch">Pitch</option>
+      <option value="heritage">Heritage</option>
+      <option value="ghia">Ghia</option>
+    </select>
+    <span class="proto-settings-label">Primary button</span>
+    <div class="proto-variant" id="proto-primary-variant" role="group" aria-label="Primary button variant">
+      <span class="proto-variant__indicator"></span>
+      <button class="proto-variant__btn" data-variant-btn="1">1</button>
+      <button class="proto-variant__btn" data-variant-btn="2">2</button>
+      <button class="proto-variant__btn" data-variant-btn="3">3</button>
+    </div>
+    <span class="proto-settings-label">Secondary button</span>
+    <div class="proto-variant" id="proto-secondary-variant" role="group" aria-label="Secondary button variant">
+      <span class="proto-variant__indicator"></span>
+      <button class="proto-variant__btn" data-variant-btn="1">1</button>
+      <button class="proto-variant__btn" data-variant-btn="2">2</button>
+      <button class="proto-variant__btn" data-variant-btn="3">3</button>
+    </div>
+  </div>
+
+  <script src="../scripts/theme-sync.js"></script>
+  <script src="../scripts/primary-config.js"></script>
+  <script src="../scripts/pay-button.js"></script>
+  <script>
+    document.getElementById('proto-theme').addEventListener('change', function () {
+      var urls = {
+        'button-overview': '../index.html',
+        'plain-goods': 'plain-goods.html',
+        'pitch': 'pitch.html',
+        'heritage': 'heritage.html',
+        'ghia': 'ghia.html',
+      };
+      if (urls[this.value]) window.location.href = urls[this.value];
+    });
+  </script>
+
+</body>
+</html>

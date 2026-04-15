@@ -1,0 +1,19 @@
+:root {
+  --button-gap: var(--spacing-small-300);
+  --button-min-size: var(--spacing-large-400);
+  --button-height: var(--spacing-large-400);
+  --button-padding-block: var(--spacing-small-200);
+  --button-padding-inline: var(--spacing-small-100);
+  --button-icon-size: var(--spacing-large-100);
+  --button-icon-padding-block: var(--spacing-large-400);
+  --button-radius: var(--cornerradius-base);
+  --button-primary-bg: var(--color-button-primary);
+  --button-primary-fg: var(--color-button-text-inverse);
+  --button-primary-border-color: var(--color-button-primary);
+  --button-secondary-fg: var(--color-text);
+  --button-secondary-bg: var(--color-button-secondary-bg);
+  --button-secondary-border-color: var(--color-button-secondary-border);
+  --button-plain-fg: var(--color-button-plain);
+
+  --button-focus-outline: 0 0 0 1px var(--color-background), 0 0 0 3px var(--demo-focus-ring, var(--color-focus-ring));
+}

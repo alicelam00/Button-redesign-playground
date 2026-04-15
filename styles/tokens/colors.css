@@ -1,0 +1,16 @@
+:root {
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-subdued: #ffffff;
+  --color-text: #111111;
+  --color-text-subdued: #828282;
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-border-emphasized: rgba(0, 0, 0, 0.15);
+  --color-focus-ring: #005bd3;
+  --color-button-text-inverse: #f9f6f5;
+
+  --color-button-primary: #1a1a1a;
+  --color-button-secondary-bg: rgba(255, 255, 255, 0.01);
+  --color-button-secondary-border: rgba(0, 0, 0, 0.1);
+  --color-button-plain: #1860e8;
+}

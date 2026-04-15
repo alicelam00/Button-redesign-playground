@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(gh repo:*)",
+      "mcp__dev-mcp__grokt_search",
+      "mcp__figma-mcp__get_design_context",
+      "Read(//Users/alicelam/**)",
+      "Bash(git -C /Users/alicelam/Documents/design-system/buttons-playground-refactor status --short)",
+      "mcp__figma-mcp__get_metadata",
+      "Bash(cp /Users/alicelam/Desktop/TheDiscoverySet.webp /Users/alicelam/Documents/design-system/buttons-playground-refactor/assets/ghia/TheDiscoverySet.webp)",
+      "Bash(cp \"/Users/alicelam/Desktop/Really_Fancy_Pour_Spout.webp\" /Users/alicelam/Documents/design-system/buttons-playground-refactor/assets/ghia/Really_Fancy_Pour_Spout.webp)",
+      "Bash(cp \"/Users/alicelam/Desktop/Label sticker.webp\" \"/Users/alicelam/Documents/design-system/buttons-playground-refactor/assets/ghia/Label sticker.webp\")",
+      "Bash(curl -s \"http://localhost:5178/order-status?errors=0&orderId=order-1&sidebar=true&section=colourMapping\")"
+    ],
+    "additionalDirectories": [
+      "/Users/alicelam/Documents/design-system/buttons-playground-refactor/pages",
+      "/Users/alicelam/Documents/design-system/buttons-playground-refactor"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+:root {
+  --spacing-none: 0px;
+  --spacing-small-500: 2px;
+  --spacing-small-400: 4px;
+  --spacing-small-300: 6px;
+  --spacing-small-200: 8px;
+  --spacing-small-100: 12px;
+  --spacing-base: 14px;
+  --spacing-large-100: 16px;
+  --spacing-large-200: 20px;
+  --spacing-large-300: 24px;
+  --spacing-large-400: 32px;
+  --spacing-large-500: 40px;
+  --spacing-large-600: 48px;
+}
