@@ -303,24 +303,24 @@
   --button-surface-bg: rgb(80, 80, 80);
 }
 
-.button[data-variant="primary-2"]::after,
+.button[data-kind="primary"]:not([data-variant])::after {
+  border-width: 0.75px;
+}
+
+.button[data-variant="primary-2"]::after {
+  border-width: 1px;
+}
+
+.button[data-variant="primary-3"]::after {
+  border-width: 0.75px 0.75px 2px 0.75px;
+}
+
 .button[data-variant="secondary-2"]::after {
-  border-width: 1px 1px 2px 1px;
+  border-width: 1px;
 }
 
 .button[data-variant="secondary-2"]:active:not(:disabled)::after {
   border-color: var(--button-surface-bg);
-}
-
-.button[data-variant="primary-3"]::after {
-  border: 1px solid transparent;
-  background:
-    linear-gradient(var(--button-surface-bg, transparent), var(--button-surface-bg, transparent)) padding-box,
-    linear-gradient(
-      to bottom,
-      var(--demo-primary-border-gradient-top,    var(--button-surface-border, transparent)),
-      var(--demo-primary-border-gradient-bottom, var(--button-surface-border, transparent))
-    ) border-box;
 }
 
 .button[data-variant="primary-4"]::after {
@@ -331,15 +331,6 @@
   border-color: transparent;
 }
 
-.button[data-variant="primary-3"]:active:not(:disabled)::after {
-  background:
-    linear-gradient(var(--button-surface-bg, transparent), var(--button-surface-bg, transparent)) padding-box,
-    linear-gradient(
-      to bottom,
-      var(--demo-primary-border-gradient-top,    var(--button-surface-border, transparent)),
-      var(--demo-primary-border-gradient-bottom, var(--button-surface-border, transparent))
-    ) border-box;
-}
 
 .button[data-kind="secondary"] {
   color: var(--demo-secondary-fg, var(--button-secondary-fg, #000));
@@ -352,6 +343,10 @@
   --button-surface-bg: var(--demo-secondary-hover-bg, color-mix(in srgb, currentColor 6%, var(--demo-secondary-bg, var(--button-secondary-bg, transparent))));
   --button-surface-border: var(--demo-secondary-border-color, var(--button-secondary-border-color, var(--color-button-secondary-border)));
   --button-surface-shadow: none;
+}
+
+.button[data-kind="secondary"]:not([data-variant]) {
+  --button-surface-border: transparent;
 }
 
 .button[data-kind="secondary"]:not([data-variant]):hover:not(:disabled) {

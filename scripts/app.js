@@ -545,7 +545,7 @@
 
 
   function autoPrimaryBorder(step) {
-    const s = (step != null && !isNaN(step)) ? step : 10;
+    const s = (step != null && !isNaN(step)) ? step : 5;
     const hsl = hexToHsluv(state.primaryColor);
     const pageBright = hexBrightness(state.backgroundColor);
     const darkerHex  = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - 13)]);
@@ -618,7 +618,7 @@
     const hsl = hexToHsluv(state.primaryColor);
     const hoverLStep      = readLInput('setting-primary-hover-l',         5);
     const activeLStep     = readLInput('setting-primary-active-l',        10);
-    const borderContrast  = readLInput('setting-primary-border-contrast', 10);
+    const borderContrast  = readLInput('setting-primary-border-contrast', 5);
     const gradTopStep     = readLInput('setting-primary-grad-top-l',      20);
     const gradBotStep     = readLInput('setting-primary-grad-bottom-l',   10);
     const borderHex       = autoPrimaryBorder(borderContrast);
@@ -658,7 +658,7 @@
       const hoverLStep    = readLInput('setting-secondary-hover-l',      -9);
       const activeLStep   = readLInput('setting-secondary-active-l',    -10);
       const active23LStep = readLInput('setting-secondary-active23-l',  -14);
-      const borderLStep   = readLInput('setting-secondary-border-l',    -14);
+      const borderLStep   = readLInput('setting-secondary-border-l',    -8);
       defaultL  = Math.max(0, bgL + defaultLStep);
       hoverL    = Math.max(0, bgL + hoverLStep);
       activeL   = Math.max(0, bgL + activeLStep);
@@ -744,14 +744,14 @@
     var params = {
       primaryHoverL:      readLInput('setting-primary-hover-l',         5),
       primaryActiveL:     readLInput('setting-primary-active-l',        10),
-      primaryBorderStep:  readLInput('setting-primary-border-contrast', 10),
+      primaryBorderStep:  readLInput('setting-primary-border-contrast', 5),
       primaryGradTopL:    readLInput('setting-primary-grad-top-l',      20),
       primaryGradBotL:    readLInput('setting-primary-grad-bottom-l',   10),
       secondaryDefaultL:  readLInput('setting-secondary-default-l',     -4),
       secondaryHoverL:    readLInput('setting-secondary-hover-l',       -9),
       secondaryActiveL:   readLInput('setting-secondary-active-l',      -10),
       secondaryActive23L: readLInput('setting-secondary-active23-l',    -14),
-      secondaryBorderL:   readLInput('setting-secondary-border-l',      -14),
+      secondaryBorderL:   readLInput('setting-secondary-border-l',      -8),
     };
     try { localStorage.setItem('btn-pg-params', JSON.stringify(params)); } catch(e) {}
   }

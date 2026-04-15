@@ -1,8 +1,6 @@
 (function () {
-  var saved = localStorage.getItem('btn-pg-params');
-  if (!saved) return;
-  var p;
-  try { p = JSON.parse(saved); } catch (e) { return; }
+  var p = {};
+  try { var saved = localStorage.getItem('btn-pg-params'); if (saved) p = JSON.parse(saved); } catch (e) {}
 
   // ── HSLUV (MIT) ──────────────────────────────────────────────────────
   const _HM = [[3.240969941904521,-1.537383177570093,-0.498610760293],[-0.96924363628087,1.87596750150772,0.041555057407175],[0.055630079696993,-0.20397695888897,1.056971514242878]];
@@ -32,7 +30,7 @@
   var accent = cs.getPropertyValue('--color-accent').trim();
   if (HEX.test(accent)) {
     var hsl      = hexToHsluv(accent);
-    var bStep    = p.primaryBorderStep != null ? p.primaryBorderStep : 10;
+    var bStep    = p.primaryBorderStep != null ? p.primaryBorderStep : 5;
     var pageBg   = cs.getPropertyValue('--color-bg-page').trim();
     var pageBrt  = HEX.test(pageBg) ? hexBrightness(pageBg) : 255;
     var dkHex    = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - 13)]);
@@ -68,7 +66,7 @@
     var hovL     = Math.max(0, bgL + (p.secondaryHoverL    != null ? p.secondaryHoverL    : -9));
     var actL     = Math.max(0, bgL + (p.secondaryActiveL   != null ? p.secondaryActiveL   : -10));
     var act23L   = Math.max(0, bgL + (p.secondaryActive23L != null ? p.secondaryActive23L : -14));
-    var secBordL = Math.max(0, bgL + (p.secondaryBorderL   != null ? p.secondaryBorderL   : -14));
+    var secBordL = Math.max(0, bgL + (p.secondaryBorderL   != null ? p.secondaryBorderL   : -8));
 
     root.style.setProperty('--demo-secondary-bg',           hsluvToHex([bgHsl[0], bgHsl[1], defL]));
     root.style.setProperty('--demo-secondary-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], hovL]));

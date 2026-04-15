@@ -6,7 +6,8 @@
 
   --x-duration-faster: 0s;
   --x-duration-fast: 0s;
-  --x-duration-base: 0s;
+  --x-duration-base: 100ms;
+  --x-timing-hover: ease-out;
   --x-duration-slow: 0s;
   --x-duration-slower: 0s;
   --x-duration-slowest: 0s;

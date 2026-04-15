@@ -88,28 +88,19 @@
     return hexBrightness(hex) > 128 ? '#000000' : '#f9f6f5';
   }
 
-  function autoPrimaryBorder(accentHex, bgHex) {
-    var MIN_CONTRAST = 18;
+  function autoPrimaryBorder(accentHex, bgHex, step) {
+    var s = (step != null && !isNaN(step)) ? step : 5;
     var hsl = hexToHsluv(accentHex);
     var pageBright = hexBrightness(bgHex);
     var darkerHex  = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - 13)]);
     var lighterHex = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + 13)]);
-    var useDarker  = Math.abs(hexBrightness(darkerHex)  - pageBright)
-                  >= Math.abs(hexBrightness(lighterHex) - pageBright);
-    function findBorderL(dir) {
-      var step = 13;
-      var borderL = Math.max(0, Math.min(100, hsl[2] + dir * step));
-      while (Math.abs(borderL - hsl[2]) < MIN_CONTRAST) {
-        var next = Math.max(0, Math.min(100, hsl[2] + dir * (step + 1)));
-        if (next === borderL) break;
-        step++;
-        borderL = next;
-      }
-      return borderL;
-    }
-    var preferred = useDarker ? -1 : 1;
-    var borderL = findBorderL(preferred);
-    if (Math.abs(borderL - hsl[2]) < MIN_CONTRAST) { borderL = findBorderL(-preferred); }
+    var dir = Math.abs(hexBrightness(darkerHex) - pageBright)
+           >= Math.abs(hexBrightness(lighterHex) - pageBright) ? -1 : 1;
+    var borderL = Math.max(0, Math.min(100, hsl[2] + dir * s));
+    var borderHex = hsluvToHex([hsl[0], hsl[1], borderL]);
+    var borderBright = hexBrightness(borderHex);
+    if (borderBright < 30)  borderL = Math.max(borderL, 40);
+    if (borderBright > 225) borderL = Math.min(borderL, 80);
     return hsluvToHex([hsl[0], hsl[1], borderL]);
   }
 
@@ -118,15 +109,22 @@
     var accentHex = styles.getPropertyValue('--color-accent').trim();
     if (!accentHex) return;
     var bgHex = styles.getPropertyValue('--color-bg-page').trim() || '#ffffff';
-    var hoverL  = window.PRIMARY_CONFIG ? window.PRIMARY_CONFIG.HOVER_L  : 5;
-    var activeL = window.PRIMARY_CONFIG ? window.PRIMARY_CONFIG.ACTIVE_L : 10;
+
+    var p = {};
+    try { var saved = localStorage.getItem('btn-pg-params'); if (saved) p = JSON.parse(saved); } catch(e) {}
+    var borderStep = p.primaryBorderStep != null ? p.primaryBorderStep : 5;
+    var hoverL     = p.primaryHoverL     != null ? p.primaryHoverL     : 5;
+    var activeL    = p.primaryActiveL    != null ? p.primaryActiveL    : 10;
+    var gradTopL   = p.primaryGradTopL   != null ? p.primaryGradTopL   : 20;
+    var gradBotL   = p.primaryGradBotL   != null ? p.primaryGradBotL   : 10;
+
     var hsl = hexToHsluv(accentHex);
-    var hoverBg   = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + hoverL)]);
-    var activeBg  = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - activeL)]);
+    var hoverBg        = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + hoverL)]);
+    var activeBg       = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - activeL)]);
     var fgColor        = contrastColor(accentHex);
-    var borderHex      = autoPrimaryBorder(accentHex, bgHex);
-    var gradientTop    = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + 20)]);
-    var gradientBottom = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - 10)]);
+    var borderHex      = autoPrimaryBorder(accentHex, bgHex, borderStep);
+    var gradientTop    = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + gradTopL)]);
+    var gradientBottom = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - gradBotL)]);
     document.documentElement.style.setProperty('--demo-primary-fg',                     fgColor);
     document.documentElement.style.setProperty('--demo-primary-hover-bg',               hoverBg);
     document.documentElement.style.setProperty('--demo-primary-active-bg',              activeBg);
@@ -202,15 +200,24 @@
   // bindPressAnimation();
 
   // ── Secondary colour setup ───────────────────────────────────────────────
-  function applySecondaryTokens(el, bgHex) {
+  function applySecondaryTokens(el, bgHex, p) {
     var dark  = hexBrightness(bgHex) < 128;
     var bgHsl = hexToHsluv(bgHex);
     var bgL   = bgHsl[2];
-    var defaultL   = dark ? Math.min(100, bgL +  8) : Math.max(0, bgL -  4);
-    var hoverL     = dark ? Math.min(100, bgL + 14) : Math.max(0, bgL -  9);
-    var activeL    = dark ? Math.min(100, bgL + 19) : Math.max(0, bgL - 10);
-    var activeLm23 = dark ? Math.min(100, bgL + 19) : Math.max(0, bgL - 14);
-    var borderL    = dark ? Math.min(100, defaultL + 8) : Math.max(0, defaultL - 10);
+    var defaultL, hoverL, activeL, activeLm23, borderL;
+    if (dark) {
+      defaultL   = Math.min(100, bgL +  8);
+      hoverL     = Math.min(100, bgL + 14);
+      activeL    = Math.min(100, bgL + 19);
+      activeLm23 = Math.min(100, bgL + 19);
+      borderL    = Math.min(100, defaultL + 8);
+    } else {
+      defaultL   = Math.max(0, bgL + (p.secondaryDefaultL  != null ? p.secondaryDefaultL  : -4));
+      hoverL     = Math.max(0, bgL + (p.secondaryHoverL    != null ? p.secondaryHoverL    : -9));
+      activeL    = Math.max(0, bgL + (p.secondaryActiveL   != null ? p.secondaryActiveL   : -10));
+      activeLm23 = Math.max(0, bgL + (p.secondaryActive23L != null ? p.secondaryActive23L : -14));
+      borderL    = Math.max(0, bgL + (p.secondaryBorderL   != null ? p.secondaryBorderL   : -8));
+    }
     el.style.setProperty('--demo-secondary-fg',           contrastColor(bgHex));
     el.style.setProperty('--demo-secondary-bg',           hsluvToHex([bgHsl[0], bgHsl[1], defaultL]));
     el.style.setProperty('--demo-secondary-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], hoverL]));
@@ -220,14 +227,16 @@
   }
 
   function initSecondaryColours() {
+    var sp = {};
+    try { var saved = localStorage.getItem('btn-pg-params'); if (saved) sp = JSON.parse(saved); } catch(e) {}
     var styles = getComputedStyle(document.documentElement);
     var pageBg = styles.getPropertyValue('--color-bg-page').trim() || '#ffffff';
-    applySecondaryTokens(document.documentElement, pageBg);
+    applySecondaryTokens(document.documentElement, pageBg, sp);
 
     var summaryBg = styles.getPropertyValue('--color-bg-summary').trim();
     if (summaryBg) {
       var summaryEl = document.querySelector('.summary-column');
-      if (summaryEl) applySecondaryTokens(summaryEl, summaryBg);
+      if (summaryEl) applySecondaryTokens(summaryEl, summaryBg, sp);
     }
   }
 
