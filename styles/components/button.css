@@ -345,7 +345,8 @@
   --button-surface-shadow: none;
 }
 
-.button[data-kind="secondary"]:not([data-variant]) {
+.button[data-kind="secondary"]:not([data-variant]),
+.button[data-variant="secondary-3"] {
   --button-surface-border: transparent;
 }
 
@@ -365,6 +366,10 @@
 .button[data-variant="secondary-2"]:active:not(:disabled),
 .button[data-variant="secondary-3"]:active:not(:disabled) {
   --button-surface-bg: var(--demo-secondary-active-bg-23, var(--demo-secondary-active-bg, color-mix(in srgb, currentColor 11%, var(--demo-secondary-bg, var(--button-secondary-bg, transparent)))));
+}
+
+.button[data-variant="secondary-3"]:active:not(:disabled) {
+  --button-surface-border: transparent;
 }
 
 .button[data-kind="secondary"]:focus-visible {
