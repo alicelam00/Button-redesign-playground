@@ -223,6 +223,212 @@
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* ── Checkout page sub-section ──────────────────────────────────────── */
+
+.settings-widget__sub-theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.settings-widget__variant-group {
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.settings-widget__variant-group .settings-widget__label {
+  display: block;
+  margin-bottom: 7px;
+}
+
+.settings-variant-pills {
+  position: relative;
+  display: flex;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 3px;
+}
+
+/* Sliding indicator — moves via --active-idx CSS var set from JS */
+.settings-variant-pills__slider {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: calc(3px + var(--active-idx, 0) * ((100% - 15px) / 4 + 3px));
+  width: calc((100% - 15px) / 4);
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  transition: left 0.22s cubic-bezier(0.34, 1.2, 0.64, 1);
+  pointer-events: none;
+}
+
+.settings-variant-pills__btn {
+  position: relative;
+  flex: 1;
+  padding: 5px 0;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.15s;
+  text-align: center;
+  z-index: 1;
+}
+
+.settings-variant-pills__btn.is-active {
+  color: #ffffff;
+}
+
+.settings-variant-pills__btn:hover:not(.is-active) {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ── Viewport area (wraps the preview iframe) ───────────────────────── */
+
+#viewport-area {
+  position: fixed;
+  top: 0;
+  left: 300px;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+#viewport-area[hidden] { display: none !important; }
+
+#phone-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.phone-chrome__top,
+.phone-chrome__bottom { display: none; }
+
+#theme-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ── Mobile mode ─────────────────────────────────────────────────────── */
+
+#viewport-area.is-mobile {
+  background: #111111;
+  align-items: center;
+  justify-content: center;
+}
+
+#viewport-area.is-mobile #phone-wrap {
+  position: relative;
+  width: 390px;
+  flex-shrink: 0;
+  height: min(844px, calc(100% - 48px));
+  background: #000;
+  border-radius: 50px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 0 0 2px rgba(0, 0, 0, 0.6),
+    0 24px 72px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+#viewport-area.is-mobile #theme-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 390px;
+  height: 100%;
+  border: none;
+}
+
+#viewport-area.is-mobile .phone-chrome__top {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 59px;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 14px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#viewport-area.is-mobile .phone-chrome__dynamic-island {
+  width: 126px;
+  height: 37px;
+  background: #000;
+  border-radius: 22px;
+}
+
+#viewport-area.is-mobile .phone-chrome__bottom {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 6px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#viewport-area.is-mobile .phone-chrome__home-bar {
+  width: 134px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+}
+
+/* ── Viewport toggle buttons ─────────────────────────────────────────── */
+
+.settings-viewport-toggle {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.settings-viewport-toggle__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 26px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.settings-viewport-toggle__btn.is-active {
+  background: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.settings-viewport-toggle__btn:hover:not(.is-active) {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 /* ── HSLUV expandable groups ─────────────────────────────────────── */
 
 .settings-widget__row-right {
@@ -340,6 +546,7 @@
   gap: 3px 4px;
   padding: 2px 0 8px;
 }
+
 
 .settings-widget__l-cols > span {
   font-size: 12px;

@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="0;url=pages/index.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Button States Prototype</title>
+  <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
   <div class="prototype">
@@ -27,6 +28,7 @@
           </div>
           <div class="interactive-demo__row interactive-demo__row--core">
             <button type="button" class="button" data-kind="primary" data-variant="primary-4" id="interactive-primary-btn-4">Primary button 4</button>
+            <button type="button" class="button" data-kind="secondary" data-variant="secondary-4" id="interactive-secondary-btn-4">Secondary button 4</button>
           </div>
         </div>
       </div>
@@ -43,20 +45,130 @@
     <div class="settings-widget__body">
       <div class="settings-widget__panel">
 
-        <!-- Theme row -->
+        <!-- Page row -->
         <div class="settings-widget__theme-row">
-          <span class="settings-widget__label">Theme</span>
-          <select class="settings-widget__select settings-widget__select--sm" id="setting-theme">
+          <span class="settings-widget__label">Page</span>
+          <select class="settings-widget__select" id="setting-page" style="min-width: 130px">
             <option value="button-overview" selected>Button overview</option>
-            <option value="plain-goods">Plain goods</option>
-            <option value="pitch">Pitch</option>
-            <option value="heritage">Heritage</option>
-            <option value="ghia">Ghia</option>
+            <option value="checkout">Checkout</option>
+            <option value="order-index">Order index</option>
+            <option value="order-status">Order status</option>
           </select>
         </div>
 
+        <!-- Viewport toggle row -->
+        <div class="settings-widget__theme-row" id="setting-viewport-row" hidden>
+          <span class="settings-widget__label">View</span>
+          <div class="settings-viewport-toggle" id="setting-viewport">
+            <button class="settings-viewport-toggle__btn is-active" data-viewport="desktop" aria-pressed="true" title="Desktop">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="2" width="14" height="9.5" rx="1.5"/><path d="M5 14h6M8 11.5V14"/></svg>
+            </button>
+            <button class="settings-viewport-toggle__btn" data-viewport="mobile" aria-pressed="false" title="Mobile">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="1" width="7" height="14" rx="2"/><circle cx="8" cy="12.5" r="0.75" fill="currentColor" stroke="none"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Order index sub-section -->
+        <div id="order-index-sub-section" hidden>
+          <div class="settings-widget__sub-theme-row">
+            <span class="settings-widget__label">Theme</span>
+            <select class="settings-widget__select settings-widget__select--sm" id="setting-order-index-theme">
+              <option value="plain-goods">Plain goods</option>
+              <option value="pitch">Pitch</option>
+              <option value="heritage">Heritage</option>
+              <option value="ghia">Ghia</option>
+            </select>
+          </div>
+          <div class="settings-widget__variant-group">
+            <span class="settings-widget__label">Primary button</span>
+            <div class="settings-variant-pills" id="setting-oi-primary-variant-pills">
+              <span class="settings-variant-pills__slider"></span>
+              <button class="settings-variant-pills__btn" data-v="1">1</button>
+              <button class="settings-variant-pills__btn" data-v="2">2</button>
+              <button class="settings-variant-pills__btn" data-v="3">3</button>
+              <button class="settings-variant-pills__btn" data-v="4">4</button>
+            </div>
+          </div>
+          <div class="settings-widget__variant-group">
+            <span class="settings-widget__label">Secondary button</span>
+            <div class="settings-variant-pills" id="setting-oi-secondary-variant-pills">
+              <span class="settings-variant-pills__slider"></span>
+              <button class="settings-variant-pills__btn" data-v="1">1</button>
+              <button class="settings-variant-pills__btn" data-v="2">2</button>
+              <button class="settings-variant-pills__btn" data-v="3">3</button>
+              <button class="settings-variant-pills__btn" data-v="4">4</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order status sub-section -->
+        <div id="order-status-sub-section" hidden>
+          <div class="settings-widget__sub-theme-row">
+            <span class="settings-widget__label">Theme</span>
+            <select class="settings-widget__select settings-widget__select--sm" id="setting-order-status-theme">
+              <option value="plain-goods">Plain goods</option>
+              <option value="pitch">Pitch</option>
+              <option value="heritage">Heritage</option>
+            </select>
+          </div>
+          <div class="settings-widget__variant-group">
+            <span class="settings-widget__label">Primary button</span>
+            <div class="settings-variant-pills" id="setting-os-primary-variant-pills">
+              <span class="settings-variant-pills__slider"></span>
+              <button class="settings-variant-pills__btn" data-v="1">1</button>
+              <button class="settings-variant-pills__btn" data-v="2">2</button>
+              <button class="settings-variant-pills__btn" data-v="3">3</button>
+              <button class="settings-variant-pills__btn" data-v="4">4</button>
+            </div>
+          </div>
+          <div class="settings-widget__variant-group">
+            <span class="settings-widget__label">Secondary button</span>
+            <div class="settings-variant-pills" id="setting-os-secondary-variant-pills">
+              <span class="settings-variant-pills__slider"></span>
+              <button class="settings-variant-pills__btn" data-v="1">1</button>
+              <button class="settings-variant-pills__btn" data-v="2">2</button>
+              <button class="settings-variant-pills__btn" data-v="3">3</button>
+              <button class="settings-variant-pills__btn" data-v="4">4</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checkout page sub-section -->
+        <div id="page-sub-section" hidden>
+          <div class="settings-widget__sub-theme-row">
+            <span class="settings-widget__label">Theme</span>
+            <select class="settings-widget__select settings-widget__select--sm" id="setting-page-theme">
+              <option value="plain-goods">Plain goods</option>
+              <option value="pitch">Pitch</option>
+              <option value="heritage">Heritage</option>
+              <option value="ghia">Ghia</option>
+            </select>
+          </div>
+          <div class="settings-widget__variant-group">
+            <span class="settings-widget__label">Primary button</span>
+            <div class="settings-variant-pills" id="setting-primary-variant-pills">
+              <span class="settings-variant-pills__slider"></span>
+              <button class="settings-variant-pills__btn" data-v="1">1</button>
+              <button class="settings-variant-pills__btn" data-v="2">2</button>
+              <button class="settings-variant-pills__btn" data-v="3">3</button>
+              <button class="settings-variant-pills__btn" data-v="4">4</button>
+            </div>
+          </div>
+          <div class="settings-widget__variant-group">
+            <span class="settings-widget__label">Secondary button</span>
+            <div class="settings-variant-pills" id="setting-secondary-variant-pills">
+              <span class="settings-variant-pills__slider"></span>
+              <button class="settings-variant-pills__btn" data-v="1">1</button>
+              <button class="settings-variant-pills__btn" data-v="2">2</button>
+              <button class="settings-variant-pills__btn" data-v="3">3</button>
+              <button class="settings-variant-pills__btn" data-v="4">4</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Buttons section -->
-        <div class="settings-widget__section">
+        <div class="settings-widget__section" id="section-buttons">
           <button type="button" class="settings-widget__section-header" id="section-buttons-btn" aria-expanded="false" aria-controls="section-buttons-content">
             <span>Buttons</span>
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -98,12 +210,23 @@
                 </div>
               </div>
 
+              <div class="settings-widget__group">
+                <div class="settings-widget__row">
+                  <span class="settings-widget__label">Secondary 4</span>
+                </div>
+                <div class="settings-widget__l-cols" style="grid-template-columns: repeat(2, 1fr)">
+                  <span>Hover</span><span>Press</span>
+                  <input type="number" class="settings-widget__l-num" id="setting-secondary4-hover-l" value="5" step="1">
+                  <input type="number" class="settings-widget__l-num" id="setting-secondary4-active-l" value="8" step="1">
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
 
         <!-- Colours section -->
-        <div class="settings-widget__section">
+        <div class="settings-widget__section" id="section-colours">
           <button type="button" class="settings-widget__section-header" id="section-colours-btn" aria-expanded="false" aria-controls="section-colours-content">
             <span>Colours</span>
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -140,7 +263,7 @@
         </div>
 
         <!-- Button section -->
-        <div class="settings-widget__section">
+        <div class="settings-widget__section" id="section-styles">
           <button type="button" class="settings-widget__section-header" id="section-button-btn" aria-expanded="false" aria-controls="section-button-content">
             <span>Styles</span>
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -184,7 +307,7 @@
         </div>
 
         <!-- Footer -->
-        <div class="settings-widget__footer">
+        <div class="settings-widget__footer" id="settings-footer">
           <button type="button" class="settings-widget__reset-all-btn" id="global-reset-all">Reset all</button>
         </div>
 
@@ -192,7 +315,19 @@
     </div>
   </div>
 
-  <script src="scripts/primary-config.js"></script>
-  <script src="scripts/app.js"></script>
+  <div id="viewport-area" hidden>
+    <div id="phone-wrap">
+      <iframe id="theme-frame" src="" title="Theme preview"></iframe>
+      <div class="phone-chrome__top" aria-hidden="true">
+        <div class="phone-chrome__dynamic-island"></div>
+      </div>
+      <div class="phone-chrome__bottom" aria-hidden="true">
+        <div class="phone-chrome__home-bar"></div>
+      </div>
+    </div>
+  </div></iframe>
+
+  <script src="../scripts/primary-config.js"></script>
+  <script src="../scripts/app.js"></script>
 </body>
 </html>

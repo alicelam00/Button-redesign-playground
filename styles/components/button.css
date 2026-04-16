@@ -21,7 +21,7 @@
   gap: var(--button-gap);
   min-height: var(--button-height, var(--button-min-size));
   min-width: var(--button-min-size);
-  border: 1px solid transparent;
+  border: none;
   font-family: var(--font-body);
   font-size: var(--body-base-size);
   line-height: 1;
@@ -251,20 +251,24 @@
   box-shadow: var(--button-focus-outline);
 }
 
-/* Secondary 4 — Option B: always mix 25% white into page colour (oklch), purely CSS-driven */
+/* Secondary 4 — elevated surface; hover/press computed via HSLuv in JS */
 .button[data-kind="secondary"][data-variant="secondary-4"] {
-  --secondary-4-bg: color-mix(in oklch, white 25%, var(--color-background, #ffffff));
+  --secondary-4-bg: var(--demo-secondary-4-bg, color-mix(in oklch, white 25%, var(--color-background, #ffffff)));
   --button-surface-bg: var(--secondary-4-bg);
-  --button-surface-border: color-mix(in srgb, currentColor 15%, transparent);
+  --button-surface-border: transparent;
   --button-surface-shadow: none;
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.06),
+    0 6px 16px rgba(16, 24, 40, 0.08);
+  transition: all 0.2s ease;
 }
 
 .button[data-kind="secondary"][data-variant="secondary-4"]:hover:not(:disabled) {
-  --button-surface-bg: color-mix(in srgb, currentColor 6%, var(--secondary-4-bg));
+  --button-surface-bg: var(--demo-secondary-4-hover-bg, color-mix(in srgb, currentColor 6%, var(--secondary-4-bg)));
 }
 
 .button[data-kind="secondary"][data-variant="secondary-4"]:active:not(:disabled) {
-  --button-surface-bg: color-mix(in srgb, currentColor 11%, var(--secondary-4-bg));
+  --button-surface-bg: var(--demo-secondary-4-active-bg, color-mix(in srgb, currentColor 11%, var(--secondary-4-bg)));
 }
 
 /* Secondary blend variant — button takes on page background, ::after uses multiply overlay */
@@ -304,7 +308,7 @@
 }
 
 .button[data-kind="primary"]:not([data-variant])::after {
-  border-width: 0.75px;
+  border-width: 0.5px;
 }
 
 .button[data-variant="primary-2"]::after {
@@ -323,12 +327,15 @@
   border-color: var(--button-surface-bg);
 }
 
-.button[data-variant="primary-4"]::after {
-  border-width: 1px 1px 2px 1px;
+.button[data-variant="primary-4"] {
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.08),
+    0 10px 24px rgba(0, 0, 0, 0.10);
+  transition: all 0.2s ease;
 }
 
-.button[data-variant="primary-4"]:active:not(:disabled)::after {
-  border-color: transparent;
+.button[data-variant="primary-4"]::after {
+  border-width: 0.5px;
 }
 
 
@@ -347,7 +354,8 @@
 
 .button[data-kind="secondary"]:not([data-variant]),
 .button[data-variant="secondary-3"],
-.button[data-variant="secondary-3"]:hover:not(:disabled) {
+.button[data-variant="secondary-3"]:hover:not(:disabled),
+.button[data-variant="secondary-4"]:hover:not(:disabled) {
   --button-surface-border: transparent;
 }
 

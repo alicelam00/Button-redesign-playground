@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order #1001 · Orders</title>
+  <script>
+  // ── Theme: apply CSS vars + font before first paint ────────────────────
+  (function () {
+    var THEMES = {
+      'plain-goods': {
+        vars: {
+          '--x-color-text':          '#1a1a1a',
+          '--x-color-text-subdued':  '#707070',
+          '--x-color-bg':            '#ffffff',
+          '--x-color-bg-subdued':    '#f5f5f5',
+          '--x-color-border':        '#e0e0e0',
+          '--x-color-border-header': '#e8e8e8',
+          '--x-font':  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+          '--x-radius-sm':   '1px',
+          '--x-radius-base': '8px',
+          '--x-radius-lg':   '12px',
+          '--x-color-accent':    '#005BD3',
+          '--color-accent':      '#005BD3',
+          '--demo-primary-fg':   '#f9f6f5',
+        },
+        logo: { src: '../assets/themes/plaingoods/logos/logo.svg', alt: 'Plain Goods', maxWidth: '150px' },
+        products: ['p1.png','p2.png','p3.png','p4.png','p5.png','p6.png','p7.png','p8.png','p9.png','p10.png'],
+        productsBase: '../assets/themes/plaingoods/products/',
+      },
+      'pitch': {
+        vars: {
+          '--x-color-text':          '#560E00',
+          '--x-color-text-subdued':  '#9E5A40',
+          '--x-color-bg':            '#FFFAF7',
+          '--x-color-bg-subdued':    '#F5EDE8',
+          '--x-color-border':        '#E6DBD9',
+          '--x-color-border-header': '#E6DBD9',
+          '--x-font':  "Liter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          '--x-radius-sm':   '4px',
+          '--x-radius-base': '8px',
+          '--x-radius-lg':   '12px',
+          '--x-color-accent':    '#FF4315',
+          '--color-accent':      '#FF4315',
+          '--demo-primary-fg':   '#f9f6f5',
+        },
+        font: { family: 'Liter', src: '../assets/themes/pitch/fonts/Liter-Regular.ttf', weight: '400' },
+        logo: { src: '../assets/themes/pitch/logos/logo.png', alt: 'Pitch', maxWidth: '160px' },
+        products: ['p1.webp','p2.webp','p3.webp','p4.webp','p5.webp','p6.webp','p7.webp','p8.webp','p9.webp','p10.png'],
+        productsBase: '../assets/themes/pitch/products/',
+      },
+      'heritage': {
+        vars: {
+          '--x-color-text':          '#f6eddd',
+          '--x-color-text-subdued':  '#aba698',
+          '--x-color-bg':            '#202219',
+          '--x-color-bg-subdued':    '#2d3025',
+          '--x-color-border':        '#404036',
+          '--x-color-border-header': '#404036',
+          '--x-font':  '"Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+          '--x-radius-sm':   '4px',
+          '--x-radius-base': '8px',
+          '--x-radius-lg':   '12px',
+          '--x-color-accent':    '#F6EDDD',
+          '--color-accent':      '#F6EDDD',
+          '--demo-primary-fg':   '#000000',
+        },
+        font: { family: 'Instrument Sans', src: '../assets/themes/heritage/fonts/InstrumentSans-Regular.ttf', weight: '400' },
+        logo: { src: '../assets/themes/heritage/logos/logo.png', alt: 'Heritage', maxWidth: '50px' },
+        products: ['p1.png','p2.png','p3.png','p4.png','p5.png','p6.png','p7.png','p8.png','p9.png','p10.png'],
+        productsBase: '../assets/themes/heritage/products/',
+      },
+    };
+
+    var params = new URLSearchParams(window.location.search);
+    var themeName = params.get('theme') || 'plain-goods';
+    var theme = THEMES[themeName] || THEMES['plain-goods'];
+    window.__ORDER_THEME__ = theme;
+
+    var root = document.documentElement;
+    Object.keys(theme.vars).forEach(function (k) { root.style.setProperty(k, theme.vars[k]); });
+
+    if (theme.font) {
+      var style = document.createElement('style');
+      style.textContent = '@font-face { font-family: "' + theme.font.family + '"; src: url("' + theme.font.src + '"); font-weight: ' + theme.font.weight + '; }';
+      document.head.appendChild(style);
+    }
+  })();
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── Tokens ─── */
+    :root {
+      --x-color-text:            #1a1a1a;
+      --x-color-text-subdued:    #707070;
+      --x-color-bg:              #ffffff;
+      --x-color-bg-subdued:      #f5f5f5;
+      --x-color-border:          #e0e0e0;
+      --x-color-border-header:   #e8e8e8;
+      --x-color-bg-header:       var(--x-color-bg);
+      --x-color-accent:          #005BD3;
+      --x-color-accent-hover:    #0052ba;
+      --x-color-accent-fg:       #ffffff;
+      --x-radius-sm:    4px;
+      --x-radius-base:  8px;
+      --x-radius-lg:    12px;
+      --x-space-xs:     4px;
+      --x-space-sm:     6px;
+      --x-space-base:   12px;
+      --x-space-md:     20px;
+      --x-space-lg:     34px;
+      --x-duration:     0.2s;
+      --x-font:         -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+      /* ─── Bridge vars for button.css ─── */
+      --color-accent:               #005BD3;
+      --color-bg-page:              var(--x-color-bg);
+      --demo-primary-bg:            var(--color-accent);
+      --demo-primary-fg:            #f9f6f5;
+      --font-body:                  var(--x-font);
+      --body-base-size:             14px;
+      --body-base-letter-spacing:   -0.15px;
+      --font-weight-semibold:       600;
+      --btn-primary-font-size:      14px;
+      --btn-primary-font-weight:    600;
+      --btn-primary-letter-spacing: -0.15px;
+      --btn-primary-text-transform: none;
+      --button-gap:                 6px;
+      --button-radius:              12px;
+      --button-height:              44px;
+      --button-min-size:            44px;
+      --button-padding-block:       10px;
+      --button-padding-inline:      16px;
+      --button-shadow-top:          none;
+      --button-shadow-bottom:       none;
+      --button-shadow-focus:        none;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--x-font);
+      font-size: 14px;
+      color: var(--x-color-text);
+      background: var(--x-color-bg-subdued);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Shell ─── */
+    .af-shell {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── Header ─── */
+    .af-header {
+      background: var(--x-color-bg-header, var(--x-color-bg));
+      border-bottom: 1px solid var(--x-color-border-header);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .af-header-inner {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      padding: 0 var(--x-space-md);
+      gap: var(--x-space-base);
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .af-hamburger {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      background: none; border: none;
+      border-radius: var(--x-radius-base);
+      color: var(--x-color-text);
+      flex-shrink: 0; cursor: pointer;
+      transition: background var(--x-duration);
+    }
+    .af-hamburger:hover { background: var(--x-color-bg-subdued); }
+
+    .af-logo {
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none; color: var(--x-color-text); flex-shrink: 0;
+    }
+    .af-logo__img { max-width: 150px; height: 28px; width: auto; display: block; }
+
+    .af-nav {
+      display: none; align-items: center; gap: 2px;
+    }
+    .af-nav__link {
+      display: block; padding: 7px 14px;
+      border-radius: var(--x-radius-base);
+      font-size: 14px; color: var(--x-color-text);
+      text-decoration: none;
+      transition: background var(--x-duration);
+    }
+    .af-nav__link:hover { background: var(--x-color-bg-subdued); }
+    .af-nav__link--active { text-decoration: underline; text-underline-offset: 2px; }
+
+    .af-account {
+      display: flex; align-items: center; gap: 6px;
+      background: none; border: none;
+      border-radius: var(--x-radius-base);
+      padding: 5px 8px;
+      color: var(--x-color-text); font-size: 13px;
+      transition: background var(--x-duration);
+      flex-shrink: 0; position: relative;
+      margin-left: auto; cursor: pointer;
+    }
+    .af-account:hover { background: var(--x-color-bg-subdued); }
+    .af-account__avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #c9cfd4;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600; flex-shrink: 0;
+    }
+    .af-account__name { display: none; }
+
+    /* ─── Main layout ─── */
+    .af-center {
+      flex: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 21px;
+    }
+
+    /* ─── Internal page header ─── */
+    .ip-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--x-space-base);
+      margin-bottom: var(--x-space-md);
+    }
+    /* 2-column, 2-row grid: [arrow | title] / [empty | date] */
+    .ip-header__left {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      column-gap: 8px;
+      row-gap: 2px;
+      align-items: center;
+    }
+    .ip-back {
+      grid-column: 1; grid-row: 1;
+      display: flex; align-items: center;
+      color: var(--x-color-text);
+      text-decoration: none;
+      padding: 2px;
+      border-radius: var(--x-radius-sm);
+      transition: opacity var(--x-duration);
+    }
+    .ip-back:hover { opacity: 0.6; }
+    .ip-heading__title {
+      grid-column: 2; grid-row: 1;
+      font-size: 19px; font-weight: 600; line-height: 1.3;
+    }
+    .ip-heading__sub {
+      grid-column: 2; grid-row: 2;
+      font-size: 14px; color: var(--x-color-text-subdued);
+    }
+    .ip-header__actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-top: 2px; }
+
+    /* ─── Two-column grid ─── */
+    .os-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 21px;
+      align-items: start;
+    }
+
+    .card-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 21px;
+    }
+
+    /* ─── Card ─── */
+    .card {
+      background: var(--x-color-bg);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .card--padded { padding: var(--x-space-md); }
+
+    /* ─── Fulfillment status card ─── */
+    .fulfillment-meta {
+      margin-bottom: 16px;
+    }
+    .fulfillment-delivery {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .fulfillment-tracking {
+      font-size: 13px;
+      color: var(--x-color-text-subdued);
+    }
+    .fulfillment-tracking a {
+      color: var(--x-color-accent);
+      text-decoration: none;
+    }
+    .fulfillment-tracking a:hover { text-decoration: underline; }
+
+    /* Timeline */
+    .timeline-event {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      gap: 0 10px;
+    }
+    .timeline-event__icon-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 1px;
+    }
+    /* Timeline dot: SVG-based icons */
+    .timeline-event__dot {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+    }
+    /* Dashed connector line */
+    .timeline-event__line {
+      flex: 1;
+      width: 0;
+      border-right: 1px dashed var(--x-color-text-subdued);
+      min-height: 14px;
+      margin-top: 4px;
+    }
+    .timeline-event:last-child .timeline-event__line { display: none; }
+    /* 3-column header row: title takes the middle, toggle goes to the right */
+    .timeline-event__header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 8px;
+    }
+    .timeline-event__body { padding-bottom: 14px; }
+    .timeline-event:last-child .timeline-event__body { padding-bottom: 0; }
+    .timeline-event__title { font-size: 14px; font-weight: 500; line-height: 1.4; }
+    .timeline-event__desc { font-size: 13px; color: var(--x-color-text-subdued); margin-top: 4px; }
+    .timeline-event__date { font-size: 12px; color: var(--x-color-text-subdued); margin-top: 3px; }
+    /* Show/Hide details toggle */
+    .timeline-toggle {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: none; border: none; padding: 0; cursor: pointer;
+      font-size: 13px; color: var(--x-color-accent);
+      white-space: nowrap;
+      transition: opacity var(--x-duration);
+    }
+    .timeline-toggle:hover { opacity: 0.75; }
+    .timeline-toggle__icon {
+      transition: transform 0.2s ease;
+    }
+    .timeline-toggle.is-expanded .timeline-toggle__icon {
+      transform: rotate(180deg);
+    }
+    .timeline-details { display: none; }
+    .timeline-details.is-visible { display: block; }
+
+    /* ─── Customer information card ─── */
+    .customer-info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--x-space-md);
+    }
+    .info-col { display: flex; flex-direction: column; gap: var(--x-space-md); }
+    .info-section { display: flex; flex-direction: column; gap: 6px; }
+    .info-section__title { font-size: 14px; font-weight: 600; }
+    .info-section__body {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--x-color-text);
+    }
+
+    /* ─── Payment due card ─── */
+    .payment-due {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--x-space-base);
+    }
+    .payment-due__amount { font-size: 15px; font-weight: 600; line-height: 1.3; }
+    .payment-due__label { font-size: 13px; color: var(--x-color-text-subdued); margin-top: 3px; }
+
+    /* Override button height in payment due card */
+    .payment-due .button {
+      --button-height: 40px;
+      --button-padding-block: 8px;
+      flex-shrink: 0;
+    }
+
+    /* ─── Order summary card ─── */
+    .os-line-items {
+      padding: var(--x-space-md);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .os-line-item {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      gap: 14px;
+      align-items: start;
+    }
+    .os-thumb {
+      position: relative;
+      width: 72px; height: 72px;
+      border-radius: var(--x-radius-base);
+      border: 1px solid var(--x-color-border);
+      overflow: visible;
+      flex-shrink: 0;
+      background: var(--x-color-bg-subdued);
+    }
+    .os-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      border-radius: var(--x-radius-base);
+    }
+    .os-thumb__qty {
+      position: absolute; top: -8px; left: -8px;
+      width: 22px; height: 22px;
+      background: var(--x-color-text);
+      color: var(--x-color-bg);
+      font-size: 11px; font-weight: 600;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .os-item__name { font-size: 14px; font-weight: 500; line-height: 1.4; }
+    .os-item__variant { font-size: 13px; color: var(--x-color-text-subdued); margin-top: 2px; }
+    .os-item__price { font-size: 13px; white-space: nowrap; }
+
+    .os-totals {
+      padding: var(--x-space-md);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .os-money-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 13px;
+    }
+    .os-money-line--total {
+      padding-top: 4px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .os-money-line--total .os-total-value {
+      display: flex; align-items: baseline; gap: 4px;
+    }
+    .os-total-currency {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--x-color-text-subdued);
+    }
+    .os-total-amount { font-size: 16px; font-weight: 600; }
+
+    /* ─── Loyalty card ─── */
+    .loyalty-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--x-space-base);
+    }
+    .loyalty-text__title { font-size: 14px; font-weight: 600; }
+    .loyalty-text__sub { font-size: 13px; color: var(--x-color-text-subdued); margin-top: 3px; }
+
+    /* Override secondary button height in page header */
+    .ip-header__actions .button[data-kind="secondary"] {
+      --button-height: 36px;
+      --button-padding-block: 7px;
+      --button-padding-inline: 14px;
+    }
+
+    /* ─── Footer ─── */
+    .af-footer {
+      padding: var(--x-space-md);
+      text-align: center;
+      font-size: 12px;
+      color: var(--x-color-text-subdued);
+    }
+    .af-footer a {
+      color: var(--x-color-text-subdued);
+      text-decoration: underline;
+    }
+    .af-footer a:hover { color: var(--x-color-text); }
+
+    /* ─── Desktop breakpoints ─── */
+    @media (min-width: 700px) {
+      .af-hamburger { display: none; }
+      .af-nav { display: flex; }
+      .af-header-inner { padding: 0 38px; }
+      .af-center { padding: 38px; }
+      .os-grid { grid-template-columns: 7fr 5fr; }
+      .customer-info-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+  <link rel="stylesheet" href="../styles/components/button.css">
+</head>
+<body>
+<div class="af-shell">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <header class="af-header">
+    <div class="af-header-inner">
+      <button class="af-hamburger" aria-label="Menu">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 1h16M1 7h16M1 13h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <a href="#" class="af-logo">
+        <img src="../assets/themes/plaingoods/logos/logo.svg" alt="Plain Goods" id="themeLogoImg" class="af-logo__img">
+      </a>
+      <nav class="af-nav">
+        <a href="#" class="af-nav__link">Shop</a>
+        <a href="#" class="af-nav__link af-nav__link--active">Orders</a>
+      </nav>
+      <button class="af-account" aria-label="Account">
+        <div class="af-account__avatar">EW</div>
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Main ────────────────────────────────────────────────────────────── -->
+  <main class="af-center">
+
+    <!-- Page header -->
+    <div class="ip-header">
+      <div class="ip-header__left">
+        <a href="#" class="ip-back" aria-label="Back to orders">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12 4L6 10l6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <span class="ip-heading__title">Order #1001</span>
+        <span class="ip-heading__sub">Feb 1</span>
+      </div>
+      <div class="ip-header__actions">
+        <button type="button" class="button" data-kind="secondary">
+          <span class="button__content">Buy again</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Two-column grid ─────────────────────────────────────────────── -->
+    <div class="os-grid">
+
+      <!-- Left column -->
+      <div class="card-stack">
+
+        <!-- Fulfillment status card -->
+        <div class="card card--padded">
+          <div class="fulfillment-meta">
+            <div class="fulfillment-delivery">Estimated delivery Feb 5</div>
+            <div class="fulfillment-tracking">UPS <a href="#">TRK001234567890</a></div>
+          </div>
+
+          <div class="timeline">
+            <!-- Most recent event: hollow circle + show/hide toggle -->
+            <div class="timeline-event timeline-event--current">
+              <div class="timeline-event__icon-col">
+                <div class="timeline-event__dot">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
+                </div>
+                <div class="timeline-event__line"></div>
+              </div>
+              <div class="timeline-event__body">
+                <div class="timeline-event__header">
+                  <div class="timeline-event__title">Shipped</div>
+                  <button type="button" class="timeline-toggle is-expanded" id="timeline-toggle" aria-expanded="true">
+                    <span id="timeline-toggle-label">Hide details</span>
+                    <svg class="timeline-toggle__icon" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 7l5-5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                </div>
+                <div class="timeline-event__date">Feb 2</div>
+              </div>
+            </div>
+            <!-- Past events (collapsible) -->
+            <div class="timeline-details is-visible" id="timeline-details">
+              <div class="timeline-event">
+                <div class="timeline-event__icon-col">
+                  <div class="timeline-event__dot">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="#707070"/></svg>
+                  </div>
+                  <div class="timeline-event__line"></div>
+                </div>
+                <div class="timeline-event__body">
+                  <div class="timeline-event__header">
+                    <div class="timeline-event__title">Order confirmed</div>
+                  </div>
+                  <div class="timeline-event__desc">Your order is being prepared</div>
+                  <div class="timeline-event__date">Feb 1</div>
+                </div>
+              </div>
+              <div class="timeline-event">
+                <div class="timeline-event__icon-col">
+                  <div class="timeline-event__dot">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="#707070"/></svg>
+                  </div>
+                  <div class="timeline-event__line"></div>
+                </div>
+                <div class="timeline-event__body">
+                  <div class="timeline-event__header">
+                    <div class="timeline-event__title">Payment confirmed</div>
+                  </div>
+                  <div class="timeline-event__date">Feb 1</div>
+                </div>
+              </div>
+              <div class="timeline-event">
+                <div class="timeline-event__icon-col">
+                  <div class="timeline-event__dot">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="#707070"/></svg>
+                  </div>
+                  <div class="timeline-event__line"></div>
+                </div>
+                <div class="timeline-event__body">
+                  <div class="timeline-event__header">
+                    <div class="timeline-event__title">Order placed</div>
+                  </div>
+                  <div class="timeline-event__date">Feb 1</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer information card -->
+        <div class="card card--padded">
+          <div class="customer-info-grid">
+            <!-- Left: contact, shipping address, shipping method -->
+            <div class="info-col">
+              <div class="info-section">
+                <div class="info-section__title">Contact information</div>
+                <div class="info-section__body">
+                  Emma Wilson<br>
+                  emma.wilson@email.com
+                </div>
+              </div>
+              <div class="info-section">
+                <div class="info-section__title">Shipping address</div>
+                <div class="info-section__body">
+                  Emma Wilson<br>
+                  151 O'Connor Street<br>
+                  San Francisco, California 94103<br>
+                  United States
+                </div>
+              </div>
+              <div class="info-section">
+                <div class="info-section__title">Shipping method</div>
+                <div class="info-section__body">Standard Shipping</div>
+              </div>
+            </div>
+            <!-- Right: payment, billing address -->
+            <div class="info-col">
+              <div class="info-section">
+                <div class="info-section__title">Payment</div>
+                <div class="info-section__body">
+                  Visa &#8226;&#8226;&#8226;&#8226; 4242<br>
+                  <span style="color:var(--x-color-text-subdued)">$56.99 USD</span><br>
+                  <span style="color:var(--x-color-text-subdued);font-size:12px">Feb 1</span>
+                </div>
+              </div>
+              <div class="info-section">
+                <div class="info-section__title">Billing address</div>
+                <div class="info-section__body">
+                  Emma Wilson<br>
+                  151 O'Connor Street<br>
+                  San Francisco, California 94103<br>
+                  United States
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /left column -->
+
+      <!-- Right column -->
+      <div class="card-stack">
+
+        <!-- Payment due card -->
+        <div class="card card--padded">
+          <div class="payment-due">
+            <div>
+              <div class="payment-due__amount">$28.50 USD</div>
+              <div class="payment-due__label">Payment due May 6</div>
+            </div>
+            <button type="button" class="button" data-kind="primary">
+              <span class="button__content">Pay now</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Order summary card -->
+        <div class="card">
+          <div class="os-line-items">
+            <div class="os-line-item">
+              <div class="os-thumb">
+                <img src="../assets/themes/plaingoods/products/p1.png" alt="Eye Treatment Serum" data-pg-img="1">
+                <span class="os-thumb__qty">1</span>
+              </div>
+              <div>
+                <div class="os-item__name">Eye Treatment Serum</div>
+                <div class="os-item__variant">15ml</div>
+              </div>
+              <div class="os-item__price">$48.00</div>
+            </div>
+          </div>
+          <div class="os-totals">
+            <div class="os-money-line">
+              <span>Subtotal</span>
+              <span>$48.00</span>
+            </div>
+            <div class="os-money-line">
+              <span>Shipping</span>
+              <span>$5.99</span>
+            </div>
+            <div class="os-money-line">
+              <span>Taxes</span>
+              <span>$3.00</span>
+            </div>
+            <div class="os-money-line os-money-line--total">
+              <span>Total</span>
+              <span class="os-total-value">
+                <span class="os-total-currency">USD</span>
+                <span class="os-total-amount">$56.99</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loyalty card -->
+        <div class="card card--padded">
+          <div class="loyalty-row">
+            <div>
+              <div class="loyalty-text__title">Platinum level: 34,000</div>
+              <div class="loyalty-text__sub">View your most recent activities</div>
+            </div>
+            <button type="button" class="button" data-kind="plain">
+              <span class="button__content">See points</span>
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /right column -->
+
+    </div><!-- /os-grid -->
+
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────────────────────── -->
+  <footer class="af-footer">
+    <a href="#">Privacy policy</a> &middot; <a href="#">Refund policy</a> &middot; <a href="#">Terms of service</a>
+  </footer>
+
+</div><!-- /af-shell -->
+
+<script>
+(function () {
+  // ── Apply theme logo + product images ────────────────────────────────
+  var __t = window.__ORDER_THEME__;
+  if (__t) {
+    var logoImg = document.getElementById('themeLogoImg');
+    if (logoImg) {
+      logoImg.src = __t.logo.src;
+      logoImg.alt = __t.logo.alt;
+      logoImg.style.maxWidth = __t.logo.maxWidth;
+    }
+    if (__t.products && __t.productsBase) {
+      document.querySelectorAll('[data-pg-img]').forEach(function (img) {
+        var n = parseInt(img.getAttribute('data-pg-img'), 10) - 1;
+        if (n >= 0 && n < __t.products.length) {
+          img.src = __t.productsBase + __t.products[n];
+        }
+      });
+    }
+  }
+
+  // ── Accent colour sync ───────────────────────────────────────────────
+  var HEX = /^#[0-9a-fA-F]{6}$/;
+  function hexBrt(h) {
+    var v = parseInt(h.slice(1), 16);
+    return 0.299 * ((v >> 16) & 0xff) + 0.587 * ((v >> 8) & 0xff) + 0.114 * (v & 0xff);
+  }
+  function darken(h, a) {
+    var v = parseInt(h.slice(1), 16);
+    var r = Math.max(0, Math.round(((v >> 16) & 0xff) * (1 - a)));
+    var g = Math.max(0, Math.round(((v >>  8) & 0xff) * (1 - a)));
+    var b = Math.max(0, Math.round( (v & 0xff)        * (1 - a)));
+    return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+  }
+  var THEME_ACCENTS = { 'pitch': '#FF4315', 'heritage': '#F6EDDD' };
+  var _theme = (new URLSearchParams(window.location.search)).get('theme') || 'plain-goods';
+
+  function syncAccent() {
+    try {
+      var accent;
+      if (THEME_ACCENTS[_theme]) {
+        accent = THEME_ACCENTS[_theme];
+      } else {
+        var p = JSON.parse(localStorage.getItem('btn-pg-params') || '{}');
+        accent = (p.primaryColor && HEX.test(p.primaryColor)) ? p.primaryColor : '#005BD3';
+      }
+      var hover = darken(accent, 0.1);
+      var fg    = hexBrt(accent) > 128 ? '#000000' : '#ffffff';
+      var r = document.documentElement;
+      r.style.setProperty('--x-color-accent',       accent);
+      r.style.setProperty('--x-color-accent-hover',  hover);
+      r.style.setProperty('--x-color-accent-fg',     fg);
+      r.style.setProperty('--color-accent',   accent);
+      r.style.setProperty('--color-bg-page',  getComputedStyle(r).getPropertyValue('--x-color-bg').trim() || '#ffffff');
+    } catch (e) {}
+  }
+  syncAccent();
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'btn-pg-params' && !THEME_ACCENTS[_theme]) syncAccent();
+  });
+
+  // ── Timeline show/hide toggle ────────────────────────────────────────
+  var toggleBtn   = document.getElementById('timeline-toggle');
+  var toggleLabel = document.getElementById('timeline-toggle-label');
+  var detailsEl   = document.getElementById('timeline-details');
+  if (toggleBtn && detailsEl) {
+    toggleBtn.addEventListener('click', function () {
+      var expanded = toggleBtn.classList.toggle('is-expanded');
+      detailsEl.classList.toggle('is-visible', expanded);
+      toggleBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      if (toggleLabel) toggleLabel.textContent = expanded ? 'Hide details' : 'Show details';
+    });
+  }
+
+  // ── Apply button variants from URL params ────────────────────────────
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var pv = parseInt(params.get('pv') || '1', 10);
+    var sv = parseInt(params.get('sv') || '1', 10);
+    if (pv > 1) {
+      document.querySelectorAll('.button[data-kind="primary"]').forEach(function (btn) {
+        btn.setAttribute('data-variant', 'primary-' + pv);
+      });
+    }
+    if (sv > 1) {
+      document.querySelectorAll('.button[data-kind="secondary"]').forEach(function (btn) {
+        btn.setAttribute('data-variant', 'secondary-' + sv);
+      });
+    }
+  })();
+})();
+</script>
+<script src="../scripts/theme-sync.js"></script>
+</body>
+</html>

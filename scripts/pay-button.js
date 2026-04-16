@@ -224,6 +224,16 @@
     el.style.setProperty('--demo-secondary-active-bg',    hsluvToHex([bgHsl[0], bgHsl[1], activeL]));
     el.style.setProperty('--demo-secondary-active-bg-23', hsluvToHex([bgHsl[0], bgHsl[1], activeLm23]));
     el.style.setProperty('--demo-secondary-border-color', hsluvToHex([bgHsl[0], bgHsl[1], borderL]));
+
+    // ── Secondary 4 ──────────────────────────────────────────────────
+    var s4BaseL    = bgL + (100 - bgL) * 0.25;
+    var s4HovStep  = p.secondary4HoverL  != null ? p.secondary4HoverL  : 5;
+    var s4ActStep  = p.secondary4ActiveL != null ? p.secondary4ActiveL : 8;
+    var s4HovL     = dark ? Math.min(100, s4BaseL + s4HovStep)  : Math.max(0, s4BaseL - s4HovStep);
+    var s4ActL     = dark ? Math.min(100, s4BaseL + s4ActStep)  : Math.max(0, s4BaseL - s4ActStep);
+    el.style.setProperty('--demo-secondary-4-bg',        hsluvToHex([bgHsl[0], bgHsl[1], s4BaseL]));
+    el.style.setProperty('--demo-secondary-4-hover-bg',  hsluvToHex([bgHsl[0], bgHsl[1], s4HovL]));
+    el.style.setProperty('--demo-secondary-4-active-bg', hsluvToHex([bgHsl[0], bgHsl[1], s4ActL]));
   }
 
   function initSecondaryColours() {
@@ -245,7 +255,7 @@
     var s = document.createElement('style');
     s.textContent = [
       '.proto-variant{display:flex;position:relative;background:rgba(255,255,255,.08);border-radius:8px;padding:3px;width:100%}',
-      '.proto-variant__indicator{position:absolute;top:3px;left:3px;width:calc((100% - 6px) / 3);height:calc(100% - 6px);background:rgba(255,255,255,.18);border-radius:6px;transform:translateX(calc(var(--variant-index,0) * 100%));transition:transform 220ms cubic-bezier(0.35,1.3,0.45,1);pointer-events:none}',
+      '.proto-variant__indicator{position:absolute;top:3px;left:3px;width:calc((100% - 6px) / 4);height:calc(100% - 6px);background:rgba(255,255,255,.18);border-radius:6px;transform:translateX(calc(var(--variant-index,0) * 100%));transition:transform 220ms cubic-bezier(0.35,1.3,0.45,1);pointer-events:none}',
       '.proto-variant__btn{flex:1;position:relative;z-index:1;background:transparent;border:none;color:rgba(255,255,255,.55);font-family:inherit;font-size:12px;font-weight:500;padding:3px 0;border-radius:6px;cursor:pointer;line-height:1;text-align:center}',
       '.proto-variant__btn.is-active{color:#fff}',
       '.proto-variant__btn:hover:not(.is-active){color:rgba(255,255,255,.85)}'
@@ -300,6 +310,13 @@
     initSecondaryColours();
     initVariantSelector();
   }
+
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'btn-pg-params') {
+      initColours();
+      initSecondaryColours();
+    }
+  });
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

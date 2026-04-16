@@ -1,7 +1,4 @@
 (function () {
-  var p = {};
-  try { var saved = localStorage.getItem('btn-pg-params'); if (saved) p = JSON.parse(saved); } catch (e) {}
-
   // ── HSLUV (MIT) ──────────────────────────────────────────────────────
   const _HM = [[3.240969941904521,-1.537383177570093,-0.498610760293],[-0.96924363628087,1.87596750150772,0.041555057407175],[0.055630079696993,-0.20397695888897,1.056971514242878]];
   const _HI = [[0.41239079926595,0.35758433938387,0.18048078840183],[0.21263900587151,0.71516867876775,0.072192315360733],[0.019330818715591,0.11919477979462,0.95053215224966]];
@@ -23,55 +20,78 @@
   // ─────────────────────────────────────────────────────────────────────
 
   var root = document.documentElement;
-  var cs   = getComputedStyle(root);
   var HEX  = /^#[0-9a-fA-F]{6}$/;
 
-  // ── Primary ───────────────────────────────────────────────────────────
-  var accent = cs.getPropertyValue('--color-accent').trim();
-  if (HEX.test(accent)) {
-    var hsl      = hexToHsluv(accent);
-    var bStep    = p.primaryBorderStep != null ? p.primaryBorderStep : 5;
-    var pageBg   = cs.getPropertyValue('--color-bg-page').trim();
-    var pageBrt  = HEX.test(pageBg) ? hexBrightness(pageBg) : 255;
-    var dkHex    = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - 13)]);
-    var ltHex    = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + 13)]);
-    var bDir     = Math.abs(hexBrightness(dkHex) - pageBrt) >= Math.abs(hexBrightness(ltHex) - pageBrt) ? -1 : 1;
-    var borderL  = Math.max(0, Math.min(100, hsl[2] + bDir * bStep));
-    var borderHex = hsluvToHex([hsl[0], hsl[1], borderL]);
-    var bBrt     = hexBrightness(borderHex);
-    if (bBrt < 30)  borderL = Math.max(borderL, 40);
-    if (bBrt > 225) borderL = Math.min(borderL, 80);
-    borderHex = hsluvToHex([hsl[0], hsl[1], borderL]);
+  function sync() {
+    var p = {};
+    try { var saved = localStorage.getItem('btn-pg-params'); if (saved) p = JSON.parse(saved); } catch (e) {}
 
-    var gradTop  = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + (p.primaryGradTopL  != null ? p.primaryGradTopL  : 20))]);
-    var gradBot  = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - (p.primaryGradBotL  != null ? p.primaryGradBotL  : 10))]);
-    var hDir     = hsl[2] > 50 ? -1 : 1;
-    var hoverBg  = hsluvToHex([hsl[0], hsl[1], Math.max(0, Math.min(100, hsl[2] + hDir * (p.primaryHoverL  != null ? p.primaryHoverL  : 5)))]);
-    var activeBg = hsluvToHex([hsl[0], hsl[1], Math.max(0, hsl[2] - (p.primaryActiveL != null ? p.primaryActiveL : 10))]);
+    var cs = getComputedStyle(root);
 
-    root.style.setProperty('--demo-primary-fg',                      hexBrightness(accent) > 128 ? '#000000' : '#f9f6f5');
-    root.style.setProperty('--demo-primary-border-color',            borderHex);
-    root.style.setProperty('--demo-primary-border-gradient-top',     gradTop);
-    root.style.setProperty('--demo-primary-border-gradient-bottom',  gradBot);
-    root.style.setProperty('--demo-primary-hover-bg',                hoverBg);
-    root.style.setProperty('--demo-primary-active-bg',               activeBg);
+    // ── Primary ───────────────────────────────────────────────────────────
+    var accent = cs.getPropertyValue('--color-accent').trim();
+    if (HEX.test(accent)) {
+      var hsl      = hexToHsluv(accent);
+      var bStep    = p.primaryBorderStep != null ? p.primaryBorderStep : 5;
+      var pageBg   = cs.getPropertyValue('--color-bg-page').trim();
+      var pageBrt  = HEX.test(pageBg) ? hexBrightness(pageBg) : 255;
+      var dkHex    = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - 13)]);
+      var ltHex    = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + 13)]);
+      var bDir     = Math.abs(hexBrightness(dkHex) - pageBrt) >= Math.abs(hexBrightness(ltHex) - pageBrt) ? -1 : 1;
+      var borderL  = Math.max(0, Math.min(100, hsl[2] + bDir * bStep));
+      var borderHex = hsluvToHex([hsl[0], hsl[1], borderL]);
+      var bBrt     = hexBrightness(borderHex);
+      if (bBrt < 30)  borderL = Math.max(borderL, 40);
+      if (bBrt > 225) borderL = Math.min(borderL, 80);
+      borderHex = hsluvToHex([hsl[0], hsl[1], borderL]);
+
+      var gradTop  = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + (p.primaryGradTopL  != null ? p.primaryGradTopL  : 20))]);
+      var gradBot  = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - (p.primaryGradBotL  != null ? p.primaryGradBotL  : 10))]);
+      var hDir     = hsl[2] > 50 ? -1 : 1;
+      var hoverBg  = hsluvToHex([hsl[0], hsl[1], Math.max(0, Math.min(100, hsl[2] + hDir * (p.primaryHoverL  != null ? p.primaryHoverL  : 5)))]);
+      var activeBg = hsluvToHex([hsl[0], hsl[1], Math.max(0, hsl[2] - (p.primaryActiveL != null ? p.primaryActiveL : 10))]);
+
+      root.style.setProperty('--demo-primary-fg',                      hexBrightness(accent) > 128 ? '#000000' : '#f9f6f5');
+      root.style.setProperty('--demo-primary-border-color',            borderHex);
+      root.style.setProperty('--demo-primary-border-gradient-top',     gradTop);
+      root.style.setProperty('--demo-primary-border-gradient-bottom',  gradBot);
+      root.style.setProperty('--demo-primary-hover-bg',                hoverBg);
+      root.style.setProperty('--demo-primary-active-bg',               activeBg);
+    }
+
+    // ── Secondary ─────────────────────────────────────────────────────────
+    var bgHex = cs.getPropertyValue('--color-bg-page').trim();
+    if (HEX.test(bgHex)) {
+      var bgHsl    = hexToHsluv(bgHex);
+      var bgL      = bgHsl[2];
+      var defL     = Math.max(0, bgL + (p.secondaryDefaultL  != null ? p.secondaryDefaultL  : -4));
+      var hovL     = Math.max(0, bgL + (p.secondaryHoverL    != null ? p.secondaryHoverL    : -9));
+      var actL     = Math.max(0, bgL + (p.secondaryActiveL   != null ? p.secondaryActiveL   : -10));
+      var act23L   = Math.max(0, bgL + (p.secondaryActive23L != null ? p.secondaryActive23L : -14));
+      var secBordL = Math.max(0, bgL + (p.secondaryBorderL   != null ? p.secondaryBorderL   : -8));
+
+      root.style.setProperty('--demo-secondary-bg',           hsluvToHex([bgHsl[0], bgHsl[1], defL]));
+      root.style.setProperty('--demo-secondary-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], hovL]));
+      root.style.setProperty('--demo-secondary-active-bg',    hsluvToHex([bgHsl[0], bgHsl[1], actL]));
+      root.style.setProperty('--demo-secondary-active-bg-23', hsluvToHex([bgHsl[0], bgHsl[1], act23L]));
+      root.style.setProperty('--demo-secondary-border-color', hsluvToHex([bgHsl[0], bgHsl[1], secBordL]));
+
+      // ── Secondary 4 ──────────────────────────────────────────────────
+      var s4BaseL    = bgL + (100 - bgL) * 0.25;
+      var s4HovStep  = p.secondary4HoverL  != null ? p.secondary4HoverL  : 5;
+      var s4ActStep  = p.secondary4ActiveL != null ? p.secondary4ActiveL : 8;
+      var isDark4    = hexBrightness(bgHex) < 128;
+      var s4HovL     = isDark4 ? Math.min(100, s4BaseL + s4HovStep)  : Math.max(0, s4BaseL - s4HovStep);
+      var s4ActL     = isDark4 ? Math.min(100, s4BaseL + s4ActStep)  : Math.max(0, s4BaseL - s4ActStep);
+      root.style.setProperty('--demo-secondary-4-bg',        hsluvToHex([bgHsl[0], bgHsl[1], s4BaseL]));
+      root.style.setProperty('--demo-secondary-4-hover-bg',  hsluvToHex([bgHsl[0], bgHsl[1], s4HovL]));
+      root.style.setProperty('--demo-secondary-4-active-bg', hsluvToHex([bgHsl[0], bgHsl[1], s4ActL]));
+    }
   }
 
-  // ── Secondary ─────────────────────────────────────────────────────────
-  var bgHex = cs.getPropertyValue('--color-bg-page').trim();
-  if (HEX.test(bgHex)) {
-    var bgHsl    = hexToHsluv(bgHex);
-    var bgL      = bgHsl[2];
-    var defL     = Math.max(0, bgL + (p.secondaryDefaultL  != null ? p.secondaryDefaultL  : -4));
-    var hovL     = Math.max(0, bgL + (p.secondaryHoverL    != null ? p.secondaryHoverL    : -9));
-    var actL     = Math.max(0, bgL + (p.secondaryActiveL   != null ? p.secondaryActiveL   : -10));
-    var act23L   = Math.max(0, bgL + (p.secondaryActive23L != null ? p.secondaryActive23L : -14));
-    var secBordL = Math.max(0, bgL + (p.secondaryBorderL   != null ? p.secondaryBorderL   : -8));
+  sync();
 
-    root.style.setProperty('--demo-secondary-bg',           hsluvToHex([bgHsl[0], bgHsl[1], defL]));
-    root.style.setProperty('--demo-secondary-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], hovL]));
-    root.style.setProperty('--demo-secondary-active-bg',    hsluvToHex([bgHsl[0], bgHsl[1], actL]));
-    root.style.setProperty('--demo-secondary-active-bg-23', hsluvToHex([bgHsl[0], bgHsl[1], act23L]));
-    root.style.setProperty('--demo-secondary-border-color', hsluvToHex([bgHsl[0], bgHsl[1], secBordL]));
-  }
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'btn-pg-params') sync();
+  });
 })();

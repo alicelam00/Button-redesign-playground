@@ -698,6 +698,31 @@
     }
   }
 
+  function renderSecondary4() {
+    const darkBackground = isDarkBackground();
+    const bgHsl = hexToHsluv(state.backgroundColor);
+    const bgL = bgHsl[2];
+
+    // Base: 25% of the way from bgL toward white — matches color-mix(oklch, white 25%)
+    const baseL = bgL + (100 - bgL) * 0.25;
+
+    const hoverStep  = readLInput('setting-secondary4-hover-l',  5);
+    const activeStep = readLInput('setting-secondary4-active-l', 8);
+
+    const hoverL  = darkBackground
+      ? Math.min(100, baseL + hoverStep)
+      : Math.max(0,   baseL - hoverStep);
+    const activeL = darkBackground
+      ? Math.min(100, baseL + activeStep)
+      : Math.max(0,   baseL - activeStep);
+
+    setVars(prototypeEl, {
+      '--demo-secondary-4-bg':        hsluvToHex([bgHsl[0], bgHsl[1], baseL]),
+      '--demo-secondary-4-hover-bg':  hsluvToHex([bgHsl[0], bgHsl[1], hoverL]),
+      '--demo-secondary-4-active-bg': hsluvToHex([bgHsl[0], bgHsl[1], activeL]),
+    });
+  }
+
   function renderPlain() {
     setVars(prototypeEl, {
       '--demo-focus-ring': state.accentColor,
@@ -752,6 +777,8 @@
       secondaryActiveL:   readLInput('setting-secondary-active-l',      -10),
       secondaryActive23L: readLInput('setting-secondary-active23-l',    -14),
       secondaryBorderL:   readLInput('setting-secondary-border-l',      -8),
+      secondary4HoverL:   readLInput('setting-secondary4-hover-l',       5),
+      secondary4ActiveL:  readLInput('setting-secondary4-active-l',      8),
     };
     try { localStorage.setItem('btn-pg-params', JSON.stringify(params)); } catch(e) {}
   }
@@ -760,6 +787,7 @@
     renderPage();
     renderPrimary();
     renderSecondary();
+    renderSecondary4();
     renderPlain();
     renderSize();
     renderIcons();
@@ -826,6 +854,7 @@
     'setting-primary-border-contrast', 'setting-primary-grad-top-l', 'setting-primary-grad-bottom-l',
     'setting-secondary-default-l', 'setting-secondary-hover-l', 'setting-secondary-active-l',
     'setting-secondary-active23-l', 'setting-secondary-border-l',
+    'setting-secondary4-hover-l', 'setting-secondary4-active-l',
   ].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.addEventListener('input', function() { render(); });
@@ -845,6 +874,15 @@
     document.querySelectorAll('.settings-widget__l-num').forEach(function(el) {
       el.value = el.defaultValue;
     });
+    // Reset page nav to Button overview
+    if (pageSelect) pageSelect.value = 'button-overview';
+    localStorage.removeItem('nav-page-type');
+    localStorage.removeItem('nav-page-theme');
+    localStorage.removeItem('nav-order-index-theme');
+    localStorage.removeItem('nav-order-status-theme');
+    localStorage.removeItem('nav-viewport');
+    setViewportMode('desktop');
+    applyPageSelection();
     syncControls();
     render();
   });
@@ -874,16 +912,220 @@
   syncControls();
   render();
 
-  var themeSelect = document.getElementById('setting-theme');
-  if (themeSelect) {
-    themeSelect.addEventListener('change', function () {
-      var urls = {
-        'plain-goods': 'pages/plain-goods.html',
-        'pitch': 'pages/pitch.html',
-        'heritage': 'pages/heritage.html',
-        'ghia': 'pages/ghia.html',
-      };
-      if (urls[this.value]) window.location.href = urls[this.value];
+  // ── Page navigation ──────────────────────────────────────────────────
+  var THEME_PAGE_URLS = {
+    'plain-goods': 'plain-goods.html',
+    'pitch':       'pitch.html',
+    'heritage':    'heritage.html',
+    'ghia':        'ghia.html',
+  };
+
+  var STATIC_PAGE_URLS = {
+    'order-index':  'order-index.html',
+    'order-status': 'order-status.html',
+  };
+
+  var pageSelect             = document.getElementById('setting-page');
+  var pageThemeSelect        = document.getElementById('setting-page-theme');
+  var pageSubSection         = document.getElementById('page-sub-section');
+  var orderIndexSubSection    = document.getElementById('order-index-sub-section');
+  var orderIndexThemeSelect   = document.getElementById('setting-order-index-theme');
+  var orderStatusSubSection   = document.getElementById('order-status-sub-section');
+  var orderStatusThemeSelect  = document.getElementById('setting-order-status-theme');
+  var themeFrame             = document.getElementById('theme-frame');
+  var viewportArea           = document.getElementById('viewport-area');
+  var viewportRow            = document.getElementById('setting-viewport-row');
+  var viewportToggle         = document.getElementById('setting-viewport');
+  var overviewOnlySections = [
+    document.getElementById('section-buttons'),
+    document.getElementById('section-colours'),
+    document.getElementById('section-styles'),
+    document.getElementById('settings-footer'),
+  ];
+
+  function updateVariantPills(containerId, activeV) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    container.querySelectorAll('[data-v]').forEach(function (btn) {
+      btn.classList.toggle('is-active', parseInt(btn.dataset.v, 10) === activeV);
+    });
+    container.style.setProperty('--active-idx', activeV - 1);
+  }
+
+  function getThemeFrameUrl() {
+    return THEME_PAGE_URLS[pageThemeSelect.value] || 'plain-goods.html';
+  }
+
+  function getOrderIndexUrl() {
+    var theme = orderIndexThemeSelect ? orderIndexThemeSelect.value : 'plain-goods';
+    var pv = localStorage.getItem('pay-btn-variant') || '1';
+    var sv = localStorage.getItem('add-btn-variant') || '1';
+    return 'order-index.html?theme=' + theme + '&pv=' + pv + '&sv=' + sv;
+  }
+
+  function getOrderStatusUrl() {
+    var theme = orderStatusThemeSelect ? orderStatusThemeSelect.value : 'plain-goods';
+    var pv = localStorage.getItem('pay-btn-variant') || '1';
+    var sv = localStorage.getItem('add-btn-variant') || '1';
+    return 'order-status.html?theme=' + theme + '&pv=' + pv + '&sv=' + sv;
+  }
+
+  function applyPageSelection() {
+    var page = pageSelect.value;
+    var isOverview = page === 'button-overview';
+    var isCheckout = page === 'checkout';
+
+    localStorage.setItem('nav-page-type', page);
+    pageSubSection.hidden = !isCheckout;
+    if (orderIndexSubSection)  orderIndexSubSection.hidden  = page !== 'order-index';
+    if (orderStatusSubSection) orderStatusSubSection.hidden = page !== 'order-status';
+    prototypeEl.hidden = !isOverview;
+    overviewOnlySections.forEach(function (el) { if (el) el.hidden = !isOverview; });
+
+    if (viewportRow) viewportRow.hidden = isOverview;
+
+    if (!isOverview) {
+      if (viewportArea) viewportArea.removeAttribute('hidden');
+      var frameSrc;
+      if (isCheckout) {
+        frameSrc = getThemeFrameUrl();
+      } else if (page === 'order-index') {
+        frameSrc = getOrderIndexUrl();
+      } else if (page === 'order-status') {
+        frameSrc = getOrderStatusUrl();
+      } else {
+        frameSrc = STATIC_PAGE_URLS[page] || '';
+      }
+      themeFrame.src = frameSrc;
+    } else {
+      if (viewportArea) viewportArea.hidden = true;
+      themeFrame.src = '';
+      render();
+    }
+  }
+
+  function reloadThemeFrame() {
+    if (viewportArea && !viewportArea.hidden) {
+      var page = pageSelect ? pageSelect.value : '';
+      if (page === 'order-index') {
+        themeFrame.src = getOrderIndexUrl();
+      } else if (page === 'order-status') {
+        themeFrame.src = getOrderStatusUrl();
+      } else {
+        themeFrame.src = getThemeFrameUrl();
+      }
+    }
+  }
+
+  // ── Viewport toggle ──────────────────────────────────────────────────
+  function setViewportMode(v) {
+    if (!viewportArea) return;
+    viewportArea.classList.toggle('is-mobile', v === 'mobile');
+    if (viewportToggle) {
+      viewportToggle.querySelectorAll('[data-viewport]').forEach(function (btn) {
+        var active = btn.dataset.viewport === v;
+        btn.classList.toggle('is-active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    }
+    localStorage.setItem('nav-viewport', v);
+  }
+
+  if (viewportToggle) {
+    viewportToggle.querySelectorAll('[data-viewport]').forEach(function (btn) {
+      btn.addEventListener('click', function () { setViewportMode(btn.dataset.viewport); });
     });
   }
+
+  // Init page nav state from localStorage
+  var savedPageType        = localStorage.getItem('nav-page-type')         || 'button-overview';
+  var savedPageTheme       = localStorage.getItem('nav-page-theme')        || 'plain-goods';
+  var savedOrderIndexTheme  = localStorage.getItem('nav-order-index-theme')  || 'plain-goods';
+  var savedOrderStatusTheme = localStorage.getItem('nav-order-status-theme') || 'plain-goods';
+  var savedPrimaryV  = parseInt(localStorage.getItem('pay-btn-variant'), 10) || 1;
+  var savedSecondaryV = parseInt(localStorage.getItem('add-btn-variant'), 10) || 1;
+  var savedViewport  = localStorage.getItem('nav-viewport') || 'desktop';
+
+  if (pageSelect)             pageSelect.value             = savedPageType;
+  if (pageThemeSelect)        pageThemeSelect.value        = savedPageTheme;
+  if (orderIndexThemeSelect)   orderIndexThemeSelect.value   = savedOrderIndexTheme;
+  if (orderStatusThemeSelect)  orderStatusThemeSelect.value  = savedOrderStatusTheme;
+  setViewportMode(savedViewport);
+  updateVariantPills('setting-primary-variant-pills',   savedPrimaryV);
+  updateVariantPills('setting-secondary-variant-pills', savedSecondaryV);
+  updateVariantPills('setting-oi-primary-variant-pills',   savedPrimaryV);
+  updateVariantPills('setting-oi-secondary-variant-pills', savedSecondaryV);
+  updateVariantPills('setting-os-primary-variant-pills',   savedPrimaryV);
+  updateVariantPills('setting-os-secondary-variant-pills', savedSecondaryV);
+
+  if (pageSelect) {
+    pageSelect.addEventListener('change', applyPageSelection);
+  }
+
+  if (pageThemeSelect) {
+    pageThemeSelect.addEventListener('change', function () {
+      localStorage.setItem('nav-page-theme', pageThemeSelect.value);
+      reloadThemeFrame();
+    });
+  }
+
+  if (orderIndexThemeSelect) {
+    orderIndexThemeSelect.addEventListener('change', function () {
+      localStorage.setItem('nav-order-index-theme', orderIndexThemeSelect.value);
+      if (pageSelect && pageSelect.value === 'order-index') {
+        themeFrame.src = getOrderIndexUrl();
+      }
+    });
+  }
+
+  if (orderStatusThemeSelect) {
+    orderStatusThemeSelect.addEventListener('change', function () {
+      localStorage.setItem('nav-order-status-theme', orderStatusThemeSelect.value);
+      if (pageSelect && pageSelect.value === 'order-status') {
+        themeFrame.src = getOrderStatusUrl();
+      }
+    });
+  }
+
+  function setPrimaryVariant(v) {
+    localStorage.setItem('pay-btn-variant', v);
+    updateVariantPills('setting-primary-variant-pills',    v);
+    updateVariantPills('setting-oi-primary-variant-pills', v);
+    updateVariantPills('setting-os-primary-variant-pills', v);
+    reloadThemeFrame();
+  }
+
+  function setSecondaryVariant(v) {
+    localStorage.setItem('add-btn-variant', v);
+    updateVariantPills('setting-secondary-variant-pills',    v);
+    updateVariantPills('setting-oi-secondary-variant-pills', v);
+    updateVariantPills('setting-os-secondary-variant-pills', v);
+    reloadThemeFrame();
+  }
+
+  document.querySelectorAll('#setting-primary-variant-pills [data-v]').forEach(function (btn) {
+    btn.addEventListener('click', function () { setPrimaryVariant(parseInt(btn.dataset.v, 10)); });
+  });
+
+  document.querySelectorAll('#setting-secondary-variant-pills [data-v]').forEach(function (btn) {
+    btn.addEventListener('click', function () { setSecondaryVariant(parseInt(btn.dataset.v, 10)); });
+  });
+
+  document.querySelectorAll('#setting-oi-primary-variant-pills [data-v]').forEach(function (btn) {
+    btn.addEventListener('click', function () { setPrimaryVariant(parseInt(btn.dataset.v, 10)); });
+  });
+
+  document.querySelectorAll('#setting-oi-secondary-variant-pills [data-v]').forEach(function (btn) {
+    btn.addEventListener('click', function () { setSecondaryVariant(parseInt(btn.dataset.v, 10)); });
+  });
+
+  document.querySelectorAll('#setting-os-primary-variant-pills [data-v]').forEach(function (btn) {
+    btn.addEventListener('click', function () { setPrimaryVariant(parseInt(btn.dataset.v, 10)); });
+  });
+
+  document.querySelectorAll('#setting-os-secondary-variant-pills [data-v]').forEach(function (btn) {
+    btn.addEventListener('click', function () { setSecondaryVariant(parseInt(btn.dataset.v, 10)); });
+  });
+
+  applyPageSelection();
 })();

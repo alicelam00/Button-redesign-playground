@@ -5,7 +5,7 @@
 :root {
   /* --- Elevation Shadows --- */
   --shadow-extra-small:
-    0 -1px 2px 0 rgba(0, 0, 0, 0.02), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+    0 -1px 2px 2px rgba(0, 0, 0, 0.02), 0 1px 8px 0 rgba(0, 0, 0, 0.08);
 
   --shadow-small:
     0 -1px 2px 0 rgba(0, 0, 0, 0.02), 0 3px 12px 0 rgba(0, 0, 0, 0.12);

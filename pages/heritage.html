@@ -88,6 +88,7 @@
       color: var(--color-text);
       font-size: var(--font-size-base);
       min-height: 100vh;
+      padding-left: 0;
     }
 
     /* ─── HEADER ─── */
@@ -547,51 +548,10 @@
       flex-shrink: 0;
       white-space: nowrap;
     }
-
-    /* ─── Prototype nav widget ─── */
-    .proto-settings {
-      position: fixed;
-      bottom: 24px;
-      left: 24px;
-      z-index: 9999;
-      background: #1a1a1a;
-      border-radius: 12px;
-      padding: 12px 14px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.28), 0 1px 4px rgba(0,0,0,0.14);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-      font-family: var(--font-family-base);
-      user-select: none;
-    }
-    .proto-settings-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.6);
-      white-space: nowrap;
-    }
-    .proto-settings-select {
-      height: 30px;
-      padding: 0 8px 2px;
-      background: #000000;
-      border: none;
-      border-radius: 999px;
-      color: #fff;
-      font-size: 12px;
-      outline: none;
-      cursor: pointer;
-      appearance: none;
-      -webkit-appearance: none;
-      padding-right: 22px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 6px center;
-    }
-    .proto-settings-select option { background: #1a1a1a; }
   </style>
-  <link rel="stylesheet" href="../styles/components/button.css">
+  <link rel="stylesheet" href="../styles.css">
   <style>
+    body { padding-left: 0; }
     .button[data-kind="primary"]:not(.apply-btn) { width: 100%; --button-height: 48px; }
     .button.apply-btn { --button-surface-bg: transparent; --button-surface-border: var(--color-border); color: var(--color-text); }
   </style>
@@ -881,31 +841,6 @@
 
   </div><!-- /page-content -->
 
-  <!-- ─── Prototype nav widget ─── -->
-  <div class="proto-settings">
-    <span class="proto-settings-label">Theme</span>
-    <select class="proto-settings-select" id="proto-theme" aria-label="Switch theme">
-      <option value="button-overview">Button overview</option>
-      <option value="plain-goods">Plain goods</option>
-      <option value="pitch">Pitch</option>
-      <option value="heritage" selected>Heritage</option>
-      <option value="ghia">Ghia</option>
-    </select>
-    <span class="proto-settings-label">Primary button</span>
-    <div class="proto-variant" id="proto-primary-variant" role="group" aria-label="Primary button variant">
-      <span class="proto-variant__indicator"></span>
-      <button class="proto-variant__btn" data-variant-btn="1">1</button>
-      <button class="proto-variant__btn" data-variant-btn="2">2</button>
-      <button class="proto-variant__btn" data-variant-btn="3">3</button>
-    </div>
-    <span class="proto-settings-label">Secondary button</span>
-    <div class="proto-variant" id="proto-secondary-variant" role="group" aria-label="Secondary button variant">
-      <span class="proto-variant__indicator"></span>
-      <button class="proto-variant__btn" data-variant-btn="1">1</button>
-      <button class="proto-variant__btn" data-variant-btn="2">2</button>
-      <button class="proto-variant__btn" data-variant-btn="3">3</button>
-    </div>
-  </div>
 
   <script src="../scripts/theme-sync.js"></script>
   <script src="../scripts/primary-config.js"></script>
