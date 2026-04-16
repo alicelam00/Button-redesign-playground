@@ -64,11 +64,12 @@
     if (HEX.test(bgHex)) {
       var bgHsl    = hexToHsluv(bgHex);
       var bgL      = bgHsl[2];
-      var defL     = Math.max(0, bgL + (p.secondaryDefaultL  != null ? p.secondaryDefaultL  : -4));
-      var hovL     = Math.max(0, bgL + (p.secondaryHoverL    != null ? p.secondaryHoverL    : -9));
-      var actL     = Math.max(0, bgL + (p.secondaryActiveL   != null ? p.secondaryActiveL   : -10));
-      var act23L   = Math.max(0, bgL + (p.secondaryActive23L != null ? p.secondaryActive23L : -14));
-      var secBordL = Math.max(0, bgL + (p.secondaryBorderL   != null ? p.secondaryBorderL   : -8));
+      var isDark   = hexBrightness(bgHex) < 128;
+      var defL     = isDark ? Math.min(100, bgL + 8)  : Math.max(0, bgL + (p.secondaryDefaultL  != null ? p.secondaryDefaultL  : -4));
+      var hovL     = isDark ? Math.min(100, bgL + 14) : Math.max(0, bgL + (p.secondaryHoverL    != null ? p.secondaryHoverL    : -9));
+      var actL     = isDark ? Math.min(100, bgL + 19) : Math.max(0, bgL + (p.secondaryActiveL   != null ? p.secondaryActiveL   : -10));
+      var act23L   = isDark ? Math.min(100, bgL + 23) : Math.max(0, bgL + (p.secondaryActive23L != null ? p.secondaryActive23L : -14));
+      var secBordL = isDark ? Math.min(100, defL + 8) : Math.max(0, bgL + (p.secondaryBorderL   != null ? p.secondaryBorderL   : -8));
 
       root.style.setProperty('--demo-secondary-bg',           hsluvToHex([bgHsl[0], bgHsl[1], defL]));
       root.style.setProperty('--demo-secondary-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], hovL]));
@@ -78,7 +79,7 @@
 
       // ── Secondary 4 ──────────────────────────────────────────────────
       var s4BaseL    = bgL + (100 - bgL) * 0.25;
-      var s4HovStep  = p.secondary4HoverL  != null ? p.secondary4HoverL  : 5;
+      var s4HovStep  = p.secondary4HoverL  != null ? p.secondary4HoverL  : 0;
       var s4ActStep  = p.secondary4ActiveL != null ? p.secondary4ActiveL : 8;
       var isDark4    = hexBrightness(bgHex) < 128;
       var s4HovL     = isDark4 ? Math.min(100, s4BaseL + s4HovStep)  : Math.max(0, s4BaseL - s4HovStep);
@@ -86,6 +87,14 @@
       root.style.setProperty('--demo-secondary-4-bg',        hsluvToHex([bgHsl[0], bgHsl[1], s4BaseL]));
       root.style.setProperty('--demo-secondary-4-hover-bg',  hsluvToHex([bgHsl[0], bgHsl[1], s4HovL]));
       root.style.setProperty('--demo-secondary-4-active-bg', hsluvToHex([bgHsl[0], bgHsl[1], s4ActL]));
+
+      // ── Secondary 5 — tonal step (darker/lighter than page bg) ───────
+      var s5BaseL    = isDark ? Math.min(100, bgL + 4) : Math.max(0, bgL - 2);
+      var s5HovL     = isDark ? Math.min(100, s5BaseL + s4HovStep)  : Math.max(0, s5BaseL - s4HovStep);
+      var s5ActL     = isDark ? Math.min(100, s5BaseL + s4ActStep)  : Math.max(0, s5BaseL - s4ActStep);
+      root.style.setProperty('--demo-secondary-5-bg',        hsluvToHex([bgHsl[0], bgHsl[1], s5BaseL]));
+      root.style.setProperty('--demo-secondary-5-hover-bg',  hsluvToHex([bgHsl[0], bgHsl[1], s5HovL]));
+      root.style.setProperty('--demo-secondary-5-active-bg', hsluvToHex([bgHsl[0], bgHsl[1], s5ActL]));
     }
   }
 

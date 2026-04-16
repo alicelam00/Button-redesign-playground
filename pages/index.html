@@ -30,6 +30,14 @@
             <button type="button" class="button" data-kind="primary" data-variant="primary-4" id="interactive-primary-btn-4">Primary button 4</button>
             <button type="button" class="button" data-kind="secondary" data-variant="secondary-4" id="interactive-secondary-btn-4">Secondary button 4</button>
           </div>
+          <div class="interactive-demo__row interactive-demo__row--core">
+            <button type="button" class="button" data-kind="primary" data-variant="primary-5" id="interactive-primary-btn-5">Primary button 5</button>
+            <button type="button" class="button" data-kind="secondary" data-variant="secondary-5" id="interactive-secondary-btn-5">Secondary button 5</button>
+          </div>
+          <div class="interactive-demo__row interactive-demo__row--core">
+            <button type="button" class="button" data-kind="primary" data-variant="primary-6" id="interactive-primary-btn-6">Primary button 6</button>
+            <button type="button" class="button" data-kind="secondary" data-variant="secondary-6" id="interactive-secondary-btn-6">Secondary button 6</button>
+          </div>
         </div>
       </div>
     </div>
@@ -51,7 +59,7 @@
           <select class="settings-widget__select" id="setting-page" style="min-width: 130px">
             <option value="button-overview" selected>Button overview</option>
             <option value="checkout">Checkout</option>
-            <option value="order-index">Order index</option>
+            <option value="order-index" hidden>Order index</option>
             <option value="order-status">Order status</option>
           </select>
         </div>
@@ -88,6 +96,8 @@
               <button class="settings-variant-pills__btn" data-v="2">2</button>
               <button class="settings-variant-pills__btn" data-v="3">3</button>
               <button class="settings-variant-pills__btn" data-v="4">4</button>
+              <button class="settings-variant-pills__btn" data-v="5">5</button>
+              <button class="settings-variant-pills__btn" data-v="6">6</button>
             </div>
           </div>
           <div class="settings-widget__variant-group">
@@ -98,6 +108,8 @@
               <button class="settings-variant-pills__btn" data-v="2">2</button>
               <button class="settings-variant-pills__btn" data-v="3">3</button>
               <button class="settings-variant-pills__btn" data-v="4">4</button>
+              <button class="settings-variant-pills__btn" data-v="5">5</button>
+              <button class="settings-variant-pills__btn" data-v="6">6</button>
             </div>
           </div>
         </div>
@@ -120,6 +132,8 @@
               <button class="settings-variant-pills__btn" data-v="2">2</button>
               <button class="settings-variant-pills__btn" data-v="3">3</button>
               <button class="settings-variant-pills__btn" data-v="4">4</button>
+              <button class="settings-variant-pills__btn" data-v="5">5</button>
+              <button class="settings-variant-pills__btn" data-v="6">6</button>
             </div>
           </div>
           <div class="settings-widget__variant-group">
@@ -130,6 +144,8 @@
               <button class="settings-variant-pills__btn" data-v="2">2</button>
               <button class="settings-variant-pills__btn" data-v="3">3</button>
               <button class="settings-variant-pills__btn" data-v="4">4</button>
+              <button class="settings-variant-pills__btn" data-v="5">5</button>
+              <button class="settings-variant-pills__btn" data-v="6">6</button>
             </div>
           </div>
         </div>
@@ -153,6 +169,8 @@
               <button class="settings-variant-pills__btn" data-v="2">2</button>
               <button class="settings-variant-pills__btn" data-v="3">3</button>
               <button class="settings-variant-pills__btn" data-v="4">4</button>
+              <button class="settings-variant-pills__btn" data-v="5">5</button>
+              <button class="settings-variant-pills__btn" data-v="6">6</button>
             </div>
           </div>
           <div class="settings-widget__variant-group">
@@ -163,6 +181,8 @@
               <button class="settings-variant-pills__btn" data-v="2">2</button>
               <button class="settings-variant-pills__btn" data-v="3">3</button>
               <button class="settings-variant-pills__btn" data-v="4">4</button>
+              <button class="settings-variant-pills__btn" data-v="5">5</button>
+              <button class="settings-variant-pills__btn" data-v="6">6</button>
             </div>
           </div>
         </div>
@@ -216,7 +236,7 @@
                 </div>
                 <div class="settings-widget__l-cols" style="grid-template-columns: repeat(2, 1fr)">
                   <span>Hover</span><span>Press</span>
-                  <input type="number" class="settings-widget__l-num" id="setting-secondary4-hover-l" value="5" step="1">
+                  <input type="number" class="settings-widget__l-num" id="setting-secondary4-hover-l" value="0" step="1">
                   <input type="number" class="settings-widget__l-num" id="setting-secondary4-active-l" value="8" step="1">
                 </div>
               </div>
@@ -318,9 +338,6 @@
   <div id="viewport-area" hidden>
     <div id="phone-wrap">
       <iframe id="theme-frame" src="" title="Theme preview"></iframe>
-      <div class="phone-chrome__top" aria-hidden="true">
-        <div class="phone-chrome__dynamic-island"></div>
-      </div>
       <div class="phone-chrome__bottom" aria-hidden="true">
         <div class="phone-chrome__home-bar"></div>
       </div>

@@ -1,6 +1,10 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 
+/* Hide scrollbar when rendered inside phone chrome */
+:root.is-phone-chrome { scrollbar-width: none; }
+:root.is-phone-chrome::-webkit-scrollbar { display: none; }
+
 body {
   margin: 0;
   padding-left: 316px;
@@ -42,7 +46,7 @@ body {
 .interactive-demo__cluster {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 }
 
 .interactive-demo__row {

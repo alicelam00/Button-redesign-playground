@@ -227,7 +227,7 @@
 
     // ── Secondary 4 ──────────────────────────────────────────────────
     var s4BaseL    = bgL + (100 - bgL) * 0.25;
-    var s4HovStep  = p.secondary4HoverL  != null ? p.secondary4HoverL  : 5;
+    var s4HovStep  = p.secondary4HoverL  != null ? p.secondary4HoverL  : 0;
     var s4ActStep  = p.secondary4ActiveL != null ? p.secondary4ActiveL : 8;
     var s4HovL     = dark ? Math.min(100, s4BaseL + s4HovStep)  : Math.max(0, s4BaseL - s4HovStep);
     var s4ActL     = dark ? Math.min(100, s4BaseL + s4ActStep)  : Math.max(0, s4BaseL - s4ActStep);

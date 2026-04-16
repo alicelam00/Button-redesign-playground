@@ -651,7 +651,7 @@
       defaultL = Math.min(100, bgL + 8);
       hoverL   = Math.min(100, bgL + 14);
       activeL  = Math.min(100, bgL + 19);
-      activeL23 = Math.min(100, bgL + 19);
+      activeL23 = Math.min(100, bgL + 23);
       borderL  = Math.min(100, defaultL + 8);
     } else {
       const defaultLStep  = readLInput('setting-secondary-default-l',   -4);
@@ -706,7 +706,7 @@
     // Base: 25% of the way from bgL toward white — matches color-mix(oklch, white 25%)
     const baseL = bgL + (100 - bgL) * 0.25;
 
-    const hoverStep  = readLInput('setting-secondary4-hover-l',  5);
+    const hoverStep  = readLInput('setting-secondary4-hover-l',  0);
     const activeStep = readLInput('setting-secondary4-active-l', 8);
 
     const hoverL  = darkBackground
@@ -720,6 +720,35 @@
       '--demo-secondary-4-bg':        hsluvToHex([bgHsl[0], bgHsl[1], baseL]),
       '--demo-secondary-4-hover-bg':  hsluvToHex([bgHsl[0], bgHsl[1], hoverL]),
       '--demo-secondary-4-active-bg': hsluvToHex([bgHsl[0], bgHsl[1], activeL]),
+    });
+  }
+
+  function renderSecondary5() {
+    const darkBackground = isDarkBackground();
+    const bgHsl = hexToHsluv(state.backgroundColor);
+    const bgL = bgHsl[2];
+
+    // Base: step slightly darker/lighter than page bg — gives a tonal, more visible surface
+    // (mirrors secondary-1's approach: bgL - 4 for light, bgL + 8 for dark)
+    const baseStep = 2;
+    const baseL = darkBackground
+      ? Math.min(100, bgL + baseStep * 2)
+      : Math.max(0,   bgL - baseStep);
+
+    const hoverStep  = readLInput('setting-secondary4-hover-l',  0);
+    const activeStep = readLInput('setting-secondary4-active-l', 8);
+
+    const hoverL  = darkBackground
+      ? Math.min(100, baseL + hoverStep)
+      : Math.max(0,   baseL - hoverStep);
+    const activeL = darkBackground
+      ? Math.min(100, baseL + activeStep)
+      : Math.max(0,   baseL - activeStep);
+
+    setVars(prototypeEl, {
+      '--demo-secondary-5-bg':        hsluvToHex([bgHsl[0], bgHsl[1], baseL]),
+      '--demo-secondary-5-hover-bg':  hsluvToHex([bgHsl[0], bgHsl[1], hoverL]),
+      '--demo-secondary-5-active-bg': hsluvToHex([bgHsl[0], bgHsl[1], activeL]),
     });
   }
 
@@ -788,6 +817,7 @@
     renderPrimary();
     renderSecondary();
     renderSecondary4();
+    renderSecondary5();
     renderPlain();
     renderSize();
     renderIcons();
@@ -925,6 +955,8 @@
     'order-status': 'order-status.html',
   };
 
+  var frameInitialized = false;
+
   var pageSelect             = document.getElementById('setting-page');
   var pageThemeSelect        = document.getElementById('setting-page-theme');
   var pageSubSection         = document.getElementById('page-sub-section');
@@ -952,22 +984,27 @@
     container.style.setProperty('--active-idx', activeV - 1);
   }
 
+  function isMobileMode() {
+    return viewportArea && viewportArea.classList.contains('is-mobile');
+  }
+
   function getThemeFrameUrl() {
-    return THEME_PAGE_URLS[pageThemeSelect.value] || 'plain-goods.html';
+    var base = THEME_PAGE_URLS[pageThemeSelect.value] || 'plain-goods.html';
+    return isMobileMode() ? base + '?mobile=1' : base;
   }
 
   function getOrderIndexUrl() {
     var theme = orderIndexThemeSelect ? orderIndexThemeSelect.value : 'plain-goods';
     var pv = localStorage.getItem('pay-btn-variant') || '1';
     var sv = localStorage.getItem('add-btn-variant') || '1';
-    return 'order-index.html?theme=' + theme + '&pv=' + pv + '&sv=' + sv;
+    return 'order-index.html?theme=' + theme + '&pv=' + pv + '&sv=' + sv + (isMobileMode() ? '&mobile=1' : '');
   }
 
   function getOrderStatusUrl() {
     var theme = orderStatusThemeSelect ? orderStatusThemeSelect.value : 'plain-goods';
     var pv = localStorage.getItem('pay-btn-variant') || '1';
     var sv = localStorage.getItem('add-btn-variant') || '1';
-    return 'order-status.html?theme=' + theme + '&pv=' + pv + '&sv=' + sv;
+    return 'order-status.html?theme=' + theme + '&pv=' + pv + '&sv=' + sv + (isMobileMode() ? '&mobile=1' : '');
   }
 
   function applyPageSelection() {
@@ -996,11 +1033,25 @@
       } else {
         frameSrc = STATIC_PAGE_URLS[page] || '';
       }
+      frameInitialized = true;
       themeFrame.src = frameSrc;
     } else {
+      frameInitialized = false;
       if (viewportArea) viewportArea.hidden = true;
       themeFrame.src = '';
       render();
+    }
+  }
+
+  function reloadFramePreservingScroll(url) {
+    var savedScroll = 0;
+    try { savedScroll = themeFrame.contentWindow.scrollY || 0; } catch (e) {}
+    themeFrame.src = url;
+    if (savedScroll > 0) {
+      themeFrame.addEventListener('load', function restoreScroll() {
+        try { themeFrame.contentWindow.scrollTo(0, savedScroll); } catch (e) {}
+        themeFrame.removeEventListener('load', restoreScroll);
+      });
     }
   }
 
@@ -1008,11 +1059,11 @@
     if (viewportArea && !viewportArea.hidden) {
       var page = pageSelect ? pageSelect.value : '';
       if (page === 'order-index') {
-        themeFrame.src = getOrderIndexUrl();
+        reloadFramePreservingScroll(getOrderIndexUrl());
       } else if (page === 'order-status') {
-        themeFrame.src = getOrderStatusUrl();
+        reloadFramePreservingScroll(getOrderStatusUrl());
       } else {
-        themeFrame.src = getThemeFrameUrl();
+        reloadFramePreservingScroll(getThemeFrameUrl());
       }
     }
   }
@@ -1029,6 +1080,10 @@
       });
     }
     localStorage.setItem('nav-viewport', v);
+    // Reload iframe with updated ?mobile=1 param so the page applies is-phone-chrome itself
+    if (frameInitialized) {
+      reloadThemeFrame();
+    }
   }
 
   if (viewportToggle) {
@@ -1073,7 +1128,7 @@
     orderIndexThemeSelect.addEventListener('change', function () {
       localStorage.setItem('nav-order-index-theme', orderIndexThemeSelect.value);
       if (pageSelect && pageSelect.value === 'order-index') {
-        themeFrame.src = getOrderIndexUrl();
+        reloadFramePreservingScroll(getOrderIndexUrl());
       }
     });
   }
@@ -1082,7 +1137,7 @@
     orderStatusThemeSelect.addEventListener('change', function () {
       localStorage.setItem('nav-order-status-theme', orderStatusThemeSelect.value);
       if (pageSelect && pageSelect.value === 'order-status') {
-        themeFrame.src = getOrderStatusUrl();
+        reloadFramePreservingScroll(getOrderStatusUrl());
       }
     });
   }

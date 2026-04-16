@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Orders</title>
+  <script>if(new URLSearchParams(location.search).get('mobile')==='1')document.documentElement.classList.add('is-phone-chrome');</script>
   <script>
   // ── Theme: apply CSS vars + font before first paint ────────────────────
   (function () {
@@ -34,8 +35,10 @@
           '--x-color-text-subdued':  '#9E5A40',
           '--x-color-bg':            '#FFFAF7',
           '--x-color-bg-subdued':    '#F5EDE8',
+          '--x-color-bg-card':       'transparent',
+          '--x-color-bg-header':     '#F5EDE8',
           '--x-color-border':        '#E6DBD9',
-          '--x-color-border-header': '#E6DBD9',
+          '--x-color-border-header': 'transparent',
           '--x-font':  "Liter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
           '--x-radius-sm':   '4px',
           '--x-radius-base': '8px',
@@ -128,6 +131,7 @@
       --x-color-border:          #e0e0e0;
       --x-color-border-header:   #e8e8e8;
       --x-color-bg-header:       var(--x-color-bg);
+      --x-color-bg-card:         var(--x-color-bg);
       --x-color-accent:          #005BD3;
       --x-color-accent-hover:    #0052ba;
       --x-color-accent-fg:       #ffffff;
@@ -513,9 +517,9 @@
 
     /* ─── Card ─── */
     .card {
-      background: var(--x-color-bg);
+      background: var(--x-color-bg-card);
       border: 1px solid var(--x-color-bg-subdued);
-      border-radius: var(--x-radius-lg);
+      border-radius: 8px;
       overflow: hidden;
     }
     .card--padded { padding: var(--x-space-md); }
@@ -1416,12 +1420,19 @@
     if (e.key === 'btn-pg-params' && !THEME_ACCENTS[_theme]) syncAccent();
   });
 
-  // ── Apply primary button variant from URL param ───────────────────────
+  // ── Apply button variants from URL params ────────────────────────────
   (function () {
-    var pv = parseInt((new URLSearchParams(window.location.search)).get('pv') || '1', 10);
+    var params = new URLSearchParams(window.location.search);
+    var pv = parseInt(params.get('pv') || '1', 10);
+    var sv = parseInt(params.get('sv') || '1', 10);
     if (pv > 1) {
       document.querySelectorAll('.button[data-kind="primary"]').forEach(function (btn) {
         btn.setAttribute('data-variant', 'primary-' + pv);
+      });
+    }
+    if (sv > 1) {
+      document.querySelectorAll('.button[data-kind="secondary"]').forEach(function (btn) {
+        btn.setAttribute('data-variant', 'secondary-' + sv);
       });
     }
   })();
@@ -1551,5 +1562,21 @@
 })();
 </script>
 <script src="../scripts/theme-sync.js"></script>
+<script>
+// Scroll position save/restore — persists across variant-change reloads
+(function () {
+  var _theme = (new URLSearchParams(window.location.search)).get('theme') || 'plain-goods';
+  var _key   = 'oi-scroll-' + _theme;
+  window.addEventListener('scroll', function () {
+    try { localStorage.setItem(_key, Math.round(window.scrollY)); } catch (e) {}
+  }, { passive: true });
+  window.addEventListener('load', function () {
+    try {
+      var pos = parseInt(localStorage.getItem(_key) || '0', 10);
+      if (pos > 0) window.scrollTo(0, pos);
+    } catch (e) {}
+  });
+})();
+</script>
 </body>
 </html>
