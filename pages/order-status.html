@@ -14,7 +14,7 @@
           '--x-color-text':          '#1a1a1a',
           '--x-color-text-subdued':  '#707070',
           '--x-color-bg':            '#ffffff',
-          '--x-color-bg-subdued':    '#f5f5f5',
+          '--x-color-bg-subdued':    '#ffffff',
           '--x-color-border':        '#e0e0e0',
           '--x-color-border-header': '#e8e8e8',
           '--x-font':  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
@@ -35,7 +35,6 @@
           '--x-color-text-subdued':  '#9E5A40',
           '--x-color-bg':            '#FFFAF8',
           '--x-color-bg-subdued':    '#FFFAF8',
-          '--x-card-shadow':         'var(--shadow-small)',
           '--x-color-bg-header':     'transparent',
           '--x-color-border':        '#E6DBD9',
           '--x-color-border-header': 'transparent',
@@ -69,7 +68,7 @@
           '--demo-primary-fg':   '#000000',
         },
         font: { family: 'Instrument Sans', src: '../assets/themes/heritage/fonts/InstrumentSans-Regular.ttf', weight: '400' },
-        logo: { src: '../assets/themes/heritage/logos/logo.png', alt: 'Heritage', maxWidth: '50px' },
+        logo: { src: '../assets/themes/heritage/logos/logo.png', alt: 'Heritage', maxWidth: '78px' },
         products: ['p1.png','p2.png','p3.png','p4.png','p5.png','p6.png','p7.png','p8.png','p9.png','p10.png'],
         productsBase: '../assets/themes/heritage/products/',
       },
@@ -102,7 +101,7 @@
       --x-color-border:          #e0e0e0;
       --x-color-border-header:   #e8e8e8;
       --x-color-bg-header:       var(--x-color-bg);
-      --x-card-shadow:           none;
+      --x-card-shadow:           rgba(0,0,0,.08) 0 0 0 .5px, rgba(0,0,0,.08) 0 2px 12px;
       --x-color-accent:          #005BD3;
       --x-color-accent-hover:    #0052ba;
       --x-color-accent-fg:       #ffffff;
@@ -125,13 +124,6 @@
       --demo-primary-bg:            var(--color-accent);
       --demo-primary-fg:            #f9f6f5;
       --font-body:                  var(--x-font);
-      --body-base-size:             14px;
-      --body-base-letter-spacing:   -0.15px;
-      --font-weight-semibold:       600;
-      --btn-primary-font-size:      14px;
-      --btn-primary-font-weight:    600;
-      --btn-primary-letter-spacing: -0.15px;
-      --btn-primary-text-transform: none;
       --button-gap:                 6px;
       --button-radius:              12px;
       --button-height:              44px;
@@ -197,14 +189,13 @@
 
     /* ─── Header ─── */
     .af-header {
-      background: var(--x-color-bg-header, var(--x-color-bg));
-      border-bottom: 1px solid var(--x-color-border-header);
+      background: var(--x-color-bg-subdued);
       padding-top: env(safe-area-inset-top, 0px);
     }
     .af-header-inner {
       display: flex;
       align-items: center;
-      height: 48px;
+      height: 80px;
       padding: 0 var(--x-space-md);
       gap: var(--x-space-base);
       max-width: 1200px;
@@ -325,7 +316,7 @@
 
     /* ─── Card ─── */
     .card {
-      background: var(--x-color-bg);
+      background: var(--x-color-bg-subdued);
       border-radius: 8px;
       box-shadow: var(--x-card-shadow);
       overflow: hidden;
@@ -575,6 +566,7 @@
       .customer-info-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
+  <link rel="stylesheet" href="../styles/tokens/typography.css">
   <link rel="stylesheet" href="../styles/tokens/shadows.css">
   <link rel="stylesheet" href="../styles/components/button.css">
 </head>

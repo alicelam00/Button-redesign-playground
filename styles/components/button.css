@@ -247,6 +247,18 @@
   --button-surface-shadow: var(--shadow-button-primary-pressed);
 }
 
+/* Per-variant primary hover / active overrides (P2–P6) */
+.button[data-variant="primary-2"]:hover:not(:disabled)  { --button-surface-bg: var(--demo-primary-2-hover-bg,  var(--demo-primary-hover-bg)); }
+.button[data-variant="primary-2"]:active:not(:disabled) { --button-surface-bg: var(--demo-primary-2-active-bg, var(--demo-primary-active-bg)); }
+.button[data-variant="primary-3"]:hover:not(:disabled)  { --button-surface-bg: var(--demo-primary-3-hover-bg,  var(--demo-primary-hover-bg)); }
+.button[data-variant="primary-3"]:active:not(:disabled) { --button-surface-bg: var(--demo-primary-3-active-bg, var(--demo-primary-active-bg)); }
+.button[data-variant="primary-4"]:hover:not(:disabled)  { --button-surface-bg: var(--demo-primary-4-hover-bg,  var(--demo-primary-hover-bg)); }
+.button[data-variant="primary-4"]:active:not(:disabled) { --button-surface-bg: var(--demo-primary-4-active-bg, var(--demo-primary-active-bg)); }
+.button[data-variant="primary-5"]:hover:not(:disabled)  { --button-surface-bg: var(--demo-primary-5-hover-bg,  var(--demo-primary-hover-bg)); }
+.button[data-variant="primary-5"]:active:not(:disabled) { --button-surface-bg: var(--demo-primary-5-active-bg, var(--demo-primary-active-bg)); }
+.button[data-variant="primary-6"]:hover:not(:disabled)  { --button-surface-bg: var(--demo-primary-6-hover-bg,  var(--demo-primary-hover-bg)); }
+.button[data-variant="primary-6"]:active:not(:disabled) { --button-surface-bg: var(--demo-primary-6-active-bg, var(--demo-primary-active-bg)); }
+
 .button[data-kind="primary"]:focus-visible {
   box-shadow: var(--button-focus-outline);
 }
@@ -260,10 +272,13 @@
   transition: all 0.2s ease;
 }
 
-.button[data-kind="secondary"][data-variant="secondary-4"],
-.button[data-kind="secondary"][data-variant="secondary-6"] {
+.button[data-kind="secondary"][data-variant="secondary-4"] {
   --secondary-4-bg: var(--demo-secondary-4-bg, color-mix(in oklch, white 25%, var(--color-background, #ffffff)));
   --button-surface-bg: var(--secondary-4-bg);
+}
+
+.button[data-kind="secondary"][data-variant="secondary-6"] {
+  --button-surface-bg: var(--demo-secondary-6-bg, var(--demo-secondary-4-bg, color-mix(in oklch, white 25%, var(--color-background, #ffffff))));
 }
 
 /* Secondary 5 — tonal bg stepped from page background (more visible than 4/6) */
@@ -283,33 +298,43 @@
 
 .button[data-kind="secondary"][data-variant="secondary-5"] {
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.03),
-    0 2px 6px rgba(0, 0, 0, 0.08),
-    0 10px 24px rgba(0, 0, 0, 0.08);
+    0 1px 2px rgba(16, 24, 40, 0.04),
+    0 3px 8px rgba(16, 24, 40, 0.05);
 }
 
 .button[data-kind="secondary"][data-variant="secondary-6"] {
   box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.08);
+    0 1px 2px rgba(16, 24, 40, 0.04),
+    0 3px 8px rgba(16, 24, 40, 0.05);
 }
 
-.button[data-kind="secondary"][data-variant="secondary-4"]:hover:not(:disabled),
-.button[data-kind="secondary"][data-variant="secondary-6"]:hover:not(:disabled) {
+.button[data-kind="secondary"][data-variant="secondary-4"]:hover:not(:disabled) {
   --button-surface-bg: var(--demo-secondary-4-hover-bg, color-mix(in srgb, currentColor 6%, var(--secondary-4-bg)));
 }
 
-.button[data-kind="secondary"][data-variant="secondary-5"]:hover:not(:disabled) {
-  --button-surface-bg: var(--demo-secondary-5-hover-bg, var(--demo-secondary-4-hover-bg, color-mix(in srgb, currentColor 6%, var(--button-surface-bg))));
+.button[data-kind="secondary"][data-variant="secondary-6"]:hover:not(:disabled) {
+  --button-surface-bg: var(--demo-secondary-6-hover-bg, var(--demo-secondary-4-hover-bg, color-mix(in srgb, currentColor 6%, var(--button-surface-bg))));
 }
 
-.button[data-kind="secondary"][data-variant="secondary-4"]:active:not(:disabled),
+.button[data-kind="secondary"][data-variant="secondary-5"]:hover:not(:disabled) {
+  --button-surface-bg:     var(--demo-secondary-5-hover-bg, var(--demo-secondary-4-hover-bg, color-mix(in srgb, currentColor 6%, var(--button-surface-bg))));
+  --button-surface-border: var(--demo-secondary-5-border-color, transparent);
+}
+
+.button[data-kind="secondary"][data-variant="secondary-4"]:active:not(:disabled) {
+  --button-surface-bg:     var(--demo-secondary-4-active-bg, color-mix(in srgb, currentColor 11%, var(--secondary-4-bg)));
+  --button-surface-border: var(--demo-secondary-4-border-color, transparent);
+}
+
 .button[data-kind="secondary"][data-variant="secondary-6"]:active:not(:disabled) {
-  --button-surface-bg: var(--demo-secondary-4-active-bg, color-mix(in srgb, currentColor 11%, var(--secondary-4-bg)));
+  --button-surface-bg:     var(--demo-secondary-6-active-bg, var(--demo-secondary-4-active-bg, color-mix(in srgb, currentColor 11%, var(--button-surface-bg))));
+  --button-surface-border: var(--demo-secondary-6-border-color, transparent);
+  box-shadow: none;
 }
 
 .button[data-kind="secondary"][data-variant="secondary-5"]:active:not(:disabled) {
-  --button-surface-bg: var(--demo-secondary-5-active-bg, var(--demo-secondary-4-active-bg, color-mix(in srgb, currentColor 11%, var(--button-surface-bg))));
+  --button-surface-bg:     var(--demo-secondary-5-active-bg, var(--demo-secondary-4-active-bg, color-mix(in srgb, currentColor 11%, var(--button-surface-bg))));
+  --button-surface-border: var(--demo-secondary-5-border-color, transparent);
 }
 
 /* Secondary blend variant — button takes on page background, ::after uses multiply overlay */
@@ -381,17 +406,15 @@
 
 .button[data-variant="primary-5"] {
   box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.06),
-    0 8px 20px rgba(0, 0, 0, 0.10),
-    0 16px 32px rgba(0, 0, 0, 0.06);
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 4px 10px rgba(0, 0, 0, 0.06);
   transition: all 0.2s ease;
 }
 
 .button[data-variant="primary-6"] {
   box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.08),
-    0 10px 24px rgba(0, 0, 0, 0.08),
-    0 6px 18px rgba(59, 130, 246, 0.12);
+    0 1px 2px rgba(16, 24, 40, 0.04),
+    0 3px 8px rgba(16, 24, 40, 0.05);
   transition: all 0.2s ease;
 }
 
@@ -409,21 +432,23 @@
   --button-surface-shadow: none;
 }
 
+/* S1 — no border at rest */
+.button[data-kind="secondary"]:not([data-variant]) {
+  --button-surface-border: transparent;
+}
+
 .button[data-kind="secondary"]:hover:not(:disabled) {
   --button-surface-bg: var(--demo-secondary-hover-bg, color-mix(in srgb, currentColor 6%, var(--demo-secondary-bg, var(--button-secondary-bg, transparent))));
   --button-surface-border: var(--demo-secondary-border-color, var(--button-secondary-border-color, var(--color-button-secondary-border)));
   --button-surface-shadow: none;
 }
 
-.button[data-kind="secondary"]:not([data-variant]),
-.button[data-variant="secondary-3"]:hover:not(:disabled),
-.button[data-variant="secondary-5"]:hover:not(:disabled),
-.button[data-variant="secondary-6"]:hover:not(:disabled) {
-  --button-surface-border: transparent;
-}
 
 .button[data-kind="secondary"][data-variant="secondary-4"]:hover:not(:disabled) {
-  --button-surface-border: rgba(0, 0, 0, 0.10);
+  --button-surface-border: var(--demo-secondary-4-border-color, rgba(0, 0, 0, 0.10));
+}
+.button[data-kind="secondary"][data-variant="secondary-6"]:hover:not(:disabled) {
+  --button-surface-border: var(--demo-secondary-6-border-color, rgba(0, 0, 0, 0.10));
 }
 
 .button[data-variant="secondary-3"]::after {
@@ -443,9 +468,32 @@
   --button-surface-border: var(--demo-secondary-border-color, var(--button-secondary-border-color, var(--color-button-secondary-border)));
 }
 
-.button[data-variant="secondary-2"]:active:not(:disabled),
+/* Per-variant secondary S2 — own bg/hover/active/border (placed after general rules to win cascade) */
+.button[data-variant="secondary-2"] {
+  --button-surface-bg:     var(--demo-secondary-2-bg,           var(--demo-secondary-bg));
+  --button-surface-border: var(--demo-secondary-2-border-color, var(--demo-secondary-border-color));
+}
+.button[data-variant="secondary-2"]:hover:not(:disabled) {
+  --button-surface-bg:     var(--demo-secondary-2-hover-bg,     var(--demo-secondary-hover-bg));
+  --button-surface-border: var(--demo-secondary-2-border-color, var(--demo-secondary-border-color));
+}
+.button[data-variant="secondary-2"]:active:not(:disabled) {
+  --button-surface-bg:     var(--demo-secondary-2-active-bg,    var(--demo-secondary-active-bg));
+  --button-surface-border: var(--demo-secondary-2-border-color, var(--demo-secondary-border-color));
+}
+
+/* Per-variant secondary S3 — own bg/hover/active/border */
+.button[data-variant="secondary-3"] {
+  --button-surface-bg:     var(--demo-secondary-3-bg,           var(--demo-secondary-bg));
+  --button-surface-border: var(--demo-secondary-3-border-color, var(--demo-secondary-border-color));
+}
+.button[data-variant="secondary-3"]:hover:not(:disabled) {
+  --button-surface-bg:     var(--demo-secondary-3-hover-bg,     var(--demo-secondary-hover-bg));
+  --button-surface-border: var(--demo-secondary-3-border-color, var(--demo-secondary-border-color));
+}
 .button[data-variant="secondary-3"]:active:not(:disabled) {
-  --button-surface-bg: var(--demo-secondary-active-bg-23, var(--demo-secondary-active-bg, color-mix(in srgb, currentColor 11%, var(--demo-secondary-bg, var(--button-secondary-bg, transparent)))));
+  --button-surface-bg:     var(--demo-secondary-3-active-bg,    var(--demo-secondary-active-bg));
+  --button-surface-border: var(--demo-secondary-3-border-color, var(--demo-secondary-border-color));
 }
 
 

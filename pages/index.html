@@ -196,6 +196,13 @@
           <div class="settings-widget__section-content is-collapsed" id="section-buttons-content">
             <div class="settings-widget__section-content-inner">
 
+              <!-- Hidden backward-compat inputs for theme-sync.js -->
+              <input type="color" id="setting-secondary-bg" hidden>
+              <input type="text" id="setting-secondary-bg-hex" hidden>
+              <input type="number" id="setting-primary-border-contrast" value="5" hidden>
+              <input type="number" id="setting-primary-grad-top-l" value="20" hidden>
+              <input type="number" id="setting-primary-grad-bottom-l" value="10" hidden>
+
               <div class="settings-widget__group">
                 <div class="settings-widget__row">
                   <span class="settings-widget__label">Primary</span>
@@ -203,41 +210,6 @@
                     <input type="color" class="settings-widget__color" id="setting-branded-bg" value="#005BD3">
                     <input type="text" class="settings-widget__color-hex" id="setting-branded-bg-hex" value="#005BD3" maxlength="7" spellcheck="false">
                   </div>
-                </div>
-                <div class="settings-widget__l-cols">
-                  <span>Hover</span><span>Press</span><span>Border</span><span>Top</span><span>Bottom</span>
-                  <input type="number" class="settings-widget__l-num" id="setting-primary-hover-l" value="5" step="1">
-                  <input type="number" class="settings-widget__l-num" id="setting-primary-active-l" value="10" step="1">
-                  <input type="number" class="settings-widget__l-num" id="setting-primary-border-contrast" value="5" step="1" min="0" max="100">
-                  <input type="number" class="settings-widget__l-num" id="setting-primary-grad-top-l" value="20" step="1">
-                  <input type="number" class="settings-widget__l-num" id="setting-primary-grad-bottom-l" value="10" step="1">
-                </div>
-              </div>
-
-              <div class="settings-widget__group">
-                <div class="settings-widget__row">
-                  <span class="settings-widget__label">Secondary</span>
-                </div>
-                <input type="color" class="settings-widget__color" id="setting-secondary-bg" value="#F2F2F2" hidden>
-                <input type="text" class="settings-widget__color-hex" id="setting-secondary-bg-hex" value="" maxlength="7" spellcheck="false" hidden>
-                <div class="settings-widget__l-cols">
-                  <span>Default</span><span>Hover</span><span>Press</span><span>2 & 3</span><span>Border</span>
-                  <input type="number" class="settings-widget__l-num" id="setting-secondary-default-l" value="-4" step="1">
-                  <input type="number" class="settings-widget__l-num" id="setting-secondary-hover-l" value="-9" step="1">
-                  <input type="number" class="settings-widget__l-num" id="setting-secondary-active-l" value="-10" step="1">
-                  <input type="number" class="settings-widget__l-num" id="setting-secondary-active23-l" value="-14" step="1">
-                  <input type="number" class="settings-widget__l-num" id="setting-secondary-border-l" value="-8" step="1">
-                </div>
-              </div>
-
-              <div class="settings-widget__group">
-                <div class="settings-widget__row">
-                  <span class="settings-widget__label">Secondary 4</span>
-                </div>
-                <div class="settings-widget__l-cols" style="grid-template-columns: repeat(2, 1fr)">
-                  <span>Hover</span><span>Press</span>
-                  <input type="number" class="settings-widget__l-num" id="setting-secondary4-hover-l" value="0" step="1">
-                  <input type="number" class="settings-widget__l-num" id="setting-secondary4-active-l" value="8" step="1">
                 </div>
               </div>
 

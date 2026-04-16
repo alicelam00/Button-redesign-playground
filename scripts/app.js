@@ -615,27 +615,34 @@
   }
 
   function renderPrimary() {
-    const hsl = hexToHsluv(state.primaryColor);
-    const hoverLStep      = readLInput('setting-primary-hover-l',         5);
-    const activeLStep     = readLInput('setting-primary-active-l',        10);
-    const borderContrast  = readLInput('setting-primary-border-contrast', 5);
-    const gradTopStep     = readLInput('setting-primary-grad-top-l',      20);
-    const gradBotStep     = readLInput('setting-primary-grad-bottom-l',   10);
-    const borderHex       = autoPrimaryBorder(borderContrast);
-    const gradientTop     = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + gradTopStep)]);
-    const gradientBottom  = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - gradBotStep)]);
-    const hoverDir        = hsl[2] > 50 ? -1 : 1;
-    const hoverBg         = hsluvToHex([hsl[0], hsl[1], Math.max(0, Math.min(100, hsl[2] + hoverDir * hoverLStep))]);
-    const activeBg        = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - activeLStep)]);
-    setVars(prototypeEl, {
-      '--demo-primary-bg': state.primaryColor,
-      '--demo-primary-fg': contrastColor(state.primaryColor),
-      '--demo-primary-border-color': borderHex,
+    const hsl            = hexToHsluv(state.primaryColor);
+    const borderContrast = readLInput('setting-primary-border-contrast', 5);
+    const gradTopStep    = readLInput('setting-primary-grad-top-l',      20);
+    const gradBotStep    = readLInput('setting-primary-grad-bottom-l',   10);
+    const borderHex      = autoPrimaryBorder(borderContrast);
+    const gradientTop    = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + gradTopStep)]);
+    const gradientBottom = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - gradBotStep)]);
+    const hoverDir       = hsl[2] > 50 ? -1 : 1;
+
+    const vars = {
+      '--demo-primary-bg':                     state.primaryColor,
+      '--demo-primary-fg':                     contrastColor(state.primaryColor),
+      '--demo-primary-border-color':           borderHex,
       '--demo-primary-border-gradient-top':    gradientTop,
       '--demo-primary-border-gradient-bottom': gradientBottom,
-      '--demo-primary-hover-bg':  hoverBg,
-      '--demo-primary-active-bg': activeBg,
-    });
+    };
+
+    var pHoverStep  = 3;
+    var pActiveStep = 5;
+    for (var i = 1; i <= 6; i++) {
+      vars['--demo-primary-' + i + '-hover-bg']  = hsluvToHex([hsl[0], hsl[1], Math.max(0, Math.min(100, hsl[2] + hoverDir * pHoverStep))]);
+      vars['--demo-primary-' + i + '-active-bg'] = hsluvToHex([hsl[0], hsl[1], Math.max(0, hsl[2] - pActiveStep)]);
+    }
+    // Shared vars (P1 values) for backward compat with theme-sync.js
+    vars['--demo-primary-hover-bg']  = vars['--demo-primary-1-hover-bg'];
+    vars['--demo-primary-active-bg'] = vars['--demo-primary-1-active-bg'];
+
+    setVars(prototypeEl, vars);
   }
 
   function renderSecondary() {
@@ -646,51 +653,60 @@
     const bgHsl = hexToHsluv(state.backgroundColor);
     const bgL = bgHsl[2];
 
-    let defaultL, hoverL, activeL, activeL23, borderL;
-    if (darkBackground) {
-      defaultL = Math.min(100, bgL + 8);
-      hoverL   = Math.min(100, bgL + 14);
-      activeL  = Math.min(100, bgL + 19);
-      activeL23 = Math.min(100, bgL + 23);
-      borderL  = Math.min(100, defaultL + 8);
-    } else {
-      const defaultLStep  = readLInput('setting-secondary-default-l',   -4);
-      const hoverLStep    = readLInput('setting-secondary-hover-l',      -9);
-      const activeLStep   = readLInput('setting-secondary-active-l',    -10);
-      const active23LStep = readLInput('setting-secondary-active23-l',  -14);
-      const borderLStep   = readLInput('setting-secondary-border-l',    -8);
-      defaultL  = Math.max(0, bgL + defaultLStep);
-      hoverL    = Math.max(0, bgL + hoverLStep);
-      activeL   = Math.max(0, bgL + activeLStep);
-      activeL23 = Math.max(0, bgL + active23LStep);
-      borderL   = Math.max(0, bgL + borderLStep);
+    function stepL(step) {
+      return darkBackground
+        ? Math.min(100, bgL - step)
+        : Math.max(0,   bgL + step);
     }
 
-    const autoBg = hsluvToHex([bgHsl[0], bgHsl[1], defaultL]);
+    // S1
+    var s1Def, s1Hov, s1Act, s1Brd;
+    if (darkBackground) {
+      s1Def = Math.min(100, bgL + 8);
+      s1Hov = Math.min(100, bgL + 14);
+      s1Act = Math.min(100, bgL + 19);
+      s1Brd = Math.min(100, s1Def + 8);
+    } else {
+      s1Def = Math.max(0, bgL - 4);
+      s1Hov = Math.max(0, bgL - 9);
+      s1Act = Math.max(0, bgL - 8);
+      s1Brd = Math.max(0, bgL - 8);
+    }
+
+    const autoBg = hsluvToHex([bgHsl[0], bgHsl[1], s1Def]);
     const background = state.secondaryBgOverride || autoBg;
 
-    let hoverBg, activeBg, activeBg23;
+    var hoverBg, activeBg;
     if (state.secondaryBgOverride) {
       const ov = hexToHsluv(state.secondaryBgOverride);
-      hoverBg    = hsluvToHex([ov[0], ov[1], darkBackground ? Math.min(100, ov[2] + 6)  : Math.max(0, ov[2] - 5)]);
-      activeBg   = hsluvToHex([ov[0], ov[1], darkBackground ? Math.min(100, ov[2] + 19) : Math.max(0, ov[2] - 10)]);
-      activeBg23 = hsluvToHex([ov[0], ov[1], darkBackground ? Math.min(100, ov[2] + 19) : Math.max(0, ov[2] - 14)]);
+      hoverBg  = hsluvToHex([ov[0], ov[1], darkBackground ? Math.min(100, ov[2] + 6)  : Math.max(0, ov[2] - 5)]);
+      activeBg = hsluvToHex([ov[0], ov[1], darkBackground ? Math.min(100, ov[2] + 19) : Math.max(0, ov[2] - 10)]);
     } else {
-      hoverBg    = hsluvToHex([bgHsl[0], bgHsl[1], hoverL]);
-      activeBg   = hsluvToHex([bgHsl[0], bgHsl[1], activeL]);
-      activeBg23 = hsluvToHex([bgHsl[0], bgHsl[1], activeL23]);
+      hoverBg  = hsluvToHex([bgHsl[0], bgHsl[1], s1Hov]);
+      activeBg = hsluvToHex([bgHsl[0], bgHsl[1], s1Act]);
     }
 
-    const autoBorderHex = hsluvToHex([bgHsl[0], bgHsl[1], borderL]);
+    const vars = {
+      '--demo-secondary-fg':           foreground,
+      '--demo-secondary-bg':           background,
+      '--demo-secondary-hover-bg':     hoverBg,
+      '--demo-secondary-active-bg':    activeBg,
+      '--demo-secondary-border-color': hsluvToHex([bgHsl[0], bgHsl[1], s1Brd]),
+    };
 
-    setVars(prototypeEl, {
-      '--demo-secondary-fg': foreground,
-      '--demo-secondary-bg': background,
-      '--demo-secondary-hover-bg': hoverBg,
-      '--demo-secondary-active-bg': activeBg,
-      '--demo-secondary-active-bg-23': activeBg23,
-      '--demo-secondary-border-color': autoBorderHex,
-    });
+    // S2
+    vars['--demo-secondary-2-bg']           = hsluvToHex([bgHsl[0], bgHsl[1], stepL(-4)]);
+    vars['--demo-secondary-2-hover-bg']     = hsluvToHex([bgHsl[0], bgHsl[1], stepL(-9)]);
+    vars['--demo-secondary-2-active-bg']    = hsluvToHex([bgHsl[0], bgHsl[1], stepL(-14)]);
+    vars['--demo-secondary-2-border-color'] = hsluvToHex([bgHsl[0], bgHsl[1], stepL(-8)]);
+
+    // S3
+    vars['--demo-secondary-3-bg']           = hsluvToHex([bgHsl[0], bgHsl[1], stepL(-4)]);
+    vars['--demo-secondary-3-hover-bg']     = hsluvToHex([bgHsl[0], bgHsl[1], stepL(-9)]);
+    vars['--demo-secondary-3-active-bg']    = hsluvToHex([bgHsl[0], bgHsl[1], stepL(-14)]);
+    vars['--demo-secondary-3-border-color'] = hsluvToHex([bgHsl[0], bgHsl[1], stepL(-8)]);
+
+    setVars(prototypeEl, vars);
 
     if (!state.secondaryBgOverride) {
       document.getElementById('setting-secondary-bg').value = background;
@@ -703,23 +719,21 @@
     const bgHsl = hexToHsluv(state.backgroundColor);
     const bgL = bgHsl[2];
 
-    // Base: 25% of the way from bgL toward white — matches color-mix(oklch, white 25%)
-    const baseL = bgL + (100 - bgL) * 0.25;
-
-    const hoverStep  = readLInput('setting-secondary4-hover-l',  0);
-    const activeStep = readLInput('setting-secondary4-active-l', 8);
-
-    const hoverL  = darkBackground
-      ? Math.min(100, baseL + hoverStep)
-      : Math.max(0,   baseL - hoverStep);
-    const activeL = darkBackground
-      ? Math.min(100, baseL + activeStep)
-      : Math.max(0,   baseL - activeStep);
+    function stepL(step) {
+      return darkBackground
+        ? Math.min(100, bgL - step)
+        : Math.max(0,   bgL + step);
+    }
 
     setVars(prototypeEl, {
-      '--demo-secondary-4-bg':        hsluvToHex([bgHsl[0], bgHsl[1], baseL]),
-      '--demo-secondary-4-hover-bg':  hsluvToHex([bgHsl[0], bgHsl[1], hoverL]),
-      '--demo-secondary-4-active-bg': hsluvToHex([bgHsl[0], bgHsl[1], activeL]),
+      '--demo-secondary-4-bg':           hsluvToHex([bgHsl[0], bgHsl[1], stepL(0)]),
+      '--demo-secondary-4-hover-bg':     hsluvToHex([bgHsl[0], bgHsl[1], stepL(0)]),
+      '--demo-secondary-4-active-bg':    hsluvToHex([bgHsl[0], bgHsl[1], stepL(-5)]),
+      '--demo-secondary-4-border-color': hsluvToHex([bgHsl[0], bgHsl[1], stepL(-8)]),
+      '--demo-secondary-6-bg':           hsluvToHex([bgHsl[0], bgHsl[1], stepL(0)]),
+      '--demo-secondary-6-hover-bg':     hsluvToHex([bgHsl[0], bgHsl[1], stepL(0)]),
+      '--demo-secondary-6-active-bg':    hsluvToHex([bgHsl[0], bgHsl[1], stepL(-5)]),
+      '--demo-secondary-6-border-color': hsluvToHex([bgHsl[0], bgHsl[1], stepL(-8)]),
     });
   }
 
@@ -728,27 +742,17 @@
     const bgHsl = hexToHsluv(state.backgroundColor);
     const bgL = bgHsl[2];
 
-    // Base: step slightly darker/lighter than page bg — gives a tonal, more visible surface
-    // (mirrors secondary-1's approach: bgL - 4 for light, bgL + 8 for dark)
-    const baseStep = 2;
-    const baseL = darkBackground
-      ? Math.min(100, bgL + baseStep * 2)
-      : Math.max(0,   bgL - baseStep);
-
-    const hoverStep  = readLInput('setting-secondary4-hover-l',  0);
-    const activeStep = readLInput('setting-secondary4-active-l', 8);
-
-    const hoverL  = darkBackground
-      ? Math.min(100, baseL + hoverStep)
-      : Math.max(0,   baseL - hoverStep);
-    const activeL = darkBackground
-      ? Math.min(100, baseL + activeStep)
-      : Math.max(0,   baseL - activeStep);
+    function stepL(step) {
+      return darkBackground
+        ? Math.min(100, bgL - step)
+        : Math.max(0,   bgL + step);
+    }
 
     setVars(prototypeEl, {
-      '--demo-secondary-5-bg':        hsluvToHex([bgHsl[0], bgHsl[1], baseL]),
-      '--demo-secondary-5-hover-bg':  hsluvToHex([bgHsl[0], bgHsl[1], hoverL]),
-      '--demo-secondary-5-active-bg': hsluvToHex([bgHsl[0], bgHsl[1], activeL]),
+      '--demo-secondary-5-bg':           hsluvToHex([bgHsl[0], bgHsl[1], stepL(-2)]),
+      '--demo-secondary-5-hover-bg':     hsluvToHex([bgHsl[0], bgHsl[1], stepL(-7)]),
+      '--demo-secondary-5-active-bg':    hsluvToHex([bgHsl[0], bgHsl[1], stepL(-10)]),
+      '--demo-secondary-5-border-color': hsluvToHex([bgHsl[0], bgHsl[1], stepL(-8)]),
     });
   }
 
@@ -796,18 +800,30 @@
 
   function saveVarsToStorage() {
     var params = {
-      primaryHoverL:      readLInput('setting-primary-hover-l',         5),
-      primaryActiveL:     readLInput('setting-primary-active-l',        10),
-      primaryBorderStep:  readLInput('setting-primary-border-contrast', 5),
-      primaryGradTopL:    readLInput('setting-primary-grad-top-l',      20),
-      primaryGradBotL:    readLInput('setting-primary-grad-bottom-l',   10),
-      secondaryDefaultL:  readLInput('setting-secondary-default-l',     -4),
-      secondaryHoverL:    readLInput('setting-secondary-hover-l',       -9),
-      secondaryActiveL:   readLInput('setting-secondary-active-l',      -10),
-      secondaryActive23L: readLInput('setting-secondary-active23-l',    -14),
-      secondaryBorderL:   readLInput('setting-secondary-border-l',      -8),
-      secondary4HoverL:   readLInput('setting-secondary4-hover-l',       5),
-      secondary4ActiveL:  readLInput('setting-secondary4-active-l',      8),
+      // Primary (all variants share same steps)
+      p1HoverL: 3,  p1ActiveL: 5,
+      p2HoverL: 3,  p2ActiveL: 5,
+      p3HoverL: 3,  p3ActiveL: 5,
+      p4HoverL: 3,  p4ActiveL: 5,
+      p5HoverL: 3,  p5ActiveL: 5,
+      p6HoverL: 3,  p6ActiveL: 5,
+      // Secondary per-variant steps
+      s1DefaultL: -4,  s1HoverL: -9,  s1ActiveL:  -8, s1BorderL: -8,
+      s2DefaultL: -4,  s2HoverL: -9,  s2ActiveL: -14, s2BorderL: -8,
+      s3DefaultL: -4,  s3HoverL: -9,  s3ActiveL: -14, s3BorderL: -8,
+      s4DefaultL:  0,  s4HoverL:  0,  s4ActiveL:  -5, s4BorderL: -8,
+      s5DefaultL: -2,  s5HoverL: -7,  s5ActiveL: -10, s5BorderL: -8,
+      s6DefaultL:  0,  s6HoverL:  0,  s6ActiveL:  -5, s6BorderL: -8,
+      // Backward compat for theme-sync.js
+      primaryHoverL:     3,
+      primaryActiveL:    5,
+      primaryBorderStep: readLInput('setting-primary-border-contrast', 5),
+      primaryGradTopL:   readLInput('setting-primary-grad-top-l',      20),
+      primaryGradBotL:   readLInput('setting-primary-grad-bottom-l',   10),
+      secondaryDefaultL: -4,
+      secondaryHoverL:   -9,
+      secondaryActiveL:   -8,
+      secondaryBorderL:  -8,
     };
     try { localStorage.setItem('btn-pg-params', JSON.stringify(params)); } catch(e) {}
   }

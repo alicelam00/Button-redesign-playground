@@ -45,56 +45,87 @@
       if (bBrt > 225) borderL = Math.min(borderL, 80);
       borderHex = hsluvToHex([hsl[0], hsl[1], borderL]);
 
-      var gradTop  = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + (p.primaryGradTopL  != null ? p.primaryGradTopL  : 20))]);
-      var gradBot  = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - (p.primaryGradBotL  != null ? p.primaryGradBotL  : 10))]);
+      var gradTop  = hsluvToHex([hsl[0], hsl[1], Math.min(100, hsl[2] + (p.primaryGradTopL != null ? p.primaryGradTopL : 20))]);
+      var gradBot  = hsluvToHex([hsl[0], hsl[1], Math.max(0,   hsl[2] - (p.primaryGradBotL != null ? p.primaryGradBotL : 10))]);
       var hDir     = hsl[2] > 50 ? -1 : 1;
-      var hoverBg  = hsluvToHex([hsl[0], hsl[1], Math.max(0, Math.min(100, hsl[2] + hDir * (p.primaryHoverL  != null ? p.primaryHoverL  : 5)))]);
-      var activeBg = hsluvToHex([hsl[0], hsl[1], Math.max(0, hsl[2] - (p.primaryActiveL != null ? p.primaryActiveL : 10))]);
 
-      root.style.setProperty('--demo-primary-fg',                      hexBrightness(accent) > 128 ? '#000000' : '#f9f6f5');
-      root.style.setProperty('--demo-primary-border-color',            borderHex);
-      root.style.setProperty('--demo-primary-border-gradient-top',     gradTop);
-      root.style.setProperty('--demo-primary-border-gradient-bottom',  gradBot);
-      root.style.setProperty('--demo-primary-hover-bg',                hoverBg);
-      root.style.setProperty('--demo-primary-active-bg',               activeBg);
+      root.style.setProperty('--demo-primary-fg',                     hexBrightness(accent) > 128 ? '#000000' : '#f9f6f5');
+      root.style.setProperty('--demo-primary-border-color',           borderHex);
+      root.style.setProperty('--demo-primary-border-gradient-top',    gradTop);
+      root.style.setProperty('--demo-primary-border-gradient-bottom', gradBot);
+
+      // Per-variant primary hover/active (P1–P6 share same base color, different step inputs)
+      for (var pi = 1; pi <= 6; pi++) {
+        var pHovStep = p['p' + pi + 'HoverL']  != null ? p['p' + pi + 'HoverL']  : (p.primaryHoverL  != null ? p.primaryHoverL  : 3);
+        var pActStep = p['p' + pi + 'ActiveL'] != null ? p['p' + pi + 'ActiveL'] : (p.primaryActiveL != null ? p.primaryActiveL : 5);
+        var pHovBg   = hsluvToHex([hsl[0], hsl[1], Math.max(0, Math.min(100, hsl[2] + hDir * pHovStep))]);
+        var pActBg   = hsluvToHex([hsl[0], hsl[1], Math.max(0, hsl[2] - pActStep)]);
+        root.style.setProperty('--demo-primary-' + pi + '-hover-bg',  pHovBg);
+        root.style.setProperty('--demo-primary-' + pi + '-active-bg', pActBg);
+      }
+      // Shared vars (P1 values) for backward compat
+      root.style.setProperty('--demo-primary-hover-bg',  root.style.getPropertyValue('--demo-primary-1-hover-bg'));
+      root.style.setProperty('--demo-primary-active-bg', root.style.getPropertyValue('--demo-primary-1-active-bg'));
     }
 
     // ── Secondary ─────────────────────────────────────────────────────────
     var bgHex = cs.getPropertyValue('--color-bg-page').trim();
     if (HEX.test(bgHex)) {
-      var bgHsl    = hexToHsluv(bgHex);
-      var bgL      = bgHsl[2];
-      var isDark   = hexBrightness(bgHex) < 128;
-      var defL     = isDark ? Math.min(100, bgL + 8)  : Math.max(0, bgL + (p.secondaryDefaultL  != null ? p.secondaryDefaultL  : -4));
-      var hovL     = isDark ? Math.min(100, bgL + 14) : Math.max(0, bgL + (p.secondaryHoverL    != null ? p.secondaryHoverL    : -9));
-      var actL     = isDark ? Math.min(100, bgL + 19) : Math.max(0, bgL + (p.secondaryActiveL   != null ? p.secondaryActiveL   : -10));
-      var act23L   = isDark ? Math.min(100, bgL + 23) : Math.max(0, bgL + (p.secondaryActive23L != null ? p.secondaryActive23L : -14));
-      var secBordL = isDark ? Math.min(100, defL + 8) : Math.max(0, bgL + (p.secondaryBorderL   != null ? p.secondaryBorderL   : -8));
+      var bgHsl = hexToHsluv(bgHex);
+      var bgL   = bgHsl[2];
+      var isDark = hexBrightness(bgHex) < 128;
 
-      root.style.setProperty('--demo-secondary-bg',           hsluvToHex([bgHsl[0], bgHsl[1], defL]));
-      root.style.setProperty('--demo-secondary-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], hovL]));
-      root.style.setProperty('--demo-secondary-active-bg',    hsluvToHex([bgHsl[0], bgHsl[1], actL]));
-      root.style.setProperty('--demo-secondary-active-bg-23', hsluvToHex([bgHsl[0], bgHsl[1], act23L]));
-      root.style.setProperty('--demo-secondary-border-color', hsluvToHex([bgHsl[0], bgHsl[1], secBordL]));
+      function tsStep(step) {
+        return isDark ? Math.min(100, bgL - step) : Math.max(0, bgL + step);
+      }
 
-      // ── Secondary 4 ──────────────────────────────────────────────────
-      var s4BaseL    = bgL + (100 - bgL) * 0.25;
-      var s4HovStep  = p.secondary4HoverL  != null ? p.secondary4HoverL  : 0;
-      var s4ActStep  = p.secondary4ActiveL != null ? p.secondary4ActiveL : 8;
-      var isDark4    = hexBrightness(bgHex) < 128;
-      var s4HovL     = isDark4 ? Math.min(100, s4BaseL + s4HovStep)  : Math.max(0, s4BaseL - s4HovStep);
-      var s4ActL     = isDark4 ? Math.min(100, s4BaseL + s4ActStep)  : Math.max(0, s4BaseL - s4ActStep);
-      root.style.setProperty('--demo-secondary-4-bg',        hsluvToHex([bgHsl[0], bgHsl[1], s4BaseL]));
-      root.style.setProperty('--demo-secondary-4-hover-bg',  hsluvToHex([bgHsl[0], bgHsl[1], s4HovL]));
-      root.style.setProperty('--demo-secondary-4-active-bg', hsluvToHex([bgHsl[0], bgHsl[1], s4ActL]));
+      // S1 — dark mode uses hardcoded steps for backward compat
+      var s1Def, s1Hov, s1Act, s1Brd;
+      if (isDark) {
+        s1Def = Math.min(100, bgL + 8);
+        s1Hov = Math.min(100, bgL + 14);
+        s1Act = Math.min(100, bgL + 19);
+        s1Brd = Math.min(100, s1Def + 8);
+      } else {
+        s1Def = Math.max(0, bgL + (p.s1DefaultL != null ? p.s1DefaultL : (p.secondaryDefaultL != null ? p.secondaryDefaultL : -4)));
+        s1Hov = Math.max(0, bgL + (p.s1HoverL   != null ? p.s1HoverL   : (p.secondaryHoverL   != null ? p.secondaryHoverL   : -9)));
+        s1Act = Math.max(0, bgL + (p.s1ActiveL  != null ? p.s1ActiveL  : (p.secondaryActiveL  != null ? p.secondaryActiveL  : -8)));
+        s1Brd = Math.max(0, bgL + (p.s1BorderL  != null ? p.s1BorderL  : (p.secondaryBorderL  != null ? p.secondaryBorderL  : -8)));
+      }
+      root.style.setProperty('--demo-secondary-bg',           hsluvToHex([bgHsl[0], bgHsl[1], s1Def]));
+      root.style.setProperty('--demo-secondary-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], s1Hov]));
+      root.style.setProperty('--demo-secondary-active-bg',    hsluvToHex([bgHsl[0], bgHsl[1], s1Act]));
+      root.style.setProperty('--demo-secondary-border-color', hsluvToHex([bgHsl[0], bgHsl[1], s1Brd]));
 
-      // ── Secondary 5 — tonal step (darker/lighter than page bg) ───────
-      var s5BaseL    = isDark ? Math.min(100, bgL + 4) : Math.max(0, bgL - 2);
-      var s5HovL     = isDark ? Math.min(100, s5BaseL + s4HovStep)  : Math.max(0, s5BaseL - s4HovStep);
-      var s5ActL     = isDark ? Math.min(100, s5BaseL + s4ActStep)  : Math.max(0, s5BaseL - s4ActStep);
-      root.style.setProperty('--demo-secondary-5-bg',        hsluvToHex([bgHsl[0], bgHsl[1], s5BaseL]));
-      root.style.setProperty('--demo-secondary-5-hover-bg',  hsluvToHex([bgHsl[0], bgHsl[1], s5HovL]));
-      root.style.setProperty('--demo-secondary-5-active-bg', hsluvToHex([bgHsl[0], bgHsl[1], s5ActL]));
+      // S2
+      root.style.setProperty('--demo-secondary-2-bg',           hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s2DefaultL != null ? p.s2DefaultL : -4)]));
+      root.style.setProperty('--demo-secondary-2-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s2HoverL   != null ? p.s2HoverL   : -9)]));
+      root.style.setProperty('--demo-secondary-2-active-bg',    hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s2ActiveL  != null ? p.s2ActiveL  : -14)]));
+      root.style.setProperty('--demo-secondary-2-border-color', hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s2BorderL  != null ? p.s2BorderL  : -8)]));
+
+      // S3
+      root.style.setProperty('--demo-secondary-3-bg',           hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s3DefaultL != null ? p.s3DefaultL : -4)]));
+      root.style.setProperty('--demo-secondary-3-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s3HoverL   != null ? p.s3HoverL   : -9)]));
+      root.style.setProperty('--demo-secondary-3-active-bg',    hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s3ActiveL  != null ? p.s3ActiveL  : -14)]));
+      root.style.setProperty('--demo-secondary-3-border-color', hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s3BorderL  != null ? p.s3BorderL  : -8)]));
+
+      // S4
+      root.style.setProperty('--demo-secondary-4-bg',           hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s4DefaultL != null ? p.s4DefaultL : 0)]));
+      root.style.setProperty('--demo-secondary-4-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s4HoverL   != null ? p.s4HoverL   : 0)]));
+      root.style.setProperty('--demo-secondary-4-active-bg',    hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s4ActiveL  != null ? p.s4ActiveL  : -5)]));
+      root.style.setProperty('--demo-secondary-4-border-color', hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s4BorderL  != null ? p.s4BorderL  : -8)]));
+
+      // S5
+      root.style.setProperty('--demo-secondary-5-bg',           hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s5DefaultL != null ? p.s5DefaultL : -2)]));
+      root.style.setProperty('--demo-secondary-5-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s5HoverL   != null ? p.s5HoverL   : -7)]));
+      root.style.setProperty('--demo-secondary-5-active-bg',    hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s5ActiveL  != null ? p.s5ActiveL  : -10)]));
+      root.style.setProperty('--demo-secondary-5-border-color', hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s5BorderL  != null ? p.s5BorderL  : -8)]));
+
+      // S6
+      root.style.setProperty('--demo-secondary-6-bg',           hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s6DefaultL != null ? p.s6DefaultL : 0)]));
+      root.style.setProperty('--demo-secondary-6-hover-bg',     hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s6HoverL   != null ? p.s6HoverL   : 0)]));
+      root.style.setProperty('--demo-secondary-6-active-bg',    hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s6ActiveL  != null ? p.s6ActiveL  : -5)]));
+      root.style.setProperty('--demo-secondary-6-border-color', hsluvToHex([bgHsl[0], bgHsl[1], tsStep(p.s6BorderL  != null ? p.s6BorderL  : -8)]));
     }
   }
 

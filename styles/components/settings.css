@@ -338,8 +338,7 @@
   border-radius: 50px;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.14),
-    0 0 0 2px rgba(0, 0, 0, 0.6),
-    0 24px 72px rgba(0, 0, 0, 0.7);
+    0 0 0 2px rgba(0, 0, 0, 0.6);
   overflow: hidden;
 }
 
