@@ -32,20 +32,37 @@
     sizePreset: 'default',
   };
   const PRESS_SPRING = {
-    compactScale: 0.952,
-    wideScale: 0.972,
-    mass: 0.88,
-    stiffness: 310,
-    damping: 12,
+    compactScale: 0.965,
+    wideScale: 0.982,
+    mass: 0.75,
+    stiffness: 400,
+    damping: 16,
+  };
+  const PRESS_SPRING_56 = {
+    compactScale: 0.968,
+    wideScale: 0.984,
+    mass: 0.7,
+    stiffness: 430,
+    damping: 17,
+  };
+  const RELEASE_SPRING_56 = {
+    mass: 0.7,
+    stiffness: 470,
+    damping: 16,
   };
   const HOVER_SPRING = {
-    compactScale: 1.034,
-    wideScale: 1.018,
-    plainCompactScale: 1.028,
-    plainWideScale: 1.014,
-    mass: 0.76,
-    stiffness: 370,
-    damping: 11.5,
+    compactScale: 1.016,
+    wideScale: 1.008,
+    plainCompactScale: 1.012,
+    plainWideScale: 1.006,
+    mass: 0.72,
+    stiffness: 330,
+    damping: 17,
+  };
+  const HOVER_RELEASE_SPRING = {
+    mass: 0.72,
+    stiffness: 320,
+    damping: 18,
   };
 
   const state = Object.assign({}, DEFAULTS);
@@ -331,13 +348,13 @@
     });
   }
 
-  function getSpringConfig(kind, mode) {
+  function getSpringConfig(kind, mode, button) {
     if (kind === 'hover') {
       if (mode === 'release') {
         return {
-          stiffness: HOVER_SPRING.stiffness * 1.08,
-          damping: HOVER_SPRING.damping * 0.92,
-          mass: HOVER_SPRING.mass,
+          stiffness: HOVER_RELEASE_SPRING.stiffness,
+          damping: HOVER_RELEASE_SPRING.damping,
+          mass: HOVER_RELEASE_SPRING.mass,
         };
       }
 
@@ -348,18 +365,18 @@
       };
     }
 
+    const spring = getPressSpring(button);
+
     if (mode === 'release') {
-      return {
-        stiffness: PRESS_SPRING.stiffness * 1.12,
-        damping: PRESS_SPRING.damping * 0.9,
-        mass: PRESS_SPRING.mass,
-      };
+      return isVariant56(button)
+        ? { stiffness: RELEASE_SPRING_56.stiffness, damping: RELEASE_SPRING_56.damping, mass: RELEASE_SPRING_56.mass }
+        : { stiffness: 440, damping: 14, mass: 0.75 };
     }
 
     return {
-      stiffness: PRESS_SPRING.stiffness,
-      damping: PRESS_SPRING.damping,
-      mass: PRESS_SPRING.mass,
+      stiffness: spring.stiffness,
+      damping: spring.damping,
+      mass: spring.mass,
     };
   }
 
@@ -403,7 +420,7 @@
     let position = springState.pos;
     let velocity = springState.vel;
     let lastTick = null;
-    const config = getSpringConfig(springName, mode);
+    const config = getSpringConfig(springName, mode, button);
 
     function tick(timestamp) {
       if (!lastTick) {
@@ -456,13 +473,29 @@
   }
 
   function getPressScale(button) {
-    return lerp(PRESS_SPRING.compactScale, PRESS_SPRING.wideScale, getWidthFactor(button));
+    const spring = getPressSpring(button);
+    return lerp(spring.compactScale, spring.wideScale, getWidthFactor(button));
+  }
+
+  function isVariant2(button) {
+    return button && (button.dataset.variant === 'primary-2' || button.dataset.variant === 'secondary-2');
+  }
+
+  function isVariant56(button) {
+    return button && (
+      button.dataset.variant === 'primary-5' || button.dataset.variant === 'secondary-5' ||
+      button.dataset.variant === 'primary-6' || button.dataset.variant === 'secondary-6'
+    );
+  }
+
+  function getPressSpring(button) {
+    return isVariant56(button) ? PRESS_SPRING_56 : PRESS_SPRING;
   }
 
   function bindHoverAnimation() {
     document.addEventListener('pointerover', function (event) {
       const button = event.target.closest('.button');
-      if (!button || button.disabled || button.contains(event.relatedTarget)) {
+      if (!button || button.disabled || isVariant2(button) || button.contains(event.relatedTarget)) {
         return;
       }
 
@@ -471,7 +504,7 @@
 
     document.addEventListener('pointerout', function (event) {
       const button = event.target.closest('.button');
-      if (!button || button.disabled || button.contains(event.relatedTarget)) {
+      if (!button || button.disabled || isVariant2(button) || button.contains(event.relatedTarget)) {
         return;
       }
 
@@ -493,7 +526,7 @@
 
     document.addEventListener('pointerdown', function (event) {
       const button = event.target.closest('.button');
-      if (!button || button.disabled || prefersReducedMotion.matches) {
+      if (!button || button.disabled || isVariant2(button) || prefersReducedMotion.matches) {
         return;
       }
 
@@ -507,7 +540,7 @@
       }
 
       const button = event.target.closest('.button');
-      if (!button || button.disabled || prefersReducedMotion.matches) {
+      if (!button || button.disabled || isVariant2(button) || prefersReducedMotion.matches) {
         return;
       }
 
@@ -520,7 +553,7 @@
       }
 
       const button = event.target.closest('.button');
-      if (!button || button.disabled || prefersReducedMotion.matches) {
+      if (!button || button.disabled || isVariant2(button) || prefersReducedMotion.matches) {
         return;
       }
 
@@ -909,8 +942,8 @@
   document.getElementById('setting-border-radius').addEventListener('change', function () {
     prototypeEl.style.setProperty('--button-radius', 'var(--' + this.value + ')');
   });
-  // bindHoverAnimation();
-  // bindPressAnimation();
+  bindHoverAnimation();
+  bindPressAnimation();
 
   document.getElementById('global-reset-all').addEventListener('click', function () {
     Object.assign(state, DEFAULTS);
